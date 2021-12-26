@@ -1,6 +1,6 @@
 # Percussion Library
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a project to culminate resources for Percussion Ensemble Literature from major publishers, as well as self-published works.
 
 ## Available Scripts
 
