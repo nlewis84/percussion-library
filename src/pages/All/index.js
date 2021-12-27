@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@reach/router';
-import { Button, Card, CardActions, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
 
 class All extends React.Component {
@@ -41,7 +41,9 @@ class All extends React.Component {
 			<Container className="App" sx={{ mt: 2}}>
 				<Grid container sx={{ gap: 2 }} spacing={2}>
 					{items.map((item) => (
-						<Card key={item.id} sx={{ width: 175 }} variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/${item.id}`}>
+						<Card key={item.id} sx={{ width: 175, ':hover': {
+							boxShadow: 10, // theme.shadows[20]
+						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/${item.id}`}>
 							<CardContent>
 								<Typography variant="h7" color="primary.main" component="div">
 									{item.title}
@@ -52,7 +54,7 @@ class All extends React.Component {
 								<Typography variant="body2">
 									{SanitizeDifficulty(item.level)}
 									<br />
-									Players: {item.players}
+									Player(s): {item.players}
 								</Typography>
 							</CardContent>
 						</Card>
