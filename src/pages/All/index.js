@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@reach/router';
-import { Card, CardContent, Container, Paper, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Container, Grid, Typography } from '@mui/material';
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
 
 class All extends React.Component {
@@ -38,10 +38,10 @@ class All extends React.Component {
 			);
 
 		return (
-			<Container className="App">
-				{items.map((item) => (
-					<Paper key={item.id} >
-						<Card sx={{ maxWidth: 275 }} variant="outlined">
+			<Container className="App" sx={{ mt: 2}}>
+				<Grid container sx={{ gap: 2 }} spacing={2}>
+					{items.map((item) => (
+						<Card key={item.id} sx={{ width: 175 }} variant="outlined">
 							<CardContent>
 								<Typography variant="h5" component="div">
 									{item.title}
@@ -52,14 +52,18 @@ class All extends React.Component {
 								<Typography variant="body2">
 									{SanitizeDifficulty(item.level)}
 									<br />
-									{item.players}
+									Players: {item.players}
 								</Typography>
-								<Link to={`ensembles/${item.id}`}>{item.title}</Link> by{' '}
-								{item.composer}
 							</CardContent>
+							<CardActions>
+								<Button>
+									<Link to={`ensembles/${item.id}`}>{item.title}</Link>
+								</Button>
+			
+							</CardActions>
 						</Card>
-					</Paper>
-				))}
+					))}
+				</Grid>
 			</Container>
 		);
 	}
