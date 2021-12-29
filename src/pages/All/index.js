@@ -43,7 +43,7 @@ class All extends React.Component {
 					{items.filter((item) => item.category === 'Percussion Ensembles').map((item) => (
 						<Card key={item.id} sx={{ borderRadius: 2, height: 175, width: 175, ':hover': {
 							boxShadow: 10, // theme.shadows[20]
-						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/${item.id}`}>
+						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/ensembles/${item.id}`}>
 							<CardContent>
 								<Typography variant="h7" color="primary.main" component="div">
 									{item.title}

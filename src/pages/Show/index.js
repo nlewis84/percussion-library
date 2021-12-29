@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card, CardContent, Container, Link, Typography } from '@mui/material';
 
 class Show extends React.Component {
 	// Constructor
@@ -26,34 +27,41 @@ class Show extends React.Component {
 		const { DataisLoaded, item } = this.state;
 		if (!DataisLoaded)
 			return (
-				<div>
-					<h1> Loading...</h1>{' '}
-				</div>
+				<Container>
+					<Card>
+						<CardContent>
+							<Typography variant='h1'> Loading...</Typography>{' '}
+						</CardContent>
+					</Card>
+				</Container>
 			);
 		console.log(item);
 		return (
-			<div className="App">
-				<h1> {item.title} </h1>
-				<ol>Title: {item.title}</ol>
-				{item.compilation ? <ol>Compilation: {item.compilation}</ol> : null}
-				<ol>Composer: {item.composer}</ol>
-				{item.arranger ? <ol>Arranger: {item.arranger}</ol> : null}
-				{item.level ? <ol>Difficulty: {item.level}</ol> : null}
-				{item.duration ? <ol>Duration: {item.duration}</ol> : null}
-				{item.players ? <ol>Players: {item.players}</ol> : null}
+			<Container className="App">
+				<Typography variant="body2" sx={{ mb: 1.5 }} color="text.secondary">{item.category}</Typography>
+				<Typography variant="h3" sx={{ mb: 1.5 }} color="primary.main" >{item.title}</Typography>
+				{item.compilation ? <Typography variant="h6" color="text.secondary">{item.compilation}</Typography> : null}
+				{item.arranger ? <Typography variant="h6" color="text.secondary">{item.arranger}</Typography> : <Typography variant="h6" color="text.secondary">{item.composer}</Typography>}
+				{item.level ? <Typography variant="body" color="text.secondary"><strong>Level: </strong>{item.level}</Typography> : null}
+				{item.duration ? <Typography variant="body1" color="text.secondary"><strong>Duration: </strong>{item.duration}</Typography> : null}
+				{item.players ? <Typography variant="body1" color="text.secondary"><strong>Personnel: </strong>{item.players}</Typography> : null}
+				{/* split this on the bullet */}
 				{item.instrumentation ? (
-					<ol>Instrumentation: {item.instrumentation}</ol>
+					<Typography variant="body1" color="text.secondary">{item.instrumentation}</Typography>
 				) : null}
-				<ol>Category: {item.category}</ol>
-				{item.overview ? <ol>Overview: {item.overview}</ol> : null}
-				{item.description ? <ol>Description: {item.description}</ol> : null}
+				<br />
+				{item.description ? <Typography variant="body1" color="text.secondary">{item.description}</Typography> : null}
+				<br />
+				{/* embed Sound Cloud player here */}
 				{item.audio_link ? (
-					<ol>
-            Audio Link: <a href={item.audio_link}>Sound Cloud</a>
-					</ol>
+					<Typography variant="body2" color="text.secondary">
+            Audio Link: <Link href={item.audio_link}>Sound Cloud</Link>
+					</Typography>
 				) : null}
-				{item.reviews ? <ol>Reviews: {item.reviews}</ol> : null}
-			</div>
+				<br />
+				{/* make these reviews look cool */}
+				{item.reviews ? <Typography variant="body3" color="text.secondary">{item.reviews}</Typography> : null}
+			</Container>
 		);
 	}
 }
