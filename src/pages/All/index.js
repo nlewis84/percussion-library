@@ -29,7 +29,7 @@ class All extends React.Component {
 		if (!DataisLoaded)
 			return (
 				<Container>
-					<Card sx={{ minWidth: 275 }}>
+					<Card>
 						<CardContent>
 							<Typography variant='h1'> Loading...</Typography>{' '}
 						</CardContent>
@@ -38,10 +38,10 @@ class All extends React.Component {
 			);
 
 		return (
-			<Container className="App" sx={{ mt: 2}}>
-				<Grid container sx={{ gap: 2 }} spacing={2}>
-					{items.map((item) => (
-						<Card key={item.id} sx={{ width: 175, ':hover': {
+			<Container className="App">
+				<Grid container sx={{ gap: 2, mt: 5 }} spacing={2} alignItems="center" justifyContent="center">
+					{items.filter((item) => item.category === 'Percussion Ensembles').map((item) => (
+						<Card key={item.id} sx={{ borderRadius: 2, height: 175, width: 175, ':hover': {
 							boxShadow: 10, // theme.shadows[20]
 						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/${item.id}`}>
 							<CardContent>

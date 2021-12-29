@@ -4,6 +4,7 @@ import { Container, Link, Typography } from '@mui/material';
 
 import All from './pages/All/index';
 import Show from './pages/Show/index';
+import SearchAppBar from '../src/components/SearchAppBar';
 
 function Copyright() {
 	return (
@@ -21,13 +22,13 @@ function Copyright() {
 function App() {
 	return (
 		<Container className="wrapper">
-			<Typography variant="h1" component="h1">
-        Percussion Library
-			</Typography>
-			<Router>
-				<All path="/" />
-				<Show path="ensembles/:ensembleId" />
-			</Router>
+			<SearchAppBar />
+			<Container className="wrapper" sx={{ mt: 2 }}>
+				<Router>
+					<All path="/" />
+					<Show path="ensembles/:ensembleId" />
+				</Router>
+			</Container>
 			<Copyright />
 		</Container>
 	);
