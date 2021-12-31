@@ -35,7 +35,7 @@ class Show extends React.Component {
 					</Card>
 				</Container>
 			);
-		console.log(item);
+		// console.log(item);
 		return (
 			<Container className="App">
 				<Typography variant="body2" sx={{ mb: 1.5 }} color="text.secondary">{item.category}</Typography>

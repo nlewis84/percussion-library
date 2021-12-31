@@ -1,6 +1,6 @@
 # Percussion Library
 
-This is a project to culminate resources for Percussion Ensemble Literature from major publishers, as well as self-published works.
+This is a project to culminate resources for Percussion Ensemble Literature from major publishers, as well as self-published works. This is a valuable resource for performers and educators alike to find their next favorite work for Percussion Ensemble!
 
 ## Available Scripts
 
