@@ -5,6 +5,7 @@ import ReactHtmlParser from 'react-html-parser';
 
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
 import DescriptionFormatter from '../../helpers/descriptionFormatter';
+import InstrumentationFormatter from '../../helpers/instrumentationFormatter';
 
 class Show extends React.Component {
 	// Constructor
@@ -84,7 +85,7 @@ class Show extends React.Component {
 				{item.instrumentation ? <Typography variant="body2" color="text.secondary">Instrumentation</Typography> : null}
 				{/* split this on the bullet */}
 				{item.instrumentation ? (
-					<Typography variant="body1" sx={{ mb: 1.5 }} color="text.primary">{item.instrumentation}</Typography>
+					InstrumentationFormatter(item.instrumentation)
 				) : null}
 				{item.description ? <Typography variant="body2" color="text.secondary">Description</Typography> : null}
 				{item.description ? DescriptionFormatter(item.title, item.description) : null}
