@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardContent, Container, Link, Typography } from '@mui/material';
+import { Card, CardContent, Container, Typography } from '@mui/material';
+import ReactHtmlParser from 'react-html-parser'; 
 
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
 import DescriptionFormatter from '../../helpers/descriptionFormatter';
@@ -11,7 +12,7 @@ class Show extends React.Component {
 		super(props);
 
 		this.state = {
-			items: [],
+			item: [],
 			DataisLoaded: false,
 		};
 	}
@@ -19,16 +20,44 @@ class Show extends React.Component {
 	componentDidMount() {
 		fetch(`${process.env.REACT_APP_DATA_URL}ensembles/${this.props.ensembleId}`)
 			.then((res) => res.json())
-			.then((json) => {
-				console.log('json', json[0]);
+			.then(async (json) => {
 				this.setState({
 					item: json[0],
-					DataisLoaded: true,
 				});
+
+				if (this.state.item.audio_link && this.state.item.audio_link.startsWith('https://soundcloud.com/')) {
+
+					// Audio Link embed parsing
+					const res = await fetch('https://soundcloud.com/oembed', {
+						body: `format=json&url=${this.state.item.audio_link}`,
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded'
+						},
+						method: 'POST'
+					});
+					const audioJson = await res.json();
+
+					this.setState({
+						... this.state,
+						item: {
+							... this.state.item,
+							audio_embed: audioJson.html,
+							audio_thumbnail: audioJson.thumbnail_url,
+						},
+						DataisLoaded: true,
+					});
+				} else {
+					this.setState({
+						...this.state,
+						DataisLoaded: true,
+					});
+				}
 			});
 	}
+
 	render() {
 		const { DataisLoaded, item } = this.state;
+
 		if (!DataisLoaded)
 			return (
 				<Container>
@@ -39,7 +68,7 @@ class Show extends React.Component {
 					</Card>
 				</Container>
 			);
-		// console.log(item);
+
 		return (
 			<Container className="App">
 				<Typography variant="body2" sx={{ mb: 1.5 }} color="text.secondary">{item.category}</Typography>
@@ -57,12 +86,12 @@ class Show extends React.Component {
 				{item.instrumentation ? (
 					<Typography variant="body1" sx={{ mb: 1.5 }} color="text.primary">{item.instrumentation}</Typography>
 				) : null}
+				{item.description ? <Typography variant="body2" color="text.secondary">Description</Typography> : null}
 				{item.description ? DescriptionFormatter(item.title, item.description) : null}
 				{/* embed Sound Cloud player here */}
+				{item.audio_link ? <Typography variant="body2" sx={{ mt: 1.5 }} color="text.secondary">Recording</Typography> : null}
 				{item.audio_link ? (
-					<Typography variant="body2" sx={{ mb: 1.5 }} color="text.primary">
-            Audio Link: <Link href={item.audio_link}>Sound Cloud</Link>
-					</Typography>
+					ReactHtmlParser(item.audio_embed)
 				) : null}
 				{/* make these reviews look cool */}
 				{item.reviews ? <Typography variant="body3" color="text.primary">{item.reviews}</Typography> : null}
