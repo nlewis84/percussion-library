@@ -1,6 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardContent, Container, Typography } from '@mui/material';
+import { Box, Card, CardContent, Container, Paper, Stack, Typography } from '@mui/material';
+import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 import ReactHtmlParser from 'react-html-parser'; 
 
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
@@ -72,27 +76,42 @@ class Show extends React.Component {
 
 		return (
 			<Container className="App">
-				<Typography variant="body2" sx={{ mb: 1.5 }} color="text.secondary">{item.category}</Typography>
-				<Typography variant="h3" sx={{ fontWeight: 700, mb: 1.5 }} color="primary.main" >{item.title}</Typography>
-				{item.compilation ? <Typography variant="h6" color="text.primary">{item.compilation}</Typography> : null}
-				{item.arranger ? <Typography variant="h6" color="text.primary">{item.arranger}</Typography> : <Typography variant="h6" color="text.primary">{item.composer}</Typography>}
-				{item.level ? <Typography variant="body2" color="text.secondary">Level</Typography> : null}
-				{item.level ? <Typography variant="body1" color="text.primary">{SanitizeDifficulty(item.level)}</Typography> : null}
-				{item.duration ? <Typography variant="body2" color="text.secondary">Duration</Typography> : null}
-				{item.duration ? <Typography variant="body1" color="text.primary">{item.duration}</Typography> : null}
-				{item.players ? <Typography variant="body2" color="text.secondary">Personnel</Typography> : null}
-				{item.players ? <Typography variant="body1" color="text.primary">{item.players}</Typography> : null}
-				{item.instrumentation ? <Typography variant="body2" color="text.secondary">Instrumentation</Typography> : null}
-				{/* split this on the bullet */}
+				<Typography variant="body2" align={'center'} sx={{ mb: 1.5 }} color="text.secondary">{item.category}</Typography>
+				<Typography variant="h3" align={'center'} sx={{ fontWeight: 700, mb: 1.5 }} color="primary.main" >{item.title}</Typography>
 				{item.instrumentation ? (
 					InstrumentationFormatter(item.instrumentation)
 				) : null}
-				{item.description ? <Typography variant="body2" color="text.secondary">Description</Typography> : null}
-				{item.description ? DescriptionFormatter(item.title, item.description) : null}
+				<Paper sx={{ width: '66%', p: 5 }}>
+					{item.arranger ? <Typography variant="h6" color="text.primary">{item.arranger}</Typography> : <Typography variant="h6" color="text.primary">{item.composer}</Typography>}
+					{item.compilation ? <Box component={Stack} direction="row" alignItems="center" >
+						<MenuBookOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<Typography variant="body1" color="text.primary">{item.compilation}</Typography>
+					</Box> : null}
+					{/* {item.level ? <Typography variant="body2" color="text.secondary">Level</Typography> : null} */}
+					{item.level ? <Box component={Stack} direction="row" alignItems="center" >
+						<SpeedOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<Typography variant="body1" sx={{ display: 'inline' }} color="text.primary">{SanitizeDifficulty(item.level)}</Typography>
+					</Box> : null}
+					{/* {item.duration ? <Typography variant="body2" color="text.secondary">Duration</Typography> : null} */}
+					{item.duration ? <Box component={Stack} direction="row" alignItems="center" >
+						<AccessTimeOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<Typography variant="body1" color="text.primary">{item.duration}</Typography>
+					</Box> : null}
+					{/* {item.players ? <Typography variant="body2" color="text.secondary">Personnel</Typography> : null} */}
+					{item.players ? <Box component={Stack} direction="row" alignItems="center" >
+						<GroupsOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<Typography variant="body1" color="text.primary">{item.players}</Typography> 
+					</Box> : null}
+					{/* split this on the bullet */}
+					{item.description ? <Typography variant="body2" color="text.secondary">Description</Typography> : null}
+					{item.description ? DescriptionFormatter(item.title, item.description) : null}
+				</Paper>
 				{/* embed Sound Cloud player here */}
 				{item.audio_link ? <Typography variant="body2" sx={{ mt: 1.5 }} color="text.secondary">Recording</Typography> : null}
 				{item.audio_link ? (
-					ReactHtmlParser(item.audio_embed)
+					<Box sx={{ width: '66%' }}>
+						{ReactHtmlParser(item.audio_embed)}
+					</Box>
 				) : null}
 				{/* make these reviews look cool */}
 				{item.reviews ? <Typography variant="body3" color="text.primary">{item.reviews}</Typography> : null}

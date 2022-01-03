@@ -1,29 +1,55 @@
 import React from 'react';
-import { List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
-import BlurOn from '@mui/icons-material/BlurOn';
+import { Paper, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material';
+
+import MusicNote from '../components/icons/MusicNote';
 
 function InstrumentationFormatter(instrumentation) {
-  
-	let stringArray = instrumentation
-		.split('\t•\t')
-		.filter(
+	let stringArray = [];
+
+	if (instrumentation.startsWith('•')) {
+		stringArray = instrumentation
+			.split('•')
+			.filter(
+				(item) => 
+					item !== '')
+			.join()
+			.split('\n,');
+	} else if (instrumentation.startsWith('\t•\t')) {
+		stringArray = instrumentation
+			.split('\t•\t')
+			.filter(
+				(item) => 
+					item !== '')
+			.join()
+			.split('\n,');
+	} else {
+		stringArray = instrumentation.split('\n').filter(
 			(item) => 
 				item !== '')
-		.join()
-		.split('\n,');
-
-	console.log(stringArray);
+			.join()
+			.split('\t•\t')
+			.filter(
+				(item) => 
+					item !== '')
+			.map((item) => item[item.length - 1] === ',' ? item.slice(0, -1) : item);
+	}
 	
-	return <List dense={false} sx={{ pt: 0}}>
-		{stringArray.map((value) =>
-			React.cloneElement(<ListItem disableGutters disablePadding>
-				<ListItemIcon>
-					<BlurOn color="primary" sx={{fontSize: 12 }} />
-				</ListItemIcon>
-				<ListItemText primary={value} />
-			</ListItem>),
-		)}
-	</List>;
-}
+	return (
+		<Paper sx={{ width: '33%', float: 'right', pt: 0}}>
+			<List dense={false}>
+				<Typography variant="body2" color="text.secondary" align='center'>Instrumentation</Typography>
+				{stringArray.map((value) =>
+					React.cloneElement(
+						<ListItem>
+							<ListItemIcon>
+								<MusicNote color="primary.main"/>
+							</ListItemIcon>
+							<ListItemText primary={value} />
+						</ListItem>
+					)
+				)}
+			</List>
+		</Paper>
+	);}
 
 export default InstrumentationFormatter;
