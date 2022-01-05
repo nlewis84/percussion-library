@@ -1,6 +1,6 @@
 import React from 'react';
 import { Router } from '@reach/router';
-import { Container, Link, Paper, Typography } from '@mui/material';
+import { Box, Container, Link, Typography } from '@mui/material';
 
 import All from './pages/All/index';
 import Show from './pages/Show/index';
@@ -23,16 +23,14 @@ function Copyright() {
 
 function App() {
 	return (
-		<Paper className="wrapper">
+		<Box className="wrapper">
 			<SearchAppBar />
-			{/* <Paper className="wrapper" sx={{ mt: 2 }}> */}
 			<Router>
 				<All path="/" />
 				<Show path="ensembles/:ensembleId" />
 			</Router>
-			{/* </Paper> */}
 			<Copyright />
-		</Paper>
+		</Box>
 	);
 }
 

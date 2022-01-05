@@ -21,6 +21,8 @@ const pages = [
 	{title: 'Books', route: 'books' }
 ];
 
+const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
+
 const Search = styled('div')(({ theme }) => ({
 	position: 'relative',
 	borderRadius: theme.shape.borderRadius,
@@ -77,7 +79,7 @@ const SearchAppBar = () => {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
+			<AppBar position="fixed">
 				<Toolbar>
 					<Typography
 						variant="h6"
@@ -124,7 +126,7 @@ const SearchAppBar = () => {
 							))}
 						</Menu>
 					</Box>
-					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'space-evenly' }}>
 						{pages.map((page) => (
 							<Button
 								key={page.title}
@@ -146,6 +148,7 @@ const SearchAppBar = () => {
 					</Search>
 				</Toolbar>
 			</AppBar>
+			<Offset />
 		</Box>
 	);
 };

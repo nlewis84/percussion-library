@@ -45,7 +45,7 @@ class All extends React.Component {
 							boxShadow: 10, // theme.shadows[20]
 						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/ensembles/${item.id}`}>
 							<CardContent>
-								<Typography variant="h7" color="primary.main" component="div">
+								<Typography variant="h7" color="secondary.main" sx={{ fontWeight: 'bold' }} component="div">
 									{item.title}
 								</Typography>
 								<Typography sx={{ mb: 1.5 }} color="text.secondary">

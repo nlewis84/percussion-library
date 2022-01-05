@@ -75,31 +75,31 @@ class Show extends React.Component {
 			);
 
 		return (
-			<Container className="App">
+			<Container className="App" sx={{ mt: 3 }}>
 				<Typography variant="body2" align={'center'} sx={{ mb: 1.5 }} color="text.secondary">{item.category}</Typography>
-				<Typography variant="h3" align={'center'} sx={{ fontWeight: 700, mb: 1.5 }} color="primary.main" >{item.title}</Typography>
+				<Typography variant="h3" align={'center'} sx={{ fontWeight: 700, mb: 1.5 }} color="secondary.main" >{item.title}</Typography>
 				{item.instrumentation ? (
 					InstrumentationFormatter(item.instrumentation)
 				) : null}
 				<Paper sx={{ width: '66%', p: 5 }}>
 					{item.arranger ? <Typography variant="h6" color="text.primary">{item.arranger}</Typography> : <Typography variant="h6" color="text.primary">{item.composer}</Typography>}
 					{item.compilation ? <Box component={Stack} direction="row" alignItems="center" >
-						<MenuBookOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<MenuBookOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 5 }} />
 						<Typography variant="body1" color="text.primary">{item.compilation}</Typography>
 					</Box> : null}
 					{/* {item.level ? <Typography variant="body2" color="text.secondary">Level</Typography> : null} */}
 					{item.level ? <Box component={Stack} direction="row" alignItems="center" >
-						<SpeedOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<SpeedOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 5 }} />
 						<Typography variant="body1" sx={{ display: 'inline' }} color="text.primary">{SanitizeDifficulty(item.level)}</Typography>
 					</Box> : null}
 					{/* {item.duration ? <Typography variant="body2" color="text.secondary">Duration</Typography> : null} */}
 					{item.duration ? <Box component={Stack} direction="row" alignItems="center" >
-						<AccessTimeOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<AccessTimeOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 5 }} />
 						<Typography variant="body1" color="text.primary">{item.duration}</Typography>
 					</Box> : null}
 					{/* {item.players ? <Typography variant="body2" color="text.secondary">Personnel</Typography> : null} */}
 					{item.players ? <Box component={Stack} direction="row" alignItems="center" >
-						<GroupsOutlinedIcon sx={{ color: 'primary.main', display: 'inline', mr: 5 }} />
+						<GroupsOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 5 }} />
 						<Typography variant="body1" color="text.primary">{item.players}</Typography> 
 					</Box> : null}
 					{/* split this on the bullet */}

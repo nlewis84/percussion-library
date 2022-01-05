@@ -42,7 +42,7 @@ function InstrumentationFormatter(instrumentation) {
 					React.cloneElement(
 						<ListItem>
 							<ListItemIcon>
-								<MusicNote color="primary.main"/>
+								<MusicNote color="secondary.main"/>
 							</ListItemIcon>
 							<ListItemText primary={value} />
 						</ListItem>
