@@ -7,11 +7,11 @@ function SanitzeDifficulty(difficulty) {
 	case 'Advanced':
 		return 'Advanced';
 	case 'Med-Easy':
-		return 'Medium Easy';
+		return 'Med. Easy';
 	case 'Med-Advanced':
-		return 'Medium Advanced';
+		return 'Med. Advanced';
 	default:
-		return `Various: ${difficulty}`;
+		return 'Various';
 	}
 }
 

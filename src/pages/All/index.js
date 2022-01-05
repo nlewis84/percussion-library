@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link } from '@reach/router';
-import { Card, CardContent, Container, Grid, Typography } from '@mui/material';
+import { Box, Card, CardContent, Container, Grid, Stack, Typography } from '@mui/material';
+import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
+import TruncateText from '../../helpers/truncateText';
 
 class All extends React.Component {
 	// Constructor
@@ -46,16 +49,22 @@ class All extends React.Component {
 						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/ensembles/${item.id}`}>
 							<CardContent>
 								<Typography variant="h7" color="secondary.main" sx={{ fontWeight: 'bold' }} component="div">
-									{item.title}
+									{TruncateText(item.title, 32)}
 								</Typography>
 								<Typography sx={{ mb: 1.5 }} color="text.secondary">
-									{item.composer}
+									{TruncateText(item.composer, 25)}
 								</Typography>
-								<Typography variant="body2">
-									{SanitizeDifficulty(item.level)}
-									<br />
-									Player(s): {item.players}
-								</Typography>
+								<Box component={Stack} direction="row" alignItems="center" >
+									<SpeedOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+									<Typography variant="body2" sx={{ display: 'inline' }} color="text.primary">
+										{SanitizeDifficulty(item.level)}
+									</Typography>
+								</Box>
+								<Box component={Stack} direction="row" alignItems="center" >
+									<GroupsOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+									<Typography variant="body2" color="text.primary">
+									Player(s): {item.players}</Typography> 
+								</Box>
 							</CardContent>
 						</Card>
 					))}
