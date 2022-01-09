@@ -18,6 +18,7 @@ class All extends React.Component {
 	}
 
 	componentDidMount() {
+		// eslint-disable-next-line no-undef
 		fetch(`${process.env.REACT_APP_DATA_URL}`)
 			.then((res) => res.json())
 			.then((json) => {

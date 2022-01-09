@@ -25,6 +25,7 @@ class Show extends React.Component {
 	}
 
 	componentDidMount() {
+		// eslint-disable-next-line no-undef
 		fetch(`${process.env.REACT_APP_DATA_URL}ensembles/${this.props.ensembleId}`)
 			.then((res) => res.json())
 			.then(async (json) => {
