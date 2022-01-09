@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@reach/router';
-import { Box, Card, CardContent, Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Card, CardContent, Container, Grid, Skeleton, Stack, Typography } from '@mui/material';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
@@ -32,11 +32,28 @@ class All extends React.Component {
 		if (!DataisLoaded)
 			return (
 				<Container>
-					<Card>
-						<CardContent>
-							<Typography variant='h1'> Loading...</Typography>{' '}
-						</CardContent>
-					</Card>
+					<Grid container sx={{ gap: 2, mt: 5 }} spacing={2} alignItems="center" justifyContent="center">
+						{new Array(42).fill().map((item, index) => (
+							<Card key={index} sx={{ borderRadius: 2, height: 196, width: 196 }} variant="outlined" style={{ textDecoration: 'none' }} >
+								<CardContent>
+									<Typography variant='h7'><Skeleton animation="wave" /></Typography>
+									<Typography variant='body2'><Skeleton animation="wave" /></Typography>
+									<Box component={Stack} direction="row" alignItems="center" sx={{ mt: 2 }}>
+										<SpeedOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+										<Typography variant="body2" sx={{ width: '50%' }} color="text.primary">
+											<Skeleton animated='wave' />
+										</Typography>
+									</Box>
+									<Box component={Stack} direction="row" alignItems="center" >
+										<GroupsOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+										<Typography variant="body2"  sx={{ width: '50%' }} color="text.primary">
+											<Skeleton animation="wave" />
+										</Typography> 
+									</Box>
+								</CardContent>
+							</Card>
+						))}
+					</Grid>
 				</Container>
 			);
 
@@ -44,7 +61,7 @@ class All extends React.Component {
 			<Container className="App">
 				<Grid container sx={{ gap: 2, mt: 5 }} spacing={2} alignItems="center" justifyContent="center">
 					{items.filter((item) => item.category === 'Percussion Ensembles').map((item) => (
-						<Card key={item.id} sx={{ borderRadius: 2, height: 175, width: 175, ':hover': {
+						<Card key={item.id} sx={{ borderRadius: 2, height: 196, width: 196, ':hover': {
 							boxShadow: 10, // theme.shadows[20]
 						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/ensembles/${item.id}`}>
 							<CardContent>

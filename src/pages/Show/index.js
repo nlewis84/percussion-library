@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Box, Card, CardContent, Container, Paper, Stack, Typography } from '@mui/material';
+import { Box, Container, List, ListItem, ListItemIcon, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
@@ -10,6 +10,8 @@ import ReactHtmlParser from 'react-html-parser';
 import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
 import DescriptionFormatter from '../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../helpers/instrumentationFormatter';
+
+import MusicNote from '../../components/icons/MusicNote';
 
 class Show extends React.Component {
 	// Constructor
@@ -65,13 +67,47 @@ class Show extends React.Component {
 
 		if (!DataisLoaded)
 			return (
-				<Container>
-					<Card>
-						<CardContent>
-							<Typography variant='h1'> Loading...</Typography>{' '}
-						</CardContent>
-					</Card>
+				<Container className="App" sx={{ mt: 3 }}>
+					<Typography variant="body2" align={'center'} sx={{ px: '40%', mb: 1.5 }} color="text.secondary"><Skeleton animation="wave" /></Typography>
+					<Typography variant="h3" align={'center'} sx={{ px: '33%', fontWeight: 700, mb: 1.5 }} color="secondary.main" ><Skeleton animation="wave" /></Typography>
+					<Paper sx={{ width: '33%', float: 'right', pt: 0}}>
+						<List dense={false}>
+							<Typography variant="body2" color="text.secondary" align='center' sx={{ px: '30%' }}><Skeleton animation="wave" /></Typography>
+							{new Array(8).fill().map((value) =>
+								React.cloneElement(
+									<ListItem>
+										<ListItemIcon>
+											<MusicNote color="secondary.main"/>
+										</ListItemIcon>
+										<Typography key={value} variant="body1" sx={{ mb: 1, width: '50%' }} ><Skeleton animation="wave" /></Typography>
+									</ListItem>
+								)
+							)}
+						</List>
+					</Paper>
+					<Paper sx={{ width: '66%', p: 5 }}>
+						<Typography variant="h6" color="text.primary"><Skeleton animation="wave" /></Typography>
+						<Box component={Stack} direction="row" alignItems="center" >
+							<SpeedOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 5 }} />
+							<Typography variant="body1" sx={{ width: '20%' }} color="text.primary"><Skeleton animation="wave" /></Typography>
+						</Box>
+						<Box component={Stack} direction="row" alignItems="center" >
+							<AccessTimeOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 5 }} />
+							<Typography variant="body1" sx={{ width: '20%' }} color="text.primary"><Skeleton animation="wave" /></Typography>
+						</Box>
+						<Box component={Stack} direction="row" alignItems="center" >
+							<GroupsOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 5 }} />
+							<Typography variant="body1" sx={{ width: '20%' }} color="text.primary"><Skeleton animation="wave" /></Typography>
+						</Box>
+						<Typography variant="body2" color="text.secondary" sx={{ width: '15%', mt: 5}} ><Skeleton animated="wave" /></Typography>
+						<Typography variant="body1" sx={{ width: '"30%' }} color="secondary.main"><Skeleton animation="wave" /></Typography>
+						<Typography variant="body1" sx={{ width: '"30%' }} color="secondary.main"><Skeleton animation="wave" /></Typography>
+						<Typography variant="body1" sx={{ width: '"30%' }} color="secondary.main"><Skeleton animation="wave" /></Typography>
+						<Typography variant="body1" sx={{ width: '"30%' }} color="secondary.main"><Skeleton animation="wave" /></Typography>
+						<Typography variant="body1" sx={{ width: '"30%' }} color="secondary.main"><Skeleton animation="wave" /></Typography>
+					</Paper>
 				</Container>
+
 			);
 
 		return (
