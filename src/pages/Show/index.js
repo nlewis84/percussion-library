@@ -151,7 +151,9 @@ class Show extends React.Component {
 					</Box>
 				) : null}
 				{/* make these reviews look cool */}
-				{item.reviews ? <Typography variant="body3" color="text.primary">{item.reviews}</Typography> : null}
+				<Paper sx={{ width: '66%', p: 5 }}>
+					{item.reviews ? <Typography variant="body3" color="text.primary">{item.reviews}</Typography> : null}
+				</Paper>
 			</Container>
 		);
 	}
