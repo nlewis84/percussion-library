@@ -2,8 +2,9 @@ import React from 'react';
 import { Router } from '@reach/router';
 import { Box, Container, Link, Typography } from '@mui/material';
 
-import All from './pages/All/index';
-import Show from './pages/Show/index';
+import AllEnsembles from './pages/Ensembles/All/AllEnsembles';
+import Show from './pages/Ensembles/Show/index';
+import AllSolos from './pages/Solos/All/AllSolos';
 import SearchAppBar from '../src/components/SearchAppBar';
 
 function Copyright() {
@@ -11,7 +12,7 @@ function Copyright() {
 		<Container sx={{ p: 5 }}>
 			<Typography variant="body2" color="text.secondary" align="center">
 				{'Copyright © '}
-				<Link color="inherit" href="https://mui.com/">
+				<Link color="inherit" href="https://nathanlewis.dev/" target="_blank">
         Percussion Library
 				</Link>{' '}
 				{new Date().getFullYear()}
@@ -26,7 +27,8 @@ function App() {
 		<Box className="wrapper">
 			<SearchAppBar />
 			<Router>
-				<All path="/" />
+				<AllEnsembles path="/" />
+				<AllSolos path='/solos' />
 				<Show path="ensembles/:ensembleId" />
 			</Router>
 			<Copyright />

@@ -7,11 +7,11 @@ import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 import ReactHtmlParser from 'react-html-parser'; 
 
-import SanitizeDifficulty from '../../helpers/sanitizeDifficuty';
-import DescriptionFormatter from '../../helpers/descriptionFormatter';
-import InstrumentationFormatter from '../../helpers/instrumentationFormatter';
+import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
+import DescriptionFormatter from '../../../helpers/descriptionFormatter';
+import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
 
-import MusicNote from '../../components/icons/MusicNote';
+import MusicNote from '../../../components/icons/MusicNote';
 
 class Show extends React.Component {
 	// Constructor
