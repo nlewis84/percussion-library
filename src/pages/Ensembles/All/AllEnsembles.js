@@ -1,10 +1,11 @@
 import React from 'react';
 import { Link } from '@reach/router';
-import { Box, Card, CardContent, Container, Grid, Skeleton, Stack, Typography } from '@mui/material';
+import { Box, Card, CardContent, Container, Grid, Paper, Skeleton, Stack, Typography } from '@mui/material';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
 import TruncateText from '../../../helpers/truncateText';
+import SelectFilter from '../../../components/SelectFilter';
 
 class AllEnsembles extends React.Component {
 	// Constructor
@@ -63,9 +64,10 @@ class AllEnsembles extends React.Component {
 
 		return (
 			<Container className="App">
-				<Container  sx={{ mt: 5, display: 'grid' }} alignItems="center" justifyContent="center">
-					<Typography variant="body" color="secondary.main" textAlign="center" >{items.filter((item) => item.category === 'Percussion Ensembles').length} results</Typography>
-				</Container>
+				<Paper  sx={{ mt: 2, display: 'block' }} alignItems="center" justifyContent="center">
+					<SelectFilter />
+					<Typography variant="body" color="secondary.main" textAlign="center" sx={{ display: 'block'}}>{items.filter((item) => item.category === 'Percussion Ensembles').length} results</Typography>
+				</Paper>
 				<Grid container sx={{ gap: 2, mt: 5 }} spacing={2} alignItems="center" justifyContent="center">
 					{items.filter((item) => item.category === 'Percussion Ensembles').map((item) => (
 						<Card key={item.id} sx={{ borderRadius: 2, height: 196, width: 196, ':hover': {
