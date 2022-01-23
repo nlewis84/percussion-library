@@ -4,16 +4,9 @@ import {
 	Box,
 	Card,
 	CardContent,
-	// Checkbox,
 	Container,
-	// FormControl,
 	Grid,
-	// InputLabel,
-	// ListItemText,
-	// MenuItem,
-	// OutlinedInput,
 	Paper,
-	// Select,
 	Skeleton,
 	Stack,
 	Typography
@@ -38,22 +31,7 @@ function AllEnsembles() {
 				setDataisLoaded(true);
 			});
 	}, []);
-		
-	// const ITEM_HEIGHT = 48;
-	// const ITEM_PADDING_TOP = 8;
-	// const MenuProps = {
-	// 	PaperProps: {
-	// 		style: {
-	// 			maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-	// 			width: 250,
-	// 		},
-	// 	},
-	// };
 
-	// const number = [
-	// 	'2', '3', '4', '5', '6', '7', '8', '9', '11', '12', '13+'
-	// ];
-		
 	const handleChange = (event) => {
 		const {
 			target: { value },
@@ -109,7 +87,7 @@ function AllEnsembles() {
 						: items.filter((item) => item.category === 'Percussion Ensembles').length
 					} results
 				</Typography>
-				
+
 			</Paper>
 			<Grid container sx={{ gap: 2, mt: 5 }} spacing={2} alignItems="center" justifyContent="center">
 				{filteredItems.length !== 0 
