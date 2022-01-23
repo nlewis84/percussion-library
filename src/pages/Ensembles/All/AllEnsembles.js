@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 import {
   Box,
   Card,
@@ -65,9 +66,9 @@ function AllEnsembles() {
           alignItems="center"
           justifyContent="center"
         >
-          {new Array(42).fill().map((item) => (
+          {new Array(42).fill().map((item, index) => (
             <Card
-              key={item.id}
+              key={index.toString()}
               sx={{ borderRadius: 2, height: 196, width: 196 }}
               variant="outlined"
               style={{ textDecoration: 'none' }}
