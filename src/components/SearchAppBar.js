@@ -14,11 +14,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { navigate } from '@reach/router';
 
 const pages = [
-	{title: 'Ensembles', route: '/'},
-	{title: 'Solos', route: 'solos' },
-	{title: 'Chamber Music',route: 'chamber-music'},
-	{title: 'Steel Band', route: 'steel-band'},
-	{title: 'Books', route: 'books' }
+	{ title: 'Ensembles', route: '/' },
+	{ title: 'Solos', route: 'solos' },
+	{ title: 'Chamber Music', route: 'chamber-music' },
+	{ title: 'Steel Band', route: 'steel-band' },
+	{ title: 'Books', route: 'books' },
 ];
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
@@ -65,7 +65,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 	},
 }));
 
-const SearchAppBar = () => {
+function SearchAppBar() {
 	const [anchorElNav, setAnchorElNav] = React.useState(null);
 
 	const handleOpenNavMenu = (event) => {
@@ -75,7 +75,6 @@ const SearchAppBar = () => {
 	const handleCloseNavMenu = () => {
 		setAnchorElNav(null);
 	};
-
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -87,7 +86,7 @@ const SearchAppBar = () => {
 						component="div"
 						sx={{ color: 'white', mr: 2, display: { xs: 'none', md: 'flex' } }}
 					>
-            Percussion Library
+						Percussion Library
 					</Typography>
 
 					<Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -120,13 +119,22 @@ const SearchAppBar = () => {
 							}}
 						>
 							{pages.map((page) => (
-								<MenuItem key={page.title} onClick={() => handleCloseNavMenu && navigate(page.route)}>
+								<MenuItem
+									key={page.title}
+									onClick={() => handleCloseNavMenu && navigate(page.route)}
+								>
 									<Typography textAlign="center">{page.title}</Typography>
 								</MenuItem>
 							))}
 						</Menu>
 					</Box>
-					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'space-evenly' }}>
+					<Box
+						sx={{
+							flexGrow: 1,
+							display: { xs: 'none', md: 'flex' },
+							justifyContent: 'space-evenly',
+						}}
+					>
 						{pages.map((page) => (
 							<Button
 								key={page.title}
@@ -151,6 +159,6 @@ const SearchAppBar = () => {
 			<Offset />
 		</Box>
 	);
-};
+}
 
 export default SearchAppBar;

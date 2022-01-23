@@ -19,14 +19,17 @@ const MenuProps = {
 	},
 };
 
-const number = [
-	'2', '3', '4', '5', '6', '7', '8', '9', '11', '12', '13+'
-];
+const number = ['2', '3', '4', '5', '6', '7', '8', '9', '11', '12', '13+'];
 
 export default function SelectFilter({ handleChange, numberOfPlayers }) {
 	return (
 		<FormControl sx={{ m: 2, width: 300 }}>
-			<InputLabel id="multiple-checkbox-label" sx={{bgcolor: 'background.paper', pr: 1}}>Number of Players</InputLabel>
+			<InputLabel
+				id="multiple-checkbox-label"
+				sx={{ bgcolor: 'background.paper', pr: 1 }}
+			>
+				Number of Players
+			</InputLabel>
 			<Select
 				labelId="multiple-checkbox-label"
 				id="multiple-checkbox"
@@ -45,6 +48,5 @@ export default function SelectFilter({ handleChange, numberOfPlayers }) {
 				))}
 			</Select>
 		</FormControl>
-
 	);
 }

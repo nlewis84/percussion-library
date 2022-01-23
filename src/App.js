@@ -1,11 +1,13 @@
 import React from 'react';
 import { Router } from '@reach/router';
-import { Box, Container, Link, Typography } from '@mui/material';
+import {
+	Box, Container, Link, Typography,
+} from '@mui/material';
 
 import AllEnsembles from './pages/Ensembles/All/AllEnsembles';
 import Show from './pages/Ensembles/Show/index';
 import AllSolos from './pages/Solos/All/AllSolos';
-import SearchAppBar from '../src/components/SearchAppBar';
+import SearchAppBar from './components/SearchAppBar';
 
 function Copyright() {
 	return (
@@ -13,10 +15,11 @@ function Copyright() {
 			<Typography variant="body2" color="text.secondary" align="center">
 				{'Copyright © '}
 				<Link color="inherit" href="https://nathanlewis.dev/" target="_blank">
-        Percussion Library
-				</Link>{' '}
+					Percussion Library
+				</Link>
+				{' '}
 				{new Date().getFullYear()}
-				{'.'}
+				.
 			</Typography>
 		</Container>
 	);
@@ -28,7 +31,7 @@ function App() {
 			<SearchAppBar />
 			<Router>
 				<AllEnsembles path="/" />
-				<AllSolos path='/solos' />
+				<AllSolos path="/solos" />
 				<Show path="ensembles/:ensembleId" />
 			</Router>
 			<Copyright />
