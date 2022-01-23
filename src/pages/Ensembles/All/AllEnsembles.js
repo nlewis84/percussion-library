@@ -66,6 +66,7 @@ function AllEnsembles() {
 		setNumberOfPlayers(value);
 	};
 
+	// TODO: break all of this into smaller components
 	if (!DataisLoaded)
 		return (
 			<Container>
