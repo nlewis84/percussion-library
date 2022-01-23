@@ -24,47 +24,19 @@ import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
 import TruncateText from '../../../helpers/truncateText';
 
 function AllEnsembles() {
-// class AllEnsembles extends React.Component {
-	// Constructor
-	// constructor(props) {
-	// 	super(props);
-
-	// 	this.state = {
-	// 		items: [],
-	// 		DataisLoaded: false,
-	// 		numberOfPlayers: [],
-	// 	};
-	// }
-
-	// componentDidMount() {
-	// 	// eslint-disable-next-line no-undef
-	// 	fetch(`${process.env.REACT_APP_DATA_URL}`)
-	// 		.then((res) => res.json())
-	// 		.then((json) => {
-	// 			this.setState({
-	// 				items: json,
-	// 				DataisLoaded: true,
-	// 			});
-	// 		});
-	// }
-
-	const [state, setState] = useState([]);
-	// TODO: Define each bit of state individually here
+	const [items, setItems] = useState([]);
+	const [filteredItems, setFilteredItems] = useState([]);
+	const [numberOfPlayers, setNumberOfPlayers] = useState([]);
+	const [DataisLoaded, setDataisLoaded] = useState(false);
 
 	useEffect(() => {
 		fetch(`${process.env.REACT_APP_DATA_URL}`)
 			.then((res) => res.json())
 			.then((json) => {
-				setState({
-					items: json,
-					filteredItems: json,
-					numberOfPlayers: [],
-					DataisLoaded: true,
-				});
+				setItems(json);
+				setDataisLoaded(true);
 			});
 	}, []);
-		
-	// const { DataisLoaded, filteredItems, items, numberOfPlayers } = this.state;
 		
 	const ITEM_HEIGHT = 48;
 	const ITEM_PADDING_TOP = 8;
@@ -82,24 +54,22 @@ function AllEnsembles() {
 	];
 		
 	const handleChange = (event) => {
-		console.log('test');
 		const {
 			target: { value },
 		} = event;
-		let filteredItems = state.items.filter(item => value.includes(item.min_players));
-		console.log(state);
-		setState({
-			filteredItems: filteredItems,
-			// numberOfPlayers: typeof value === 'string' ? value.split(',') : value,
-			DataisLoaded: true,
-		});
+		if (value.length === 0) {
+			setFilteredItems([]);
+		} else {
+			let filtered = items.filter(item => value.includes(item.min_players));
+			setFilteredItems(filtered);
+		}
+		setNumberOfPlayers(value);
 	};
 
-	console.log('right before return', state.DataisLoaded);
-	if (!state.DataisLoaded)
+	if (!DataisLoaded)
 		return (
 			<Container>
-				<Container  sx={{ mt: 5, display: 'grid' }} alignItems="center" justifyContent="center">
+				<Container  sx={{ mt: 5, display: 'grid' }}>
 					<Typography variant="body" color="secondary.main" textAlign="center"><Skeleton animation="wave" /></Typography>
 				</Container>
 				<Grid container sx={{ gap: 2, mt: 5 }} spacing={2} alignItems="center" justifyContent="center">
@@ -128,7 +98,7 @@ function AllEnsembles() {
 		);
 	return (
 		<Container className="App">
-			<Paper  sx={{ mt: 2, display: 'block' }} alignItems="center" justifyContent="center">
+			<Paper  sx={{ mt: 2, display: 'block' }}>
 					
 				<FormControl sx={{ m: 2, width: 300 }}>
 					<InputLabel id="multiple-checkbox-label" sx={{bgcolor: 'background.paper', pr: 1}}>Number of Players</InputLabel>
@@ -136,50 +106,81 @@ function AllEnsembles() {
 						labelId="multiple-checkbox-label"
 						id="multiple-checkbox"
 						multiple
-						value={state.numberOfPlayers}
+						value={numberOfPlayers}
 						onChange={handleChange}
 						input={<OutlinedInput label="Tag" />}
 						renderValue={(selected) => selected.join(', ')}
 						MenuProps={MenuProps}
-						labelWidth={300}
+						// labelWidth={300}
 					>
 						{number.map((num) => (
 							<MenuItem key={num} value={num}>
-								<Checkbox checked={state.numberOfPlayers.indexOf(num) > -1} />
+								<Checkbox checked={numberOfPlayers.indexOf(num) > -1} />
 								<ListItemText primary={num} />
 							</MenuItem>
 						))}
 					</Select>
 				</FormControl>
 
-				<Typography variant="body" color="secondary.main" textAlign="center" sx={{ display: 'block'}}>{state.filteredItems.filter((item) => item.category === 'Percussion Ensembles').length} results</Typography>
+				<Typography variant="body" color="secondary.main" textAlign="center" sx={{ display: 'block'}}>
+					{filteredItems.length !== 0
+						? filteredItems.filter((item) => item.category === 'Percussion Ensembles').length
+						: items.filter((item) => item.category === 'Percussion Ensembles').length
+					} results
+				</Typography>
 			</Paper>
 			<Grid container sx={{ gap: 2, mt: 5 }} spacing={2} alignItems="center" justifyContent="center">
-				{state.filteredItems.filter((item) => item.category === 'Percussion Ensembles').map((item) => (
-					<Card key={item.id} sx={{ borderRadius: 2, height: 196, width: 196, ':hover': {
-						boxShadow: 10, // theme.shadows[20]
-					}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/ensembles/${item.id}`}>
-						<CardContent>
-							<Typography variant="h7" color="secondary.main" sx={{ fontWeight: 'bold' }} component="div">
-								{TruncateText(item.title, 32)}
-							</Typography>
-							<Typography sx={{ mb: 1.5 }} color="text.secondary">
-								{TruncateText(item.composer, 25)}
-							</Typography>
-							<Box component={Stack} direction="row" alignItems="center" >
-								<SpeedOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
-								<Typography variant="body2" sx={{ display: 'inline' }} color="text.primary">
-									{SanitizeDifficulty(item.level)}
+				{filteredItems.length !== 0 
+					? filteredItems.filter((item) => item.category === 'Percussion Ensembles').map((item) => (
+						<Card key={item.id} sx={{ borderRadius: 2, height: 196, width: 196, ':hover': {
+							boxShadow: 10, // theme.shadows[20]
+						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/ensembles/${item.id}`}>
+							<CardContent>
+								<Typography variant="h7" color="secondary.main" sx={{ fontWeight: 'bold' }} component="div">
+									{TruncateText(item.title, 32)}
 								</Typography>
-							</Box>
-							<Box component={Stack} direction="row" alignItems="center" >
-								<GroupsOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
-								<Typography variant="body2" color="text.primary">
+								<Typography sx={{ mb: 1.5 }} color="text.secondary">
+									{TruncateText(item.composer, 25)}
+								</Typography>
+								<Box component={Stack} direction="row" alignItems="center" >
+									<SpeedOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+									<Typography variant="body2" sx={{ display: 'inline' }} color="text.primary">
+										{SanitizeDifficulty(item.level)}
+									</Typography>
+								</Box>
+								<Box component={Stack} direction="row" alignItems="center" >
+									<GroupsOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+									<Typography variant="body2" color="text.primary">
+										Player(s): {item.min_players} {item.max_players ? `- ${item.max_players}` : ''}</Typography> 
+								</Box>
+							</CardContent>
+						</Card>
+					))
+					: items.filter((item) => item.category === 'Percussion Ensembles').map((item) => (
+						<Card key={item.id} sx={{ borderRadius: 2, height: 196, width: 196, ':hover': {
+							boxShadow: 10, // theme.shadows[20]
+						}, }}  variant="outlined" style={{ textDecoration: 'none' }} component={Link} to={`/ensembles/${item.id}`}>
+							<CardContent>
+								<Typography variant="h7" color="secondary.main" sx={{ fontWeight: 'bold' }} component="div">
+									{TruncateText(item.title, 32)}
+								</Typography>
+								<Typography sx={{ mb: 1.5 }} color="text.secondary">
+									{TruncateText(item.composer, 25)}
+								</Typography>
+								<Box component={Stack} direction="row" alignItems="center" >
+									<SpeedOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+									<Typography variant="body2" sx={{ display: 'inline' }} color="text.primary">
+										{SanitizeDifficulty(item.level)}
+									</Typography>
+								</Box>
+								<Box component={Stack} direction="row" alignItems="center" >
+									<GroupsOutlinedIcon sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }} />
+									<Typography variant="body2" color="text.primary">
 									Player(s): {item.min_players} {item.max_players ? `- ${item.max_players}` : ''}</Typography> 
-							</Box>
-						</CardContent>
-					</Card>
-				))}
+								</Box>
+							</CardContent>
+						</Card>
+					))}
 			</Grid>
 		</Container>
 	);
