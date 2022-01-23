@@ -1,17 +1,19 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable no-param-reassign */
 function TruncateText(string, number) {
-	if (string.endsWith('(ensemble version)')) {
-		string = string.replace(/(\(ensemble version\))/, '');
-	}
+  let textToTruncate = string;
 
-	if (string.endsWith('(ensemble)')) {
-		string = string.replace(/(\(ensemble\))/, '');
-	}
+  if (textToTruncate.endsWith('(ensemble version)')) {
+    textToTruncate = textToTruncate.replace(/(\(ensemble version\))/, '');
+  }
 
-	return string.length > number
-		? (string = `${string.substring(0, number - 1)}...`)
-		: string;
+  if (textToTruncate.endsWith('(ensemble)')) {
+    textToTruncate = textToTruncate.replace(/(\(ensemble\))/, '');
+  }
+
+  if (textToTruncate.length > number) {
+    (textToTruncate = `${textToTruncate.substring(0, number - 1)}...`);
+    return textToTruncate;
+  }
+  return textToTruncate;
 }
 
 export default TruncateText;

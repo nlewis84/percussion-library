@@ -1,0 +1,88 @@
+{
+  "env": {
+    "cypress/globals": true,
+    "es6": true,
+    "node": true,
+    "browser": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "airbnb",
+    "plugin:import/errors",
+    "plugin:import/warnings"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly",
+    "localStorage": true,
+    "window": true
+  },
+  "overrides": [
+    {
+      "files": ["*test.js", "*.spec.js"],
+      "rules": {
+        "no-undef": 0
+      }
+    }
+  ],
+  "plugins": [
+    "eslint-plugin-cypress",
+    "react-hooks",
+    "sort-destructure-keys",
+    "sort-imports-es6-autofix"
+  ],
+  "rules": {
+    "strict": 0,
+    "implicit-arrow-linebreak": "off",
+    "import/prefer-default-export": "off",
+    "import/no-unresolved": "off",
+    "no-console": "off",
+    "no-use-before-define": "off",
+    "react/jsx-filename-extension": "off",
+    "react/prop-types": [
+      0,
+      {
+        "ignore": ["classes", "theme"],
+        "skipUndeclared": false
+      }
+    ],
+    "react/react-in-jsx-scope": "off",
+    "react/require-default-props": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-first-prop-new-line": [2, "multiline"],
+    "react/jsx-max-props-per-line": [
+      2,
+      {
+        "maximum": 1
+      }
+    ],
+    "sort-destructure-keys/sort-destructure-keys": 2,
+    "sort-imports-es6-autofix/sort-imports-es6": [2, {
+      "ignoreCase": false,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }],
+    "sort-keys": [
+      "error",
+      "asc",
+      {
+        "caseSensitive": true,
+        "natural": false
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "mjs": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "import/no-cycle": "off",
+    "react/jsx-props-no-spreading": "off"
+  }
+}
