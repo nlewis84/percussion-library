@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { Link } from '@reach/router';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import React, { useEffect, useState } from 'react';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 
@@ -29,7 +30,7 @@ function AllEnsembles() {
     fetch(`${process.env.REACT_APP_DATA_URL}`)
       .then((res) => res.json())
       .then((json) => {
-        console.log(json.sort((a, b) => a.title.localeCompare(b.title)));
+        json.sort((a, b) => a.title.localeCompare(b.title));
         setItems(json);
         setDataisLoaded(true);
       });
@@ -147,6 +148,22 @@ function AllEnsembles() {
                     <Skeleton animation="wave" />
                   </Typography>
                 </Box>
+                <Box
+                  component={Stack}
+                  direction="row"
+                  alignItems="center"
+                >
+                  <MenuBookOutlinedIcon
+                    sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
+                  />
+                  <Typography
+                    variant="body2"
+                    sx={{ width: '50%' }}
+                    color="text.primary"
+                  >
+                    <Skeleton animation="wave" />
+                  </Typography>
+                </Box>
               </CardContent>
             </Card>
           ))}
@@ -196,7 +213,7 @@ function AllEnsembles() {
                     boxShadow: 10,
                   },
                   borderRadius: 2,
-                  height: 196,
+                  height: 224,
                   width: 196,
                 }}
                 variant="outlined"
@@ -260,6 +277,21 @@ function AllEnsembles() {
                       {item.min_players}
                       {' '}
                       {item.max_players ? `- ${item.max_players}` : ''}
+                    </Typography>
+                  </Box>
+                  <Box
+                    component={Stack}
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <MenuBookOutlinedIcon
+                      sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {item.publisher}
                     </Typography>
                   </Box>
                 </CardContent>
@@ -339,6 +371,21 @@ function AllEnsembles() {
                       {item.min_players}
                       {' '}
                       {item.max_players ? `- ${item.max_players}` : ''}
+                    </Typography>
+                  </Box>
+                  <Box
+                    component={Stack}
+                    direction="row"
+                    alignItems="center"
+                  >
+                    <MenuBookOutlinedIcon
+                      sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
+                    />
+                    <Typography
+                      variant="body2"
+                      color="text.primary"
+                    >
+                      {item.publisher}
                     </Typography>
                   </Box>
                 </CardContent>
