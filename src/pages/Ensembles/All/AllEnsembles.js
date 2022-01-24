@@ -29,6 +29,7 @@ function AllEnsembles() {
     fetch(`${process.env.REACT_APP_DATA_URL}`)
       .then((res) => res.json())
       .then((json) => {
+        console.log(json.sort((a, b) => a.title.localeCompare(b.title)));
         setItems(json);
         setDataisLoaded(true);
       });
@@ -38,14 +39,47 @@ function AllEnsembles() {
     const {
       target: { value },
     } = event;
+    let filtered = [];
     if (value.length === 0) {
       setFilteredItems([]);
     } else {
-      const filtered = items.filter((item) => value.includes(item.min_players));
+      const valueAsIntegers = value.map((item) => parseInt(item, 10));
+
+      if (valueAsIntegers.includes(13)) {
+        filtered = items
+          .filter((item) => item.category === 'Percussion Ensembles')
+          .filter((item) => (item.max_players === null
+            ? value.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
+            : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
+              range(
+                parseInt(item.min_players, 10),
+                parseInt(item.max_players, 10),
+                1,
+              ),
+              valueAsIntegers,
+            )));
+      } else {
+        filtered = items.filter((item) => findCommonPlayers(
+          range(
+            parseInt(item.min_players, 10),
+            parseInt(item.max_players, 10),
+            1,
+          ),
+          valueAsIntegers,
+        ));
+      }
       setFilteredItems(filtered);
     }
     setNumberOfPlayers(value);
   };
+
+  function findCommonPlayers(arr1, arr2) {
+    return arr1.some((item) => arr2.includes(item));
+  }
+
+  function range(start, stop, step) {
+    return Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step));
+  }
 
   if (!DataisLoaded) {
     return (
@@ -69,7 +103,7 @@ function AllEnsembles() {
           {new Array(42).fill().map((item, index) => (
             <Card
               key={index.toString()}
-              sx={{ borderRadius: 2, height: 196, width: 196 }}
+              sx={{ borderRadius: 2, height: 224, width: 196 }}
               variant="outlined"
               style={{ textDecoration: 'none' }}
             >
@@ -241,7 +275,7 @@ function AllEnsembles() {
                     boxShadow: 10,
                   },
                   borderRadius: 2,
-                  height: 196,
+                  height: 224,
                   width: 196,
                 }}
                 variant="outlined"
