@@ -6,7 +6,6 @@ import {
   Container,
   Grid,
   Paper,
-  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
@@ -16,6 +15,7 @@ import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import React, { useEffect, useState } from 'react';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 
+import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
 import SelectFilter from '../../../components/SelectFilter';
 import TruncateText from '../../../helpers/truncateText';
@@ -84,91 +84,7 @@ function AllEnsembles() {
 
   if (!DataisLoaded) {
     return (
-      <Container>
-        <Container sx={{ display: 'grid', mt: 5 }}>
-          <Typography
-            variant="body"
-            color="secondary.main"
-            textAlign="center"
-          >
-            <Skeleton animation="wave" />
-          </Typography>
-        </Container>
-        <Grid
-          container
-          sx={{ gap: 2, mt: 5 }}
-          spacing={2}
-          alignItems="center"
-          justifyContent="center"
-        >
-          {new Array(42).fill().map((item, index) => (
-            <Card
-              key={index.toString()}
-              sx={{ borderRadius: 2, height: 224, width: 196 }}
-              variant="outlined"
-              style={{ textDecoration: 'none' }}
-            >
-              <CardContent>
-                <Typography variant="h7">
-                  <Skeleton animation="wave" />
-                </Typography>
-                <Typography variant="body2">
-                  <Skeleton animation="wave" />
-                </Typography>
-                <Box
-                  component={Stack}
-                  direction="row"
-                  alignItems="center"
-                  sx={{ mt: 2 }}
-                >
-                  <SpeedOutlinedIcon
-                    sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{ width: '50%' }}
-                    color="text.primary"
-                  >
-                    <Skeleton animated="wave" />
-                  </Typography>
-                </Box>
-                <Box
-                  component={Stack}
-                  direction="row"
-                  alignItems="center"
-                >
-                  <GroupsOutlinedIcon
-                    sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{ width: '50%' }}
-                    color="text.primary"
-                  >
-                    <Skeleton animation="wave" />
-                  </Typography>
-                </Box>
-                <Box
-                  component={Stack}
-                  direction="row"
-                  alignItems="center"
-                >
-                  <MenuBookOutlinedIcon
-                    sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
-                  />
-                  <Typography
-                    variant="body2"
-                    sx={{ width: '50%' }}
-                    color="text.primary"
-                  >
-                    <Skeleton animation="wave" />
-                  </Typography>
-                </Box>
-              </CardContent>
-            </Card>
-          ))}
-        </Grid>
-      </Container>
+      <LoadingSkeleton />
     );
   }
   return (
