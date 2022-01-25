@@ -1,24 +1,19 @@
 /* eslint-disable react/no-array-index-key */
 import {
-  Box,
   Card,
-  CardContent,
   Container,
   Grid,
   Paper,
-  Stack,
   Typography,
 } from '@mui/material';
 import { Link } from '@reach/router';
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import React, { useEffect, useState } from 'react';
-import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
-import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
 import SelectFilter from '../../../components/SelectFilter';
-import TruncateText from '../../../helpers/truncateText';
+import SmallCardContent from '../../../components/SmallCardContent';
+import findCommonPlayers from '../../../helpers/findCommonPlayers';
+import range from '../../../helpers/range';
 
 function AllEnsembles() {
   const [items, setItems] = useState([]);
@@ -45,7 +40,6 @@ function AllEnsembles() {
       setFilteredItems([]);
     } else {
       const valueAsIntegers = value.map((item) => parseInt(item, 10));
-
       if (valueAsIntegers.includes(13)) {
         filtered = items
           .filter((item) => item.category === 'Percussion Ensembles')
@@ -73,14 +67,6 @@ function AllEnsembles() {
     }
     setNumberOfPlayers(value);
   };
-
-  function findCommonPlayers(arr1, arr2) {
-    return arr1.some((item) => arr2.includes(item));
-  }
-
-  function range(start, stop, step) {
-    return Array.from({ length: (stop - start) / step + 1 }, (_, i) => start + (i * step));
-  }
 
   if (!DataisLoaded) {
     return (
@@ -137,82 +123,11 @@ function AllEnsembles() {
                 component={Link}
                 to={`/ensembles/${item.id}`}
               >
-                <CardContent>
-                  <Typography
-                    variant="h7"
-                    color="secondary.main"
-                    sx={{ fontWeight: 'bold' }}
-                    component="div"
-                  >
-                    {TruncateText(item.title, 32)}
-                  </Typography>
-                  <Typography
-                    sx={{ mb: 1.5 }}
-                    color="text.secondary"
-                  >
-                    {TruncateText(item.composer, 25)}
-                  </Typography>
-                  <Box
-                    component={Stack}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <SpeedOutlinedIcon
-                      sx={{
-                        color: 'secondary.main',
-                        display: 'inline',
-                        mr: 1.5,
-                      }}
-                    />
-                    <Typography
-                      variant="body2"
-                      sx={{ display: 'inline' }}
-                      color="text.primary"
-                    >
-                      {SanitizeDifficulty(item.level)}
-                    </Typography>
-                  </Box>
-                  <Box
-                    component={Stack}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <GroupsOutlinedIcon
-                      sx={{
-                        color: 'secondary.main',
-                        display: 'inline',
-                        mr: 1.5,
-                      }}
-                    />
-                    <Typography
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      Player(s):
-                      {' '}
-                      {item.min_players}
-                      {' '}
-                      {item.max_players ? `- ${item.max_players}` : ''}
-                    </Typography>
-                  </Box>
-                  <Box
-                    component={Stack}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <MenuBookOutlinedIcon
-                      sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
-                    />
-                    <Typography
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {item.publisher}
-                    </Typography>
-                  </Box>
-                </CardContent>
+                <SmallCardContent item />
               </Card>
             ))
+        // TODO: Change this to be some sort of landing screen with
+        // multiple different horizontal view swipers
           : items
             .filter((item) => item.category === 'Percussion Ensembles')
             .map((item) => (
@@ -231,80 +146,7 @@ function AllEnsembles() {
                 component={Link}
                 to={`/ensembles/${item.id}`}
               >
-                <CardContent>
-                  <Typography
-                    variant="h7"
-                    color="secondary.main"
-                    sx={{ fontWeight: 'bold' }}
-                    component="div"
-                  >
-                    {TruncateText(item.title, 32)}
-                  </Typography>
-                  <Typography
-                    sx={{ mb: 1.5 }}
-                    color="text.secondary"
-                  >
-                    {TruncateText(item.composer, 25)}
-                  </Typography>
-                  <Box
-                    component={Stack}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <SpeedOutlinedIcon
-                      sx={{
-                        color: 'secondary.main',
-                        display: 'inline',
-                        mr: 1.5,
-                      }}
-                    />
-                    <Typography
-                      variant="body2"
-                      sx={{ display: 'inline' }}
-                      color="text.primary"
-                    >
-                      {SanitizeDifficulty(item.level)}
-                    </Typography>
-                  </Box>
-                  <Box
-                    component={Stack}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <GroupsOutlinedIcon
-                      sx={{
-                        color: 'secondary.main',
-                        display: 'inline',
-                        mr: 1.5,
-                      }}
-                    />
-                    <Typography
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      Player(s):
-                      {' '}
-                      {item.min_players}
-                      {' '}
-                      {item.max_players ? `- ${item.max_players}` : ''}
-                    </Typography>
-                  </Box>
-                  <Box
-                    component={Stack}
-                    direction="row"
-                    alignItems="center"
-                  >
-                    <MenuBookOutlinedIcon
-                      sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
-                    />
-                    <Typography
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      {item.publisher}
-                    </Typography>
-                  </Box>
-                </CardContent>
+                <SmallCardContent item={item} />
               </Card>
             ))}
       </Grid>
