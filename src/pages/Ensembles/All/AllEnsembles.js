@@ -123,7 +123,7 @@ function AllEnsembles() {
                 component={Link}
                 to={`/ensembles/${item.id}`}
               >
-                <SmallCardContent item />
+                <SmallCardContent item={item} />
               </Card>
             ))
         // TODO: Change this to be some sort of landing screen with
