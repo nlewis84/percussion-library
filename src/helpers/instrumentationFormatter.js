@@ -13,7 +13,6 @@ import MusicNote from '../components/icons/MusicNote';
 
 function InstrumentationFormatter(instrumentation) {
   let stringArray = [];
-  console.log(instrumentation.split('\t•\t').filter((item) => item !== ''));
   if (instrumentation.startsWith('•')) {
     stringArray = instrumentation
       .split('•')

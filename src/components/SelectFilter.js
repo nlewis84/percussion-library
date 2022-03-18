@@ -22,7 +22,11 @@ const number = ['2', '3', '4', '5', '6', '7', '8', '9', '11', '12', '13+'];
 
 export default function SelectFilter({ handleChange, numberOfPlayers }) {
   return (
-    <FormControl sx={{ m: 2, width: 300 }}>
+    <FormControl
+      sx={{
+        mb: 2, mt: 4, mx: 5, width: 300,
+      }}
+    >
       <InputLabel
         id="multiple-checkbox-label"
         sx={{ bgcolor: 'background.paper', pr: 1 }}

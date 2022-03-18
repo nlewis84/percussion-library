@@ -21,6 +21,7 @@ import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 
 import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
+import ReviewFormatter from '../../../helpers/reviewFormatter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
 
 import MusicNote from '../../../components/icons/MusicNote';
@@ -365,10 +366,16 @@ class Show extends React.Component {
         {item.reviews ? (
           <Paper sx={{ p: 5, width: '66%' }}>
             <Typography
+              variant="body2"
+              color="text.secondary"
+            >
+              Reviews
+            </Typography>
+            <Typography
               variant="body3"
               color="text.primary"
             >
-              {item.reviews}
+              {ReviewFormatter(item.reviews)}
             </Typography>
           </Paper>
         ) : null}
