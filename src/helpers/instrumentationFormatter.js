@@ -13,7 +13,7 @@ import MusicNote from '../components/icons/MusicNote';
 
 function InstrumentationFormatter(instrumentation) {
   let stringArray = [];
-
+  console.log(instrumentation.split('\t•\t').filter((item) => item !== ''));
   if (instrumentation.startsWith('•')) {
     stringArray = instrumentation
       .split('•')
@@ -23,9 +23,9 @@ function InstrumentationFormatter(instrumentation) {
   } else if (instrumentation.startsWith('\t•\t')) {
     stringArray = instrumentation
       .split('\t•\t')
-      .filter((item) => item !== '')
-      .join()
-      .split('\n,');
+      .filter((item) => item !== '');
+    // .join()
+    // .split('\n,');
   } else {
     stringArray = instrumentation
       .split('\n')
@@ -34,6 +34,9 @@ function InstrumentationFormatter(instrumentation) {
       .split('\t•\t')
       .filter((item) => item !== '')
       .map((item) => (item[item.length - 1] === ',' ? item.slice(0, -1) : item));
+    if (stringArray[0] === ' ') {
+      stringArray.splice(0, 1);
+    }
   }
 
   return (
