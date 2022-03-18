@@ -276,6 +276,7 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
+              sx={{ mt: 1.5 }}
             >
               <MenuBookOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -293,6 +294,7 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
+              sx={{ mt: 1.5 }}
             >
               <SpeedOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -311,6 +313,7 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
+              sx={{ mt: 1.5 }}
             >
               <AccessTimeOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -328,6 +331,7 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
+              sx={{ mt: 1.5 }}
             >
               <GroupsOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -345,6 +349,7 @@ class Show extends React.Component {
             <Typography
               variant="body2"
               color="text.secondary"
+              sx={{ mt: 5 }}
             >
               Description
             </Typography>
@@ -354,28 +359,19 @@ class Show extends React.Component {
             : null}
         </Paper>
         {item.audio_link ? (
-          <Typography
-            variant="body2"
-            sx={{ mt: 1.5 }}
-            color="text.secondary"
-          >
-            Recording
-          </Typography>
-        ) : null}
-        {item.audio_link ? (
-          <Box sx={{ width: '66%' }}>{ReactHtmlParser(item.audio_embed)}</Box>
+          <Box sx={{ mt: 1.5, width: '66%' }}>{ReactHtmlParser(item.audio_embed)}</Box>
         ) : null}
         {/* TODO: make these reviews look cool */}
-        <Paper sx={{ p: 5, width: '66%' }}>
-          {item.reviews ? (
+        {item.reviews ? (
+          <Paper sx={{ p: 5, width: '66%' }}>
             <Typography
               variant="body3"
               color="text.primary"
             >
               {item.reviews}
             </Typography>
-          ) : null}
-        </Paper>
+          </Paper>
+        ) : null}
       </Container>
     );
   }

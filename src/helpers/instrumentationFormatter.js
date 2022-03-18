@@ -40,7 +40,11 @@ function InstrumentationFormatter(instrumentation) {
   }
 
   return (
-    <Paper sx={{ float: 'right', pt: 0, width: '33%' }}>
+    <Paper
+      sx={{
+        float: 'right', pb: 2, pt: 1, px: 5, width: '33%',
+      }}
+    >
       <List dense={false}>
         <Typography
           variant="body2"
@@ -50,7 +54,7 @@ function InstrumentationFormatter(instrumentation) {
           Instrumentation
         </Typography>
         {stringArray.map((value) => React.cloneElement(
-          <ListItem>
+          <ListItem sx={{ pl: 0, pr: 0 }}>
             <ListItemIcon>
               <MusicNote color="secondary.main" />
             </ListItemIcon>
