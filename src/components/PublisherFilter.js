@@ -18,37 +18,38 @@ const MenuProps = {
   },
 };
 
-const number = ['2', '3', '4', '5', '6', '7', '8', '9', '11', '12', '13+'];
+const publishers = ['C. Alan', 'Tapspace'];
 
-export default function SelectFilter({ handleChange, numberOfPlayers }) {
+export default function PublisherFilter({ handleChange, name, publisher }) {
   return (
     <FormControl
       sx={{
-        mb: 2, mt: 4, mx: 5, width: 300,
+        mb: 2, mt: 4, mx: 5, width: 200,
       }}
     >
       <InputLabel
         id="multiple-checkbox-label"
         sx={{ bgcolor: 'background.paper', pr: 1 }}
       >
-        Number of Players
+        Publisher
       </InputLabel>
       <Select
         labelId="multiple-checkbox-label"
         id="multiple-checkbox"
+        name={name}
         multiple
-        value={numberOfPlayers}
+        value={publisher}
         onChange={handleChange}
         input={<OutlinedInput label="Tag" />}
         renderValue={(selected) => selected.join(', ')}
         MenuProps={MenuProps}
       >
-        {number.map((num) => (
+        {publishers.map((num) => (
           <MenuItem
             key={num}
             value={num}
           >
-            <Checkbox checked={numberOfPlayers.indexOf(num) > -1} />
+            <Checkbox checked={publisher.indexOf(num) > -1} />
             <ListItemText primary={num} />
           </MenuItem>
         ))}
