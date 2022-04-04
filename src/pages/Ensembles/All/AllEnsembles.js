@@ -40,23 +40,74 @@ function AllEnsembles() {
     const {
       target,
     } = event;
-    let filtered = [];
-
-    // Psuedo code
-    //
-    // check for num of players
-    // then, check for difficulty
-    // then, check publisher
 
     // We need to check to see if all the filters are blank, but to do that we need to
     // check the target.value instead of the state of the filter that triggered this
     // handlePublisherChange due to the async nature of setState()
-    console.log(target.value.length);
 
     switch (!!target.value.length) {
       case true:
         // this is where we do the work of figuring out what to filter
-        console.log('figure out what to filter');
+
+        switch (target.name) {
+          case 'Players':
+            // Check the other two filters to see if they are false
+            if (!difficulty.length && !publisher.length) {
+              PlayerFilterAction(target.value);
+              break;
+            }
+            if (!difficulty.length && publisher.length) {
+              PublisherAndPlayerFilterAction(publisher, target.value);
+              break;
+            }
+            if (difficulty.length && !publisher.length) {
+              DifficultyAndPlayerFilterAction(difficulty, target.value);
+              break;
+            }
+            if (difficulty.length && publisher.length) {
+              FilterAllAction(target.value, difficulty, publisher);
+              break;
+            }
+            break;
+          case 'Difficulty':
+            if (!numberOfPlayers.length && !publisher.length) {
+              DifficultyFilterAction(target.value);
+              break;
+            }
+            if (numberOfPlayers.length && !publisher.length) {
+              DifficultyAndPlayerFilterAction(target.value, numberOfPlayers);
+              break;
+            }
+            if (!numberOfPlayers.length && publisher.length) {
+              PublisherAndDifficultyFilterAction(publisher, target.value);
+              break;
+            }
+            if (numberOfPlayers.length && publisher.length) {
+              FilterAllAction(numberOfPlayers, target.value, publisher);
+              break;
+            }
+            break;
+          case 'Publisher': // Publisher
+            if (!difficulty.length && !numberOfPlayers.length) {
+              PublisherFilterAction(target.value);
+              break;
+            }
+            if (difficulty.length && !numberOfPlayers.length) {
+              PublisherAndDifficultyFilterAction(target.value, difficulty);
+              break;
+            }
+            if (!difficulty.length && numberOfPlayers.length) {
+              PublisherAndPlayerFilterAction(target.value, numberOfPlayers);
+              break;
+            }
+            if (difficulty.length && numberOfPlayers.length) {
+              FilterAllAction(numberOfPlayers, difficulty, target.value);
+              break;
+            }
+            break;
+          default:
+            break;
+        }
         break;
       case false:
         // This current event.target.value is blank, so we need to
@@ -67,17 +118,56 @@ function AllEnsembles() {
           case 'Players':
             // Check the other two filters to see if they are false
             if (!difficulty.length && !publisher.length) {
-              console.log('stop filtering now 1');
+              setFilteredItems([]);
+              break;
+            }
+            if (!difficulty.length && publisher.length) {
+              PublisherFilterAction(publisher);
+              break;
+            }
+            if (difficulty.length && !publisher.length) {
+              DifficultyFilterAction(difficulty);
+              break;
+            }
+            if (difficulty.length && publisher.length) {
+              PublisherAndDifficultyFilterAction(publisher, difficulty);
+              break;
             }
             break;
           case 'Difficulty':
             if (!numberOfPlayers.length && !publisher.length) {
-              console.log('stop filtering now 2');
+              setFilteredItems([]);
+              break;
+            }
+            if (numberOfPlayers.length && !publisher.length) {
+              PlayerFilterAction(numberOfPlayers);
+              break;
+            }
+            if (!numberOfPlayers.length && publisher.length) {
+              PublisherFilterAction(publisher);
+              break;
+            }
+            if (numberOfPlayers.length && publisher.length) {
+              PublisherAndPlayerFilterAction(publisher, numberOfPlayers);
+              break;
             }
             break;
           case 'Publisher': // Publisher
             if (!difficulty.length && !numberOfPlayers.length) {
-              console.log('stop filtering now 3');
+              setFilteredItems([]);
+              break;
+            }
+            if (difficulty.length && !numberOfPlayers.length) {
+              DifficultyFilterAction(difficulty);
+              break;
+            }
+            if (!difficulty.length && numberOfPlayers.length) {
+              PlayerFilterAction(numberOfPlayers);
+              break;
+            }
+            if (difficulty.length && numberOfPlayers.length) {
+              DifficultyAndPlayerFilterAction(difficulty, numberOfPlayers);
+              break;
             }
             break;
           default:
@@ -88,10 +178,6 @@ function AllEnsembles() {
         break;
     }
 
-    if (!target.value.length || numberOfPlayers || difficulty || publisher) {
-      console.log('we should be filtering by something here');
-    }
-
     // This logic sets the correct state based on the event.target.name
     if (target.name === 'Players') {
       setNumberOfPlayers(target.value);
@@ -100,130 +186,153 @@ function AllEnsembles() {
     } else if (target.name === 'Publisher') {
       setPublisher(target.value);
     }
+  };
 
-    // This is the actual filtering process based on the event.target.name
-    // Needs to be incorporated above and take into account other
-    // filters than the currently selected one.
+  let filtered = [];
 
-    if (target.name === 'Players') {
-      // this needs to be overhauled, because it is
-      // overwriting filteredItems with no regard for other filters
-      if (target.value.length === 0) {
-        setFilteredItems([]);
-      } else {
-        const valueAsIntegers = target.value.map((item) => parseInt(item, 10));
-        if (valueAsIntegers.includes(13)) {
-          filtered = items
-            .filter((item) => item.category === 'Percussion Ensembles')
-            .filter((item) => (item.max_players === null
-              ? target.value.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
-              : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
-                range(
-                  parseInt(item.min_players, 10),
-                  parseInt(item.max_players, 10),
-                  1,
-                ),
-                valueAsIntegers,
-              )));
-        } else {
-          filtered = items.filter((item) => findCommonPlayers(
+  // TODO: Break these functions out into separate files.
+
+  // Individual functions for all filtering cases.
+
+  function FilterAllAction(play, diff, pub) {
+    const valueAsIntegers = play.map((item) => parseInt(item, 10));
+    if (valueAsIntegers.includes(13)) {
+      filtered = items
+        .filter((item) => item.category === 'Percussion Ensembles')
+        .filter((item) => (item.max_players === null
+          ? play.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
+          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
             range(
               parseInt(item.min_players, 10),
               parseInt(item.max_players, 10),
               1,
             ),
             valueAsIntegers,
-          ));
-        }
-        setFilteredItems(filtered);
-      }
-      setNumberOfPlayers(target.value);
-    } else if (target.name === 'Difficulty') {
-      if (target.value.length === 0) {
-        setFilteredItems([]);
-      } else {
-        filtered = items.filter((item) => target.value.includes(SanitizeDifficulty(item.level)));
-        setFilteredItems(filtered);
-      }
-      setDifficulty(target.value);
-    } else if (target.name === 'Publisher') {
-      if (target.value.length === 0) {
-        setFilteredItems([]);
-      } else {
-        filtered = items.filter((item) => target.value.includes(item.publisher));
-        setFilteredItems(filtered);
-      }
-      setPublisher(target.value);
+          )))
+        .filter((item) => pub.includes(item.publisher))
+        .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
+    } else {
+      filtered = items
+        .filter((item) => findCommonPlayers(
+          range(
+            parseInt(item.min_players, 10),
+            item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
+            1,
+          ),
+          valueAsIntegers,
+        ))
+        .filter((item) => pub.includes(item.publisher))
+        .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
     }
-  };
+    setFilteredItems(filtered);
+  }
 
-  // This is the original way that we were handling this, but the code above this is the new way
+  function PublisherAndDifficultyFilterAction(pub, diff) {
+    filtered = items
+      .filter((item) => pub.includes(item.publisher))
+      .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
+    setFilteredItems(filtered);
+  }
 
-  // const handleNumberOfPlayersChange = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   let filtered = [];
-  //   if (value.length === 0) {
-  //     setFilteredItems([]);
-  //   } else {
-  //     const valueAsIntegers = value.map((item) => parseInt(item, 10));
-  //     if (valueAsIntegers.includes(13)) {
-  //       filtered = items
-  //         .filter((item) => item.category === 'Percussion Ensembles')
-  //         .filter((item) => (item.max_players === null
-  //           ? value.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
-  //           : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
-  //             range(
-  //               parseInt(item.min_players, 10),
-  //               parseInt(item.max_players, 10),
-  //               1,
-  //             ),
-  //             valueAsIntegers,
-  //           )));
-  //     } else {
-  //       filtered = items.filter((item) => findCommonPlayers(
-  //         range(
-  //           parseInt(item.min_players, 10),
-  //           parseInt(item.max_players, 10),
-  //           1,
-  //         ),
-  //         valueAsIntegers,
-  //       ));
-  //     }
-  //     setFilteredItems(filtered);
-  //   }
-  //   setNumberOfPlayers(value);
-  // };
+  function PublisherAndPlayerFilterAction(pub, play) {
+    const valueAsIntegers = play.map((item) => parseInt(item, 10));
+    if (valueAsIntegers.includes(13)) {
+      filtered = items
+        .filter((item) => item.category === 'Percussion Ensembles')
+        .filter((item) => (item.max_players === null
+          ? play.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
+          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
+            range(
+              parseInt(item.min_players, 10),
+              parseInt(item.max_players, 10),
+              1,
+            ),
+            valueAsIntegers,
+          )))
+        .filter((item) => pub.includes(item.publisher));
+    } else {
+      filtered = items
+        .filter((item) => findCommonPlayers(
+          range(
+            parseInt(item.min_players, 10),
+            item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
+            1,
+          ),
+          valueAsIntegers,
+        ))
+        .filter((item) => pub.includes(item.publisher));
+    }
+    setFilteredItems(filtered);
+  }
 
-  // const handleDifficultyChange = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   let filtered = [];
-  //   if (value.length === 0) {
-  //     setFilteredItems([]);
-  //   } else {
-  //     filtered = items.filter((item) => value.includes(SanitizeDifficulty(item.level)));
-  //     setFilteredItems(filtered);
-  //   }
-  //   setDifficulty(value);
-  // };
+  function DifficultyAndPlayerFilterAction(diff, play) {
+    const valueAsIntegers = play.map((item) => parseInt(item, 10));
+    if (valueAsIntegers.includes(13)) {
+      filtered = items
+        .filter((item) => item.category === 'Percussion Ensembles')
+        .filter((item) => (item.max_players === null
+          ? play.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
+          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
+            range(
+              parseInt(item.min_players, 10),
+              parseInt(item.max_players, 10),
+              1,
+            ),
+            valueAsIntegers,
+          )))
+        .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
+    } else {
+      filtered = items
+        .filter((item) => findCommonPlayers(
+          range(
+            parseInt(item.min_players, 10),
+            item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
+            1,
+          ),
+          valueAsIntegers,
+        ))
+        .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
+    }
+    setFilteredItems(filtered);
+  }
 
-  // const handlePublisherChange = (event) => {
-  //   const {
-  //     target: { value },
-  //   } = event;
-  //   let filtered = [];
-  //   console.log(value);
-  //   if (value.length === 0) {
-  //     setFilteredItems([]);
-  //   } else {
-  //     filtered = items.filter((item) => value.includes(item.publisher));
-  //     setFilteredItems(filtered);
-  //   }
-  //   setPublisher(value);
-  // };
+  function PublisherFilterAction(target) {
+    filtered = items.filter((item) => target.includes(item.publisher));
+    setFilteredItems(filtered);
+  }
+
+  function DifficultyFilterAction(target) {
+    filtered = items.filter((item) => target.includes(SanitizeDifficulty(item.level)));
+    setFilteredItems(filtered);
+  }
+
+  function PlayerFilterAction(target) {
+    const valueAsIntegers = target.map((item) => parseInt(item, 10));
+    if (valueAsIntegers.includes(13)) {
+      filtered = items
+        .filter((item) => item.category === 'Percussion Ensembles')
+        .filter((item) => (item.max_players === null
+          ? target.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
+          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
+            range(
+              parseInt(item.min_players, 10),
+              parseInt(item.max_players, 10),
+              1,
+            ),
+            valueAsIntegers,
+          )));
+    } else {
+      filtered = items.filter((item) => findCommonPlayers(
+        range(
+          parseInt(item.min_players, 10),
+          item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
+          1,
+        ),
+        valueAsIntegers,
+      ));
+    }
+    setFilteredItems(filtered);
+  }
 
   if (!DataisLoaded) {
     return (
@@ -304,6 +413,7 @@ function AllEnsembles() {
             ))
         // TODO: Change this to be some sort of landing screen with
         // multiple different horizontal view swipers
+        // TODO: Actually disply 0 items if the filters cause there to be none with the filters
           : items
             .filter((item) => item.category === 'Percussion Ensembles')
             .map((item) => (
