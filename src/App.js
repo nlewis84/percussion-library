@@ -7,8 +7,9 @@ import Typography from '@mui/material/Typography';
 
 import AllEnsembles from './pages/Ensembles/All/AllEnsembles';
 import AllSolos from './pages/Solos/All/AllSolos';
+import EnsembleShow from './pages/Ensembles/Show/index';
 import SearchAppBar from './components/SearchAppBar';
-import Show from './pages/Ensembles/Show/index';
+import SoloShow from './pages/Solos/Show/index';
 
 function Copyright() {
   return (
@@ -41,7 +42,8 @@ function App() {
       <Router>
         <AllEnsembles path="/" />
         <AllSolos path="/solos" />
-        <Show path="ensembles/:ensembleId" />
+        <EnsembleShow path="ensembles/:ensembleId" />
+        <SoloShow path="solos/:soloId" />
       </Router>
       <Copyright />
     </Box>
