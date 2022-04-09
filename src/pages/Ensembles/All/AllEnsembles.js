@@ -26,6 +26,7 @@ function AllEnsembles() {
   const [difficulty, setDifficulty] = useState([]);
   const [publisher, setPublisher] = useState([]);
   const [DataisLoaded, setDataisLoaded] = useState(false);
+  const [filterIsOn, setFilterIsOn] = useState(false);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_DATA_URL}`)
@@ -42,6 +43,9 @@ function AllEnsembles() {
       target,
     } = event;
 
+    if (!!numberOfPlayers || !!difficulty || !!publisher) {
+      setFilterIsOn(true);
+    }
     // We need to check to see if all the filters are blank, but to do that we need to
     // check the target.value instead of the state of the filter that triggered this
     // handlePublisherChange due to the async nature of setState()
@@ -120,6 +124,7 @@ function AllEnsembles() {
             // Check the other two filters to see if they are false
             if (!difficulty.length && !publisher.length) {
               setFilteredItems([]);
+              setFilterIsOn(false);
               break;
             }
             if (!difficulty.length && publisher.length) {
@@ -138,6 +143,7 @@ function AllEnsembles() {
           case 'Difficulty':
             if (!numberOfPlayers.length && !publisher.length) {
               setFilteredItems([]);
+              setFilterIsOn(false);
               break;
             }
             if (numberOfPlayers.length && !publisher.length) {
@@ -156,6 +162,7 @@ function AllEnsembles() {
           case 'Publisher': // Publisher
             if (!difficulty.length && !numberOfPlayers.length) {
               setFilteredItems([]);
+              setFilterIsOn(false);
               break;
             }
             if (difficulty.length && !numberOfPlayers.length) {
@@ -371,13 +378,13 @@ function AllEnsembles() {
           >
             {
             // eslint-disable-next-line no-nested-ternary
-            filteredItems.length !== 0
-              ? filteredItems.length === 1
-                ? '1'
+            filterIsOn
+              ? filteredItems.length === 0
+                ? '0'
                 : filteredItems.filter(
                   (item) => item.category === 'Percussion Ensembles',
                 ).length
-              : '0'
+              : items.filter((item) => item.category === 'Percussion Ensembles').length
             }
             {' '}
             {filteredItems.length === 1 ? 'result' : 'results'}
@@ -391,8 +398,68 @@ function AllEnsembles() {
         alignItems="center"
         justifyContent="center"
       >
-        {filteredItems.length !== 0
-          ? filteredItems
+        {
+        // eslint-disable-next-line no-nested-ternary
+        filterIsOn
+          ? filteredItems.length === 0
+            ? (
+              <Card
+                key="no_items_to_show"
+                sx={{
+                  ':hover': {
+                    boxShadow: 10,
+                  },
+                  borderRadius: 2,
+                  height: 224,
+                  width: 196,
+                }}
+                variant="outlined"
+                style={{ textDecoration: 'none' }}
+              >
+                <CardContent>
+                  <Typography
+                    variant="h7"
+                    color="secondary.main"
+                    sx={{ fontWeight: 'bold', textAlign: 'center' }}
+                    component="div"
+                  >
+                    Whoops
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ textAlign: 'center' }}
+                    color="text.primary"
+                  >
+                    No items match that criteria
+                  </Typography>
+                </CardContent>
+              </Card>
+            )
+            : filteredItems
+              .filter((item) => item.category === 'Percussion Ensembles')
+              .map((item) => (
+                <Card
+                  key={item.id}
+                  sx={{
+                    ':hover': {
+                      boxShadow: 10,
+                    },
+                    borderRadius: 2,
+                    height: 224,
+                    width: 196,
+                  }}
+                  variant="outlined"
+                  style={{ textDecoration: 'none' }}
+                  component={Link}
+                  to={`/ensembles/${item.id}`}
+                >
+                  <SmallCardContent item={item} />
+                </Card>
+              ))
+        // TODO: Change this to be some sort of landing screen with
+        // multiple different horizontal view swipers
+        // TODO: Actually disply 0 items if the filters cause there to be none with the filters
+          : items
             .filter((item) => item.category === 'Percussion Ensembles')
             .map((item) => (
               <Card
@@ -413,42 +480,7 @@ function AllEnsembles() {
                 <SmallCardContent item={item} />
               </Card>
             ))
-        // TODO: Change this to be some sort of landing screen with
-        // multiple different horizontal view swipers
-        // TODO: Actually disply 0 items if the filters cause there to be none with the filters
-          : (
-            <Card
-              key="no_items_to_show"
-              sx={{
-                ':hover': {
-                  boxShadow: 10,
-                },
-                borderRadius: 2,
-                height: 224,
-                width: 196,
-              }}
-              variant="outlined"
-              style={{ textDecoration: 'none' }}
-            >
-              <CardContent>
-                <Typography
-                  variant="h7"
-                  color="secondary.main"
-                  sx={{ fontWeight: 'bold', textAlign: 'center' }}
-                  component="div"
-                >
-                  Whoops
-                </Typography>
-                <Typography
-                  variant="body2"
-                  sx={{ textAlign: 'center' }}
-                  color="text.primary"
-                >
-                  No items match that criteria
-                </Typography>
-              </CardContent>
-            </Card>
-          )}
+        }
       </Grid>
     </Container>
   );
