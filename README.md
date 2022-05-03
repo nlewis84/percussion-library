@@ -4,8 +4,6 @@ This is a project to culminate resources for Percussion Ensemble Literature from
 
 ## Available Scripts
 
-In the project directory, you can run:
-
 ### `yarn start`
 
 Runs the app in the development mode.\
