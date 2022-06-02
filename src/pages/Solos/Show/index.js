@@ -26,6 +26,7 @@ import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
 
 import MusicNote from '../../../components/icons/MusicNote';
 
+// TODO: Check the review render for In The Stillness Beneath the Trees solos/1246
 // TODO: make this a functional component, matching AllEnsembles
 class Show extends React.Component {
   // Constructor

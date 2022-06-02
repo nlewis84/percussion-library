@@ -14,7 +14,7 @@ import DifficultyFilter from '../../../components/DifficultyFilter';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import PublisherFilter from '../../../components/PublisherFilter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
-import SmallCardContent from '../../../components/SmallCardContent';
+import SoloSmallCardContent from '../../../components/SoloSmallCardContent';
 
 function AllSolos() {
   const [solos, setSolos] = useState([]);
@@ -236,7 +236,7 @@ function AllSolos() {
                   component={Link}
                   to={`/solos/${item.id}`}
                 >
-                  <SmallCardContent item={item} />
+                  <SoloSmallCardContent item={item} />
                 </Card>
               ))
         // TODO: Change this to be some sort of landing screen with
@@ -259,7 +259,7 @@ function AllSolos() {
                 component={Link}
                 to={`/solos/${item.id}`}
               >
-                <SmallCardContent item={item} />
+                <SoloSmallCardContent item={item} />
               </Card>
             ))
         }
