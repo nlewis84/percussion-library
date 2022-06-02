@@ -458,7 +458,6 @@ function AllEnsembles() {
               ))
         // TODO: Change this to be some sort of landing screen with
         // multiple different horizontal view swipers
-        // TODO: Actually disply 0 items if the filters cause there to be none with the filters
           : items
             .filter((item) => item.category === 'Percussion Ensembles')
             .map((item) => (
