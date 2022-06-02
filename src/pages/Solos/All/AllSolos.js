@@ -11,15 +11,18 @@ import { Link } from '@reach/router';
 import React, { useEffect, useState } from 'react';
 
 import DifficultyFilter from '../../../components/DifficultyFilter';
+import InstrumentFilter from '../../../components/InstrumentFilter';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import PublisherFilter from '../../../components/PublisherFilter';
-import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
+import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
+import SanitizeInstrument from '../../../helpers/sanitizeInstrument';
 import SoloSmallCardContent from '../../../components/SoloSmallCardContent';
 
 function AllSolos() {
   const [solos, setSolos] = useState([]);
   const [filteredSolos, setFilteredSolos] = useState([]);
   const [difficulty, setDifficulty] = useState([]);
+  const [instrument, setInstrument] = useState([]);
   const [publisher, setPublisher] = useState([]);
   const [DataisLoaded, setDataisLoaded] = useState(false);
   const [filterIsOn, setFilterIsOn] = useState(false);
@@ -38,7 +41,7 @@ function AllSolos() {
       target,
     } = event;
 
-    if (!!difficulty || !!publisher) {
+    if (!!instrument || !!difficulty || !!publisher) {
       setFilterIsOn(true);
     }
     // We need to check to see if all the filters are blank, but to do that we need to
@@ -50,22 +53,61 @@ function AllSolos() {
         // this is where we do the work of figuring out what to filter
 
         switch (target.name) {
+          case 'Instrument':
+            // Check the other two filters to see if they are false
+            if (!difficulty.length && !publisher.length) {
+              InstrumentFilterAction(target.value);
+              break;
+            }
+            if (!difficulty.length && publisher.length) {
+              PublisherAndInstrumentFilterAction(publisher, target.value);
+              break;
+            }
+            if (difficulty.length && !publisher.length) {
+              DifficultyAndInstrumentFilterAction(difficulty, target.value);
+              break;
+            }
+            if (difficulty.length && publisher.length) {
+              FilterAllAction(target.value, difficulty, publisher);
+              break;
+            }
+            break;
           case 'Difficulty':
-            if (!publisher.length) {
+            if (!instrument.length && !publisher.length) {
               DifficultyFilterAction(target.value);
               break;
-            } else {
+            }
+            if (instrument.length && !publisher.length) {
+              DifficultyAndInstrumentFilterAction(target.value, instrument);
+              break;
+            }
+            if (!instrument.length && publisher.length) {
               PublisherAndDifficultyFilterAction(publisher, target.value);
               break;
             }
+            if (instrument.length && publisher.length) {
+              FilterAllAction(instrument, target.value, publisher);
+              break;
+            }
+            break;
           case 'Publisher': // Publisher
-            if (!difficulty.length) {
+            if (!difficulty.length && !instrument.length) {
               PublisherFilterAction(target.value);
               break;
-            } else {
+            }
+            if (difficulty.length && !instrument.length) {
               PublisherAndDifficultyFilterAction(target.value, difficulty);
               break;
             }
+            if (!difficulty.length && instrument.length) {
+              PublisherAndInstrumentFilterAction(target.value, instrument);
+              break;
+            }
+            if (difficulty.length && instrument.length) {
+              FilterAllAction(instrument, difficulty, target.value);
+              break;
+            }
+            break;
           default:
             break;
         }
@@ -76,24 +118,64 @@ function AllSolos() {
         // then we will setFilteredSolos([]) and call it a day.
         // If not, then we will incorporate the logic on line 108.
         switch (target.name) {
-          case 'Difficulty':
-            if (!publisher.length) {
+          case 'Instrument':
+            // Check the other two filters to see if they are false
+            if (!difficulty.length && !publisher.length) {
               setFilteredSolos([]);
               setFilterIsOn(false);
               break;
-            } else {
+            }
+            if (!difficulty.length && publisher.length) {
               PublisherFilterAction(publisher);
               break;
             }
-          case 'Publisher': // Publisher
-            if (!difficulty.length) {
-              setFilteredSolos([]);
-              setFilterIsOn(false);
-              break;
-            } else {
+            if (difficulty.length && !publisher.length) {
               DifficultyFilterAction(difficulty);
               break;
             }
+            if (difficulty.length && publisher.length) {
+              PublisherAndDifficultyFilterAction(publisher, difficulty);
+              break;
+            }
+            break;
+          case 'Difficulty':
+            if (!instrument.length && !publisher.length) {
+              setFilteredSolos([]);
+              setFilterIsOn(false);
+              break;
+            }
+            if (instrument.length && !publisher.length) {
+              InstrumentFilterAction(instrument);
+              break;
+            }
+            if (!instrument.length && publisher.length) {
+              PublisherFilterAction(publisher);
+              break;
+            }
+            if (instrument.length && publisher.length) {
+              PublisherAndInstrumentFilterAction(publisher, instrument);
+              break;
+            }
+            break;
+          case 'Publisher': // Publisher
+            if (!difficulty.length && !instrument.length) {
+              setFilteredSolos([]);
+              setFilterIsOn(false);
+              break;
+            }
+            if (difficulty.length && !instrument.length) {
+              DifficultyFilterAction(difficulty);
+              break;
+            }
+            if (!difficulty.length && instrument.length) {
+              InstrumentFilterAction(instrument);
+              break;
+            }
+            if (difficulty.length && instrument.length) {
+              DifficultyAndInstrumentFilterAction(difficulty, instrument);
+              break;
+            }
+            break;
           default:
             break;
         }
@@ -103,7 +185,9 @@ function AllSolos() {
     }
 
     // This logic sets the correct state based on the event.target.name
-    if (target.name === 'Difficulty') {
+    if (target.name === 'Instrument') {
+      setInstrument(target.value);
+    } else if (target.name === 'Difficulty') {
       setDifficulty(target.value);
     } else if (target.name === 'Publisher') {
       setPublisher(target.value);
@@ -116,9 +200,31 @@ function AllSolos() {
 
   // Individual functions for all filtering cases.
 
+  function FilterAllAction(inst, diff, pub) {
+    filtered = solos
+      .filter((item) => inst.includes(SanitizeInstrument(item.min_players, item.category)))
+      .filter((item) => pub.includes(item.publisher))
+      .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
+    setFilteredSolos(filtered);
+  }
+
   function PublisherAndDifficultyFilterAction(pub, diff) {
     filtered = solos
       .filter((item) => pub.includes(item.publisher))
+      .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
+    setFilteredSolos(filtered);
+  }
+
+  function PublisherAndInstrumentFilterAction(pub, inst) {
+    filtered = solos
+      .filter((item) => inst.includes(SanitizeInstrument(item.min_players, item.category)))
+      .filter((item) => pub.includes(item.publisher));
+    setFilteredSolos(filtered);
+  }
+
+  function DifficultyAndInstrumentFilterAction(diff, inst) {
+    filtered = solos
+      .filter((item) => inst.includes(SanitizeInstrument(item.min_players, item.category)))
       .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
     setFilteredSolos(filtered);
   }
@@ -130,6 +236,12 @@ function AllSolos() {
 
   function DifficultyFilterAction(target) {
     filtered = solos.filter((item) => target.includes(SanitizeDifficulty(item.level)));
+    setFilteredSolos(filtered);
+  }
+
+  function InstrumentFilterAction(target) {
+    filtered = solos
+      .filter((item) => target.includes(SanitizeInstrument(item.min_players, item.category)));
     setFilteredSolos(filtered);
   }
 
@@ -145,6 +257,11 @@ function AllSolos() {
         sx={{ textAlign: 'center' }}
       >
         <Paper sx={{ display: 'inline-block', mr: 2, mt: 2 }}>
+          <InstrumentFilter
+            handleChange={handleChange}
+            name="Instrument"
+            instrument={instrument}
+          />
           <DifficultyFilter
             handleChange={handleChange}
             name="Difficulty"

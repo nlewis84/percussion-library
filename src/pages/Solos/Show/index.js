@@ -22,7 +22,7 @@ import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
 import ReviewFormatter from '../../../helpers/reviewFormatter';
-import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
+import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
 
 import MusicNote from '../../../components/icons/MusicNote';
 

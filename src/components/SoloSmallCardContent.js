@@ -10,7 +10,7 @@ import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import React from 'react';
 import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
 
-import SanitizeDifficulty from '../helpers/sanitizeDifficuty';
+import SanitizeDifficulty from '../helpers/sanitizeDifficulty';
 import SanitizeInstrument from '../helpers/sanitizeInstrument';
 import TruncateText from '../helpers/truncateText';
 

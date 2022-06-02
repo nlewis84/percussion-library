@@ -14,7 +14,7 @@ import DifficultyFilter from '../../../components/DifficultyFilter';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import NumberOfPlayersFilter from '../../../components/NumberOfPlayersFilter';
 import PublisherFilter from '../../../components/PublisherFilter';
-import SanitizeDifficulty from '../../../helpers/sanitizeDifficuty';
+import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
 import SmallCardContent from '../../../components/SmallCardContent';
 import findCommonPlayers from '../../../helpers/findCommonPlayers';
 import range from '../../../helpers/range';
