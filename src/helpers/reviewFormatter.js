@@ -4,7 +4,7 @@ import React from 'react';
 
 function ReviewFormatter(review) {
   const hyphenOne = /\s–/;
-  const hyphenTwo = /\s—/;
+  const hyphenTwo = /\s—+]*}*(?!.*—)/;
   let reviewText = '';
   let author = '';
 
@@ -19,7 +19,7 @@ function ReviewFormatter(review) {
   } else {
     reviewText = review;
   }
-  console.log(author);
+
   return (
     <>
       <Typography
