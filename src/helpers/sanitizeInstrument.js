@@ -1,5 +1,4 @@
 function SanitizeInstrument(instrument, category) {
-  console.log(instrument);
   switch (instrument) {
     case 'Solo (drumset)':
       return 'Drumset';
