@@ -11,6 +11,8 @@ import React from 'react';
 
 import MusicNote from '../components/icons/MusicNote';
 
+// TODO: Check out Eugenia ensembles/869
+
 function InstrumentationFormatter(instrumentation) {
   let stringArray = [];
   if (instrumentation.startsWith('•')) {

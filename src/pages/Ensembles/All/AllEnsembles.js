@@ -15,6 +15,7 @@ import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import NumberOfPlayersFilter from '../../../components/NumberOfPlayersFilter';
 import PublisherFilter from '../../../components/PublisherFilter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
+import SmallCardActions from '../../../components/SmallCardActions';
 import SmallCardContent from '../../../components/SmallCardContent';
 import findCommonPlayers from '../../../helpers/findCommonPlayers';
 import range from '../../../helpers/range';
@@ -454,6 +455,7 @@ function AllEnsembles() {
                   to={`/ensembles/${item.id}`}
                 >
                   <SmallCardContent item={item} />
+                  <SmallCardActions item={item} />
                 </Card>
               ))
         // TODO: Change this to be some sort of landing screen with
@@ -477,6 +479,7 @@ function AllEnsembles() {
                 to={`/ensembles/${item.id}`}
               >
                 <SmallCardContent item={item} />
+                <SmallCardActions item={item} />
               </Card>
             ))
         }

@@ -24,11 +24,12 @@ export default function SmallCardContent(item) {
     <CardContent>
       <Typography
         variant="h7"
+        noWrap
         color="secondary.main"
         sx={{ fontWeight: 'bold' }}
         component="div"
       >
-        {TruncateText(title, 32)}
+        {title}
       </Typography>
       {arranger ? (
         <Typography

@@ -16,6 +16,7 @@ import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import PublisherFilter from '../../../components/PublisherFilter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
 import SanitizeInstrument from '../../../helpers/sanitizeInstrument';
+import SmallCardActions from '../../../components/SmallCardActions';
 import SoloSmallCardContent from '../../../components/SoloSmallCardContent';
 
 function AllSolos() {
@@ -354,6 +355,7 @@ function AllSolos() {
                   to={`/solos/${item.id}`}
                 >
                   <SoloSmallCardContent item={item} />
+                  <SmallCardActions item={item} />
                 </Card>
               ))
         // TODO: Change this to be some sort of landing screen with
@@ -377,6 +379,7 @@ function AllSolos() {
                 to={`/solos/${item.id}`}
               >
                 <SoloSmallCardContent item={item} />
+                <SmallCardActions item={item} />
               </Card>
             ))
         }
