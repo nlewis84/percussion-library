@@ -9,6 +9,9 @@ function MusicNote(props) {
   const theme = useTheme();
   const { color } = props;
   const fill = eval(`theme.palette.${color}`);
+  // This generates a secondary color that is the primary color with 30% opacity
+  let secondaryFill = eval(`theme.palette.${color}`);
+  secondaryFill += '4D';
 
   const icon = (
     <svg
@@ -27,7 +30,7 @@ function MusicNote(props) {
         cx="88"
         cy="184"
         r="40"
-        fill="none"
+        fill={secondaryFill}
         stroke={fill}
         strokeLinecap="round"
         strokeLinejoin="round"

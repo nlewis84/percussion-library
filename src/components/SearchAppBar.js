@@ -13,7 +13,7 @@ import Typography from '@mui/material/Typography';
 
 const pages = [
   { route: '/', title: 'Ensembles' },
-  { route: 'solos', title: 'Solos' },
+  { route: '/solos', title: 'Solos' },
   // TODO: Get these route ready for primetime
   // { route: 'chamber-music', title: 'Chamber Music' },
   // { route: 'steel-band', title: 'Steel Band' },

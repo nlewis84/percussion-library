@@ -1,3 +1,4 @@
+import React from 'react';
 /* eslint-disable camelcase */
 import {
   Box,
@@ -5,10 +6,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
-import React from 'react';
-import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
+import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
+import GroupsTwoToneIcon from '@mui/icons-material/GroupsTwoTone';
+import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 
 import SanitizeDifficulty from '../helpers/sanitizeDifficulty';
 import SanitizeInstrument from '../helpers/sanitizeInstrument';
@@ -42,7 +42,7 @@ export default function SoloSmallCardContent(item) {
         direction="row"
         alignItems="center"
       >
-        <SpeedOutlinedIcon
+        <SpeedTwoToneIcon
           sx={{
             color: 'secondary.main',
             display: 'inline',
@@ -62,7 +62,7 @@ export default function SoloSmallCardContent(item) {
         direction="row"
         alignItems="center"
       >
-        <GroupsOutlinedIcon
+        <GroupsTwoToneIcon
           sx={{
             color: 'secondary.main',
             display: 'inline',
@@ -81,7 +81,7 @@ export default function SoloSmallCardContent(item) {
         direction="row"
         alignItems="center"
       >
-        <MenuBookOutlinedIcon
+        <BusinessCenterTwoToneIcon
           sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
         />
         <Typography

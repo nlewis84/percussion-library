@@ -55,7 +55,10 @@ function InstrumentationFormatter(instrumentation) {
         {stringArray.map((value) => React.cloneElement(
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <ListItemIcon>
-              <MusicNote color="secondary.main" />
+              <MusicNote
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
             </ListItemIcon>
             <ListItemText primary={value} />
           </ListItem>,

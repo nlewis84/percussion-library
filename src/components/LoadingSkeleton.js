@@ -8,10 +8,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
+import GroupsTwoToneIcon from '@mui/icons-material/GroupsTwoTone';
 import React from 'react';
-import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
+import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 
 export default function LoadingSkeleton() {
   return (
@@ -52,7 +52,7 @@ export default function LoadingSkeleton() {
                 alignItems="center"
                 sx={{ mt: 2 }}
               >
-                <SpeedOutlinedIcon
+                <SpeedTwoToneIcon
                   sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
                 />
                 <Typography
@@ -68,7 +68,7 @@ export default function LoadingSkeleton() {
                 direction="row"
                 alignItems="center"
               >
-                <GroupsOutlinedIcon
+                <GroupsTwoToneIcon
                   sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
                 />
                 <Typography
@@ -84,7 +84,7 @@ export default function LoadingSkeleton() {
                 direction="row"
                 alignItems="center"
               >
-                <MenuBookOutlinedIcon
+                <BusinessCenterTwoToneIcon
                   sx={{ color: 'secondary.main', display: 'inline', mr: 1.5 }}
                 />
                 <Typography

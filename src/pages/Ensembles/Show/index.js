@@ -11,13 +11,13 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import AccessTimeTwoToneIcon from '@mui/icons-material/AccessTimeTwoTone';
+import GroupsTwoToneIcon from '@mui/icons-material/GroupsTwoTone';
+import MenuBookTwoToneIcon from '@mui/icons-material/MenuBookTwoTone';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
+import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 
 import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
@@ -117,7 +117,10 @@ class Show extends React.Component {
               {new Array(8).fill().map((value) => React.cloneElement(
                 <ListItem>
                   <ListItemIcon>
-                    <MusicNote color="secondary.main" />
+                    <MusicNote
+                      color="secondary.main"
+                      secondaryColor="secondary.light"
+                    />
                   </ListItemIcon>
                   <Typography
                     key={value}
@@ -142,7 +145,7 @@ class Show extends React.Component {
               direction="row"
               alignItems="center"
             >
-              <SpeedOutlinedIcon
+              <SpeedTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -158,7 +161,7 @@ class Show extends React.Component {
               direction="row"
               alignItems="center"
             >
-              <AccessTimeOutlinedIcon
+              <AccessTimeTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -174,7 +177,7 @@ class Show extends React.Component {
               direction="row"
               alignItems="center"
             >
-              <GroupsOutlinedIcon
+              <GroupsTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -279,7 +282,7 @@ class Show extends React.Component {
               alignItems="center"
               sx={{ mt: 1.5 }}
             >
-              <MenuBookOutlinedIcon
+              <MenuBookTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -297,7 +300,7 @@ class Show extends React.Component {
               alignItems="center"
               sx={{ mt: 1.5 }}
             >
-              <SpeedOutlinedIcon
+              <SpeedTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -316,7 +319,7 @@ class Show extends React.Component {
               alignItems="center"
               sx={{ mt: 1.5 }}
             >
-              <AccessTimeOutlinedIcon
+              <AccessTimeTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -334,7 +337,7 @@ class Show extends React.Component {
               alignItems="center"
               sx={{ mt: 1.5 }}
             >
-              <GroupsOutlinedIcon
+              <GroupsTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
