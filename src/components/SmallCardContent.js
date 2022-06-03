@@ -16,7 +16,7 @@ import TruncateText from '../helpers/truncateText';
 export default function SmallCardContent(item) {
   const {
     item: {
-      composer, level, max_players, min_players, publisher, title,
+      arranger, composer, level, max_players, min_players, publisher, title,
     },
   } = item;
 
@@ -30,12 +30,21 @@ export default function SmallCardContent(item) {
       >
         {TruncateText(title, 32)}
       </Typography>
-      <Typography
-        sx={{ mb: 1.5 }}
-        color="text.secondary"
-      >
-        {TruncateText(composer, 25)}
-      </Typography>
+      {arranger ? (
+        <Typography
+          sx={{ mb: 1.5 }}
+          color="text.secondary"
+        >
+          {TruncateText(arranger, 25, true)}
+        </Typography>
+      ) : (
+        <Typography
+          sx={{ mb: 1.5 }}
+          color="text.secondary"
+        >
+          {TruncateText(composer, 25, true)}
+        </Typography>
+      )}
       <Box
         component={Stack}
         direction="row"
@@ -72,8 +81,6 @@ export default function SmallCardContent(item) {
           variant="body2"
           color="text.primary"
         >
-          Player(s):
-          {' '}
           {min_players}
           {' '}
           {max_players ? `- ${max_players}` : ''}

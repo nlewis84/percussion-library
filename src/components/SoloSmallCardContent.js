@@ -17,7 +17,7 @@ import TruncateText from '../helpers/truncateText';
 export default function SoloSmallCardContent(item) {
   const {
     item: {
-      category, composer, level, min_players, publisher, title,
+      arranger, category, composer, level, min_players, publisher, title,
     },
   } = item;
 
@@ -31,12 +31,21 @@ export default function SoloSmallCardContent(item) {
       >
         {TruncateText(title, 32)}
       </Typography>
-      <Typography
-        sx={{ mb: 1.5 }}
-        color="text.secondary"
-      >
-        {TruncateText(composer, 25)}
-      </Typography>
+      {arranger ? (
+        <Typography
+          sx={{ mb: 1.5 }}
+          color="text.secondary"
+        >
+          {TruncateText(arranger, 25, true)}
+        </Typography>
+      ) : (
+        <Typography
+          sx={{ mb: 1.5 }}
+          color="text.secondary"
+        >
+          {TruncateText(composer, 25, true)}
+        </Typography>
+      )}
       <Box
         component={Stack}
         direction="row"
