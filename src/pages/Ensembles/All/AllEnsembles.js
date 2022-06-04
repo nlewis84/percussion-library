@@ -351,12 +351,13 @@ function AllEnsembles() {
   return (
     <Container className="App">
       <Container
-        className="App"
+        className="Filters"
         sx={{ textAlign: 'center' }}
       >
         <Paper
+          elevation={0}
           sx={{
-            display: 'inline-block', mr: 2, mt: 2, width: '100%',
+            display: 'inline-block', mr: 2, mt: 2, width: '99%',
           }}
         >
           <NumberOfPlayersFilter
@@ -375,7 +376,7 @@ function AllEnsembles() {
             publisher={publisher}
           />
 
-          <Typography
+          {/* <Typography
             variant="body"
             color="secondary.main"
             textAlign="center"
@@ -393,12 +394,12 @@ function AllEnsembles() {
             }
             {' '}
             {filteredItems.length === 1 ? 'result' : 'results'}
-          </Typography>
+          </Typography> */}
         </Paper>
       </Container>
       <Grid
         container
-        sx={{ gap: 2, mt: 5 }}
+        sx={{ gap: 2, mt: 2 }}
         spacing={2}
         alignItems="center"
         justifyContent="center"

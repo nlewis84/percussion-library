@@ -25,7 +25,7 @@ export default function NumberOfPlayersFilter({ handleChange, name, numberOfPlay
     <FormControl
       size="small"
       sx={{
-        mb: 2, minWidth: 132, mt: 4, mx: 5,
+        minWidth: 132, mx: 5, my: 1,
       }}
     >
       <InputLabel
