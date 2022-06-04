@@ -7,13 +7,13 @@ import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 
-const ITEM_HEIGHT = 48;
+const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+      width: 198,
     },
   },
 };
@@ -23,15 +23,17 @@ const number = ['2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13+']
 export default function NumberOfPlayersFilter({ handleChange, name, numberOfPlayers }) {
   return (
     <FormControl
+      size="small"
       sx={{
-        mb: 2, mt: 4, mx: 5, width: 200,
+        mb: 2, minWidth: 132, mt: 4, mx: 5,
       }}
     >
       <InputLabel
         id="multiple-checkbox-label"
+        size="small"
         sx={{ bgcolor: 'background.paper', pr: 1 }}
       >
-        Number of Players
+        # of Players
       </InputLabel>
       <Select
         labelId="multiple-checkbox-label"
@@ -48,6 +50,7 @@ export default function NumberOfPlayersFilter({ handleChange, name, numberOfPlay
           <MenuItem
             key={num}
             value={num}
+            dense
           >
             <Checkbox checked={numberOfPlayers.indexOf(num) > -1} />
             <ListItemText primary={num} />

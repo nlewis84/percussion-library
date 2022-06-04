@@ -7,13 +7,13 @@ import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
 
-const ITEM_HEIGHT = 48;
+const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
+      width: 198,
     },
   },
 };
@@ -23,12 +23,14 @@ const levels = ['Easy', 'Med. Easy', 'Medium', 'Med. Advanced', 'Advanced'];
 export default function DifficultyFilter({ difficulty, handleChange, name }) {
   return (
     <FormControl
+      size="small"
       sx={{
-        mb: 2, mt: 4, mx: 5, width: 200,
+        mb: 2, minWidth: 132, mt: 4, mx: 5,
       }}
     >
       <InputLabel
         id="multiple-checkbox-label"
+        size="small"
         sx={{ bgcolor: 'background.paper', pr: 1 }}
       >
         Difficulty
@@ -48,6 +50,7 @@ export default function DifficultyFilter({ difficulty, handleChange, name }) {
           <MenuItem
             key={num}
             value={num}
+            dense
           >
             <Checkbox checked={difficulty.indexOf(num) > -1} />
             <ListItemText primary={num} />

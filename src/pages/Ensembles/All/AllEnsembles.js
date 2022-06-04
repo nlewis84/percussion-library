@@ -354,7 +354,11 @@ function AllEnsembles() {
         className="App"
         sx={{ textAlign: 'center' }}
       >
-        <Paper sx={{ display: 'inline-block', mr: 2, mt: 2 }}>
+        <Paper
+          sx={{
+            display: 'inline-block', mr: 2, mt: 2, width: '100%',
+          }}
+        >
           <NumberOfPlayersFilter
             handleChange={handleChange}
             name="Players"
