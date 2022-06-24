@@ -12,8 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
-import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
+import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
@@ -23,6 +24,7 @@ import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
 import ReviewFormatter from '../../../helpers/reviewFormatter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
+import SanitizeInstrument from '../../../helpers/sanitizeInstrument';
 
 import MusicNote from '../../../components/icons/MusicNote';
 
@@ -175,7 +177,7 @@ class Show extends React.Component {
               direction="row"
               alignItems="center"
             >
-              <GroupsOutlinedIcon
+              <PersonOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -310,6 +312,24 @@ class Show extends React.Component {
               </Typography>
             </Box>
           ) : null}
+          {item.min_players ? (
+            <Box
+              component={Stack}
+              direction="row"
+              alignItems="center"
+              sx={{ mt: 1.5 }}
+            >
+              <PersonOutlinedIcon
+                sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
+              />
+              <Typography
+                variant="body1"
+                color="text.primary"
+              >
+                {SanitizeInstrument(item.min_players, item.category)}
+              </Typography>
+            </Box>
+          ) : null}
           {item.duration ? (
             <Box
               component={Stack}
@@ -328,21 +348,21 @@ class Show extends React.Component {
               </Typography>
             </Box>
           ) : null}
-          {item.players ? (
+          {item.publisher ? (
             <Box
               component={Stack}
               direction="row"
               alignItems="center"
               sx={{ mt: 1.5 }}
             >
-              <GroupsOutlinedIcon
+              <BusinessCenterTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
                 variant="body1"
                 color="text.primary"
               >
-                {item.players}
+                {item.publisher}
               </Typography>
             </Box>
           ) : null}

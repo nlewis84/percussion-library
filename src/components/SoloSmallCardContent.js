@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
-import GroupsTwoToneIcon from '@mui/icons-material/GroupsTwoTone';
+import PersonTwoToneIcon from '@mui/icons-material/PersonTwoTone';
 import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 
 import SanitizeDifficulty from '../helpers/sanitizeDifficulty';
@@ -72,7 +72,7 @@ export default function SoloSmallCardContent(item) {
         direction="row"
         alignItems="center"
       >
-        <GroupsTwoToneIcon
+        <PersonTwoToneIcon
           sx={{
             color: 'secondary.main',
             display: 'inline',

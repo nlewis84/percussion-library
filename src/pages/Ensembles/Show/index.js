@@ -330,7 +330,7 @@ class Show extends React.Component {
               </Typography>
             </Box>
           ) : null}
-          {item.players ? (
+          {item.min_players ? (
             <Box
               component={Stack}
               direction="row"
@@ -344,7 +344,9 @@ class Show extends React.Component {
                 variant="body1"
                 color="text.primary"
               >
-                {item.players}
+                {item.min_players}
+                {' '}
+                {item.max_players ? `- ${item.max_players}` : ''}
               </Typography>
             </Box>
           ) : null}
