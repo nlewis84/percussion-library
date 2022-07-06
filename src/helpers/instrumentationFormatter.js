@@ -12,6 +12,7 @@ import React from 'react';
 import MusicNote from '../components/icons/MusicNote';
 
 // TODO: Check out Eugenia ensembles/869
+// TODO: Figure out how to deal with * extra notes like *  *
 
 function InstrumentationFormatter(instrumentation) {
   let stringArray = [];

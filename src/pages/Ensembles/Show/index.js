@@ -370,12 +370,14 @@ class Show extends React.Component {
         {/* TODO: make these reviews look cool */}
         {item.reviews ? (
           <Paper sx={{ p: 5, width: '66%' }}>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-            >
-              Reviews
-            </Typography>
+            <Box sx={{ pb: 1 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+              >
+                Reviews
+              </Typography>
+            </Box>
             <Typography
               variant="body3"
               color="text.primary"
