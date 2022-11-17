@@ -11,12 +11,22 @@ import React from 'react';
 
 import MusicNote from '../components/icons/MusicNote';
 
-// TODO: Check out Eugenia ensembles/869
 // TODO: Figure out how to deal with * extra notes like *  *
 
 function InstrumentationFormatter(instrumentation) {
   let stringArray = [];
-  if (instrumentation.startsWith('•')) {
+  if (instrumentation.startsWith('Soloist:')) {
+    // remove Soloist: from the start of it and also remove Accompaniment: from the middle of it
+    stringArray = instrumentation
+      .split('Soloist: ')
+      .filter((item) => item !== '')
+      .join('')
+      .split('Accompaniment: ')
+      .join('')
+      // .filter((item) => item !== '')
+      .split('•')
+      .filter((item) => item !== '');
+  } else if (instrumentation.startsWith('•')) {
     stringArray = instrumentation
       .split('•')
       .filter((item) => item !== '')
