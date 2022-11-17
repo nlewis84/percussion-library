@@ -11,13 +11,37 @@ import React from 'react';
 
 import MusicNote from '../components/icons/MusicNote';
 
-// TODO: Figure out how to deal with * extra notes like *  *
-
 function InstrumentationFormatter(instrumentation) {
   let stringArray = [];
-  if (instrumentation.startsWith('Soloist:')) {
-    // remove Soloist: from the start of it and also remove Accompaniment: from the middle of it
-    stringArray = instrumentation
+  let cleanedInstrumentation = instrumentation;
+
+  let noteOne = '';
+  let noteTwo = '';
+  let noteThree = '';
+  let noteFour = '';
+  if (instrumentation.includes(' \u2028* ')) {
+    noteOne = instrumentation.slice(instrumentation.indexOf(' \u2028* '));
+    cleanedInstrumentation = instrumentation.slice(0, instrumentation.indexOf(' \u2028* '));
+    if (noteOne.includes(' \u2028* * ')) {
+      noteTwo = noteOne.slice(noteOne.indexOf(' \u2028* * '));
+      noteOne = noteOne.slice(0, noteOne.indexOf(' \u2028* * '));
+    }
+  }
+
+  if (cleanedInstrumentation.includes('*  *')) {
+    noteThree = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  *'));
+    cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('  *'));
+  }
+
+  if (cleanedInstrumentation.includes('  * ')) {
+    noteFour = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  *'));
+    cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('  *'));
+  }
+
+  console.log(noteOne, noteTwo, noteThree, noteFour);
+
+  if (cleanedInstrumentation.startsWith('Soloist:')) {
+    stringArray = cleanedInstrumentation
       .split('Soloist: ')
       .filter((item) => item !== '')
       .join('')
@@ -26,20 +50,20 @@ function InstrumentationFormatter(instrumentation) {
       // .filter((item) => item !== '')
       .split('•')
       .filter((item) => item !== '');
-  } else if (instrumentation.startsWith('•')) {
-    stringArray = instrumentation
+  } else if (cleanedInstrumentation.startsWith('•')) {
+    stringArray = cleanedInstrumentation
       .split('•')
       .filter((item) => item !== '')
       .join()
       .split('\n,');
-  } else if (instrumentation.startsWith('\t•\t')) {
-    stringArray = instrumentation
+  } else if (cleanedInstrumentation.startsWith('\t•\t')) {
+    stringArray = cleanedInstrumentation
       .split('\t•\t')
       .filter((item) => item !== '');
     // .join()
     // .split('\n,');
   } else {
-    stringArray = instrumentation
+    stringArray = cleanedInstrumentation
       .split('\n')
       .filter((item) => item !== '')
       .join()
@@ -76,6 +100,50 @@ function InstrumentationFormatter(instrumentation) {
             <ListItemText primary={value} />
           </ListItem>,
         ))}
+        {noteOne !== '' && (
+          <ListItem sx={{ pl: 0, pr: 0 }}>
+            <ListItemIcon>
+              <MusicNote
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+            </ListItemIcon>
+            <ListItemText primary={noteOne} />
+          </ListItem>
+        )}
+        {noteTwo !== '' && (
+          <ListItem sx={{ pl: 0, pr: 0 }}>
+            <ListItemIcon>
+              <MusicNote
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+            </ListItemIcon>
+            <ListItemText primary={noteTwo} />
+          </ListItem>
+        )}
+        {noteThree !== '' && (
+          <ListItem sx={{ pl: 0, pr: 0 }}>
+            <ListItemIcon>
+              <MusicNote
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+            </ListItemIcon>
+            <ListItemText primary={noteThree} />
+          </ListItem>
+        )}
+        {noteFour !== '' && (
+          <ListItem sx={{ pl: 0, pr: 0 }}>
+            <ListItemIcon>
+              <MusicNote
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+            </ListItemIcon>
+            <ListItemText primary={noteFour} />
+          </ListItem>
+        )}
       </List>
     </Paper>
   );
