@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import {
+  Divider,
   List,
   ListItem,
   ListItemIcon,
@@ -9,6 +10,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 
+import Asterisk from '../components/icons/Asterisk';
 import MusicNote from '../components/icons/MusicNote';
 
 function InstrumentationFormatter(instrumentation) {
@@ -28,17 +30,40 @@ function InstrumentationFormatter(instrumentation) {
     }
   }
 
+  if (instrumentation.includes('   *')) {
+    noteOne = instrumentation.slice(instrumentation.indexOf('   *'));
+    cleanedInstrumentation = instrumentation.slice(0, instrumentation.indexOf('   *'));
+    if (noteOne.includes(' **')) {
+      noteTwo = noteOne.slice(noteOne.indexOf(' **'));
+      noteOne = noteOne.slice(0, noteOne.indexOf(' **'));
+      noteTwo = noteTwo.slice(3);
+      noteOne = noteOne.slice(4);
+    }
+  }
+
   if (cleanedInstrumentation.includes('*  *')) {
     noteThree = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  *'));
     cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('  *'));
+    noteThree = noteThree.slice(3);
   }
 
   if (cleanedInstrumentation.includes('  * ')) {
-    noteFour = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  *'));
-    cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('  *'));
+    noteFour = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  * '));
+    cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('  * '));
+    noteFour = noteFour.slice(4);
   }
 
-  console.log(noteOne, noteTwo, noteThree, noteFour);
+  let noteFive = '';
+  if (cleanedInstrumentation.includes('*   *')) {
+    noteFive = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('*   *'));
+    cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('*   *'));
+    noteFive = noteFive.slice(5);
+  }
+
+  console.log(noteFive);
+
+  // TODO: Search for '**' in instrumentation and make
+  // sure all the asterisk cases are covered by the above
 
   if (cleanedInstrumentation.startsWith('Soloist:')) {
     stringArray = cleanedInstrumentation
@@ -100,10 +125,14 @@ function InstrumentationFormatter(instrumentation) {
             <ListItemText primary={value} />
           </ListItem>,
         ))}
+        <Divider
+          light
+          variant="center"
+        />
         {noteOne !== '' && (
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <ListItemIcon>
-              <MusicNote
+              <Asterisk
                 color="secondary.main"
                 secondaryColor="secondary.light"
               />
@@ -111,10 +140,15 @@ function InstrumentationFormatter(instrumentation) {
             <ListItemText primary={noteOne} />
           </ListItem>
         )}
+        {/* TODO: Make two asterisks look better ensembles/752 */}
         {noteTwo !== '' && (
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <ListItemIcon>
-              <MusicNote
+              <Asterisk
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+              <Asterisk
                 color="secondary.main"
                 secondaryColor="secondary.light"
               />
@@ -125,7 +159,7 @@ function InstrumentationFormatter(instrumentation) {
         {noteThree !== '' && (
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <ListItemIcon>
-              <MusicNote
+              <Asterisk
                 color="secondary.main"
                 secondaryColor="secondary.light"
               />
@@ -136,12 +170,23 @@ function InstrumentationFormatter(instrumentation) {
         {noteFour !== '' && (
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <ListItemIcon>
-              <MusicNote
+              <Asterisk
                 color="secondary.main"
                 secondaryColor="secondary.light"
               />
             </ListItemIcon>
             <ListItemText primary={noteFour} />
+          </ListItem>
+        )}
+        {noteFive !== '' && (
+          <ListItem sx={{ pl: 0, pr: 0 }}>
+            <ListItemIcon>
+              <Asterisk
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+            </ListItemIcon>
+            <ListItemText primary={noteFive} />
           </ListItem>
         )}
       </List>
