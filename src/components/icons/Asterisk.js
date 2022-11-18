@@ -17,45 +17,44 @@ function Asterisk(props) {
       height="24"
       fill={fill}
       viewBox="0 0 256 256"
-    ><line
-      x1="128"
-      y1="40"
-      x2="128"
-      y2="216"
-      fill="none"
-      stroke={fill}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="16"
-    /><line
-      x1="51.8"
-      y1="84"
-      x2="204.2"
-      y2="172"
-      fill="none"
-      stroke={fill}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="16"
-    /><line
-      x1="51.8"
-      y1="172"
-      x2="204.2"
-      y2="84"
-      fill="none"
-      stroke={fill}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth="16"
-    />
+    >
+      <line
+        x1="128"
+        y1="40"
+        x2="128"
+        y2="216"
+        fill="none"
+        stroke={fill}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="24"
+      />
+      <line
+        x1="51.8"
+        y1="84"
+        x2="204.2"
+        y2="172"
+        fill="none"
+        stroke={fill}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="24"
+      />
+      <line
+        x1="51.8"
+        y1="172"
+        x2="204.2"
+        y2="84"
+        fill="none"
+        stroke={fill}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="24"
+      />
     </svg>
   );
 
-  return (
-    <SvgIcon {...props}>
-      {icon}
-    </SvgIcon>
-  );
+  return <SvgIcon {...props}>{icon}</SvgIcon>;
 }
 
 Asterisk.propTypes = {

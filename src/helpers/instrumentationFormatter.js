@@ -150,10 +150,9 @@ function InstrumentationFormatter(instrumentation) {
             <ListItemText primary={noteOne} />
           </ListItem>
         )}
-        {/* TODO: Make two asterisks look better ensembles/752 */}
         {noteTwo !== '' && (
           <ListItem sx={{ pl: 0, pr: 0 }}>
-            <ListItemIcon>
+            <ListItemIcon sx={{ transform: 'translateX(-10px)' }}>
               <Asterisk
                 color="secondary.main"
                 secondaryColor="secondary.light"

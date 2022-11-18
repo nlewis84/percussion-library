@@ -357,7 +357,7 @@ function AllEnsembles() {
         <Paper
           elevation={0}
           sx={{
-            display: 'inline-block', mr: 2, mt: 2, width: '99%',
+            display: 'inline-block', mr: 2, mt: 2, py: 1, width: '99%',
           }}
         >
           <NumberOfPlayersFilter
