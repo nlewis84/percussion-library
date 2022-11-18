@@ -20,6 +20,7 @@ import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
 
 import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
@@ -83,6 +84,31 @@ class Show extends React.Component {
             DataisLoaded: true,
           });
         }
+      })
+      .then(() => {
+        fetch(
+          `${process.env.REACT_APP_DATA_URL}ensembles/${this.props.ensembleId}/views`,
+          {
+            body: JSON.stringify({
+              views: this.state.item.views + 1,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'PATCH',
+          },
+        )
+          .then((res) => res.json())
+          .then((json) => {
+            this.setState({
+              ...this.state,
+              item: {
+                ...this.state.item,
+                views: json.views,
+              },
+              viewCount: json.views,
+            });
+          });
       });
   }
 
@@ -124,29 +150,6 @@ class Show extends React.Component {
           console.log(error);
         });
     };
-
-    // handleView function that increase item.view on the database
-    // const handleView = () => {
-    //   // eslint-disable-next-line no-undef
-    //   fetch(
-    //     `${process.env.REACT_APP_DATA_URL}ensembles/${this.props.ensembleId}`,
-    //     {
-    //       body: JSON.stringify({
-    //         views: item.views + 1,
-    //       }),
-    //       headers: {
-    //         'Content-Type': 'application/json',
-    //       },
-    //       method: 'PATCH',
-    //     },
-    //   )
-    //     .then((res) => res.json())
-    //     .then((json) => {
-    //       this.setState({
-    //         item: json,
-    //       });
-    //     });
-    // };
 
     if (!DataisLoaded) {
       return (
@@ -323,7 +326,6 @@ class Show extends React.Component {
         >
           {item.title}
         </Typography>
-        {/* a thumbs up icon and item.likes in small grey font */}
         <IconButton
           aria-label="like"
           onClick={() => handleLike(item.id)}
@@ -337,6 +339,19 @@ class Show extends React.Component {
           sx={{ display: 'inline' }}
         >
           {likeCount}
+        </Typography>
+        <IconButton
+          aria-label="view"
+          disabled
+        >
+          <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
+        </IconButton>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ display: 'inline' }}
+        >
+          {viewCount}
         </Typography>
         {item.instrumentation
           ? InstrumentationFormatter(item.instrumentation)
