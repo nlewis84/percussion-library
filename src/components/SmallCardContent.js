@@ -14,6 +14,8 @@ import SanitizeDifficulty from '../helpers/sanitizeDifficulty';
 import TruncateText from '../helpers/truncateText';
 
 export default function SmallCardContent(item) {
+  // onHover state
+  const [hover, setHover] = React.useState(false);
   const {
     item: {
       arranger, composer, level, max_players, min_players, publisher, title,
@@ -22,25 +24,34 @@ export default function SmallCardContent(item) {
 
   return (
     <CardContent>
+      {/* TODO: make this pop up and show the full title on hover */}
+      {/* A typography h7 with an onHover effect that lifts the text up and shows the full title */}
       <Typography
         variant="h7"
-        noWrap
+        noWrap={!hover}
         color="secondary.main"
         sx={{ fontWeight: 'bold' }}
         component="div"
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
       >
         {title}
       </Typography>
       {arranger ? (
         <Typography
-          sx={{ mb: 1.5 }}
+          // if hover is true, fade this to 0 opacity and remove height
+          sx={{
+            height: hover ? 0 : 'auto', mb: 1.5, opacity: hover ? 0 : 1, transform: hover ? 'translateY(15px)' : 'translateY(0px)', transition: 'transform 0.2s, opacity 0.2s, height 0.2s',
+          }}
           color="text.secondary"
         >
           {TruncateText(arranger, 25, true)}
         </Typography>
       ) : (
         <Typography
-          sx={{ mb: 1.5 }}
+          sx={{
+            height: hover ? 0 : 'auto', mb: 1.5, opacity: hover ? 0 : 1, transform: hover ? 'translateY(15px)' : 'translateY(0px)', transition: 'transform 0.2s, opacity 0.2s, height 0.2s',
+          }}
           color="text.secondary"
         >
           {TruncateText(composer, 25, true)}
