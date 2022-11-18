@@ -326,33 +326,70 @@ class Show extends React.Component {
         >
           {item.title}
         </Typography>
-        <IconButton
-          aria-label="like"
-          onClick={() => handleLike(item.id)}
-          disabled={likedThisLoad}
+        <Container
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            pt: 0,
+            width: '50%',
+          }}
         >
-          <ThumbUpTwoToneIcon sx={{ color: 'secondary.main' }} />
-        </IconButton>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ display: 'inline' }}
-        >
-          {likeCount}
-        </Typography>
-        <IconButton
-          aria-label="view"
-          disabled
-        >
-          <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
-        </IconButton>
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          sx={{ display: 'inline' }}
-        >
-          {viewCount}
-        </Typography>
+          <Container
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 0,
+              width: '50%',
+            }}
+          >
+            <IconButton
+              aria-label="like"
+              onClick={() => handleLike(item.id)}
+              disabled={likedThisLoad}
+              sx={{
+                '&:active': {
+                  transform: 'scale(1.1) rotate(-30deg)',
+                  transition: 'transform 0.1s',
+                  transitionTimingFunction: 'ease-out',
+                },
+              }}
+            >
+              <ThumbUpTwoToneIcon sx={{ color: 'secondary.main' }} />
+            </IconButton>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ display: 'inline' }}
+            >
+              {likeCount}
+            </Typography>
+          </Container>
+          <Container
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 0,
+              width: '50%',
+            }}
+          >
+            <IconButton
+              aria-label="view"
+              disabled
+            >
+              <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
+            </IconButton>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ display: 'inline' }}
+            >
+              {viewCount}
+            </Typography>
+          </Container>
+        </Container>
         {item.instrumentation
           ? InstrumentationFormatter(item.instrumentation)
           : null}
