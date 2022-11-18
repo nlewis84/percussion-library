@@ -11,7 +11,6 @@ import SanitizeDifficulty from '../helpers/sanitizeDifficulty';
 import TruncateText from '../helpers/truncateText';
 
 export default function SmallCardContent(item) {
-  // onHover state
   const [hover, setHover] = React.useState(false);
   const {
     item: {
