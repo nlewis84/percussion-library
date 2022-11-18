@@ -117,8 +117,6 @@ class Show extends React.Component {
       DataisLoaded, item, likeCount, likedThisLoad, viewCount,
     } = this.state;
 
-    console.log(item, likeCount, viewCount);
-
     // handleLike function that increase item.like on the database
     const handleLike = () => {
       // eslint-disable-next-line no-undef
