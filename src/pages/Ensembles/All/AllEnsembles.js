@@ -20,6 +20,9 @@ import SmallCardContent from '../../../components/SmallCardContent';
 import findCommonPlayers from '../../../helpers/findCommonPlayers';
 import range from '../../../helpers/range';
 
+// TODO: Save Filters in the query params so that links can be shared to a
+// specific filter also so when you press back your filters are saved
+
 function AllEnsembles() {
   const [items, setItems] = useState([]);
   const [filteredItems, setFilteredItems] = useState([]);
@@ -40,9 +43,7 @@ function AllEnsembles() {
   }, []);
 
   const handleChange = (event) => {
-    const {
-      target,
-    } = event;
+    const { target } = event;
 
     if (!!numberOfPlayers || !!difficulty || !!publisher) {
       setFilterIsOn(true);
@@ -208,28 +209,34 @@ function AllEnsembles() {
     if (valueAsIntegers.includes(13)) {
       filtered = items
         .filter((item) => item.category === 'Percussion Ensembles')
-        .filter((item) => (item.max_players === null
-          ? play.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
-          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
-            range(
-              parseInt(item.min_players, 10),
-              parseInt(item.max_players, 10),
-              1,
-            ),
-            valueAsIntegers,
-          )))
+        .filter((item) =>
+          (item.max_players === null
+            ? play.includes(item.min_players)
+              || parseInt(item.min_players, 10) >= 13
+            : parseInt(item.max_players, 10) >= 13
+              || findCommonPlayers(
+                range(
+                  parseInt(item.min_players, 10),
+                  parseInt(item.max_players, 10),
+                  1,
+                ),
+                valueAsIntegers,
+              )))
         .filter((item) => pub.includes(item.publisher))
         .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
     } else {
       filtered = items
-        .filter((item) => findCommonPlayers(
-          range(
-            parseInt(item.min_players, 10),
-            item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
-            1,
-          ),
-          valueAsIntegers,
-        ))
+        .filter((item) =>
+          findCommonPlayers(
+            range(
+              parseInt(item.min_players, 10),
+              item.max_players
+                ? parseInt(item.max_players, 10)
+                : parseInt(item.min_players, 10),
+              1,
+            ),
+            valueAsIntegers,
+          ))
         .filter((item) => pub.includes(item.publisher))
         .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
     }
@@ -248,27 +255,33 @@ function AllEnsembles() {
     if (valueAsIntegers.includes(13)) {
       filtered = items
         .filter((item) => item.category === 'Percussion Ensembles')
-        .filter((item) => (item.max_players === null
-          ? play.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
-          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
-            range(
-              parseInt(item.min_players, 10),
-              parseInt(item.max_players, 10),
-              1,
-            ),
-            valueAsIntegers,
-          )))
+        .filter((item) =>
+          (item.max_players === null
+            ? play.includes(item.min_players)
+              || parseInt(item.min_players, 10) >= 13
+            : parseInt(item.max_players, 10) >= 13
+              || findCommonPlayers(
+                range(
+                  parseInt(item.min_players, 10),
+                  parseInt(item.max_players, 10),
+                  1,
+                ),
+                valueAsIntegers,
+              )))
         .filter((item) => pub.includes(item.publisher));
     } else {
       filtered = items
-        .filter((item) => findCommonPlayers(
-          range(
-            parseInt(item.min_players, 10),
-            item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
-            1,
-          ),
-          valueAsIntegers,
-        ))
+        .filter((item) =>
+          findCommonPlayers(
+            range(
+              parseInt(item.min_players, 10),
+              item.max_players
+                ? parseInt(item.max_players, 10)
+                : parseInt(item.min_players, 10),
+              1,
+            ),
+            valueAsIntegers,
+          ))
         .filter((item) => pub.includes(item.publisher));
     }
     setFilteredItems(filtered);
@@ -279,27 +292,33 @@ function AllEnsembles() {
     if (valueAsIntegers.includes(13)) {
       filtered = items
         .filter((item) => item.category === 'Percussion Ensembles')
-        .filter((item) => (item.max_players === null
-          ? play.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
-          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
-            range(
-              parseInt(item.min_players, 10),
-              parseInt(item.max_players, 10),
-              1,
-            ),
-            valueAsIntegers,
-          )))
+        .filter((item) =>
+          (item.max_players === null
+            ? play.includes(item.min_players)
+              || parseInt(item.min_players, 10) >= 13
+            : parseInt(item.max_players, 10) >= 13
+              || findCommonPlayers(
+                range(
+                  parseInt(item.min_players, 10),
+                  parseInt(item.max_players, 10),
+                  1,
+                ),
+                valueAsIntegers,
+              )))
         .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
     } else {
       filtered = items
-        .filter((item) => findCommonPlayers(
-          range(
-            parseInt(item.min_players, 10),
-            item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
-            1,
-          ),
-          valueAsIntegers,
-        ))
+        .filter((item) =>
+          findCommonPlayers(
+            range(
+              parseInt(item.min_players, 10),
+              item.max_players
+                ? parseInt(item.max_players, 10)
+                : parseInt(item.min_players, 10),
+              1,
+            ),
+            valueAsIntegers,
+          ))
         .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
     }
     setFilteredItems(filtered);
@@ -311,7 +330,8 @@ function AllEnsembles() {
   }
 
   function DifficultyFilterAction(target) {
-    filtered = items.filter((item) => target.includes(SanitizeDifficulty(item.level)));
+    filtered = items.filter((item) =>
+      target.includes(SanitizeDifficulty(item.level)));
     setFilteredItems(filtered);
   }
 
@@ -320,33 +340,37 @@ function AllEnsembles() {
     if (valueAsIntegers.includes(13)) {
       filtered = items
         .filter((item) => item.category === 'Percussion Ensembles')
-        .filter((item) => (item.max_players === null
-          ? target.includes(item.min_players) || parseInt(item.min_players, 10) >= 13
-          : parseInt(item.max_players, 10) >= 13 || findCommonPlayers(
-            range(
-              parseInt(item.min_players, 10),
-              parseInt(item.max_players, 10),
-              1,
-            ),
-            valueAsIntegers,
-          )));
+        .filter((item) =>
+          (item.max_players === null
+            ? target.includes(item.min_players)
+              || parseInt(item.min_players, 10) >= 13
+            : parseInt(item.max_players, 10) >= 13
+              || findCommonPlayers(
+                range(
+                  parseInt(item.min_players, 10),
+                  parseInt(item.max_players, 10),
+                  1,
+                ),
+                valueAsIntegers,
+              )));
     } else {
-      filtered = items.filter((item) => findCommonPlayers(
-        range(
-          parseInt(item.min_players, 10),
-          item.max_players ? parseInt(item.max_players, 10) : parseInt(item.min_players, 10),
-          1,
-        ),
-        valueAsIntegers,
-      ));
+      filtered = items.filter((item) =>
+        findCommonPlayers(
+          range(
+            parseInt(item.min_players, 10),
+            item.max_players
+              ? parseInt(item.max_players, 10)
+              : parseInt(item.min_players, 10),
+            1,
+          ),
+          valueAsIntegers,
+        ));
     }
     setFilteredItems(filtered);
   }
 
   if (!DataisLoaded) {
-    return (
-      <LoadingSkeleton />
-    );
+    return <LoadingSkeleton />;
   }
   return (
     <Container className="App">
@@ -357,7 +381,11 @@ function AllEnsembles() {
         <Paper
           elevation={0}
           sx={{
-            display: 'inline-block', mr: 2, mt: 2, py: 1, width: '99%',
+            display: 'inline-block',
+            mr: 2,
+            mt: 2,
+            py: 1,
+            width: '99%',
           }}
         >
           <NumberOfPlayersFilter
@@ -405,10 +433,9 @@ function AllEnsembles() {
         justifyContent="center"
       >
         {
-        // eslint-disable-next-line no-nested-ternary
-        filterIsOn
-          ? filteredItems.length === 0
-            ? (
+          // eslint-disable-next-line no-nested-ternary
+          filterIsOn ? (
+            filteredItems.length === 0 ? (
               <Card
                 key="no_items_to_show"
                 sx={{
@@ -440,8 +467,34 @@ function AllEnsembles() {
                   </Typography>
                 </CardContent>
               </Card>
+            ) : (
+              filteredItems
+                .filter((item) => item.category === 'Percussion Ensembles')
+                .map((item) => (
+                  <Card
+                    key={item.id}
+                    sx={{
+                      ':hover': {
+                        boxShadow: 10,
+                      },
+                      borderRadius: 2,
+                      height: 224,
+                      width: 196,
+                    }}
+                    variant="outlined"
+                    style={{ textDecoration: 'none' }}
+                    component={Link}
+                    to={`/ensembles/${item.id}`}
+                  >
+                    <SmallCardContent item={item} />
+                    <SmallCardActions item={item} />
+                  </Card>
+                ))
             )
-            : filteredItems
+          ) : (
+            // TODO: Change this to be some sort of landing screen with
+            // multiple different horizontal view swipers
+            items
               .filter((item) => item.category === 'Percussion Ensembles')
               .map((item) => (
                 <Card
@@ -463,30 +516,7 @@ function AllEnsembles() {
                   <SmallCardActions item={item} />
                 </Card>
               ))
-        // TODO: Change this to be some sort of landing screen with
-        // multiple different horizontal view swipers
-          : items
-            .filter((item) => item.category === 'Percussion Ensembles')
-            .map((item) => (
-              <Card
-                key={item.id}
-                sx={{
-                  ':hover': {
-                    boxShadow: 10,
-                  },
-                  borderRadius: 2,
-                  height: 224,
-                  width: 196,
-                }}
-                variant="outlined"
-                style={{ textDecoration: 'none' }}
-                component={Link}
-                to={`/ensembles/${item.id}`}
-              >
-                <SmallCardContent item={item} />
-                <SmallCardActions item={item} />
-              </Card>
-            ))
+          )
         }
       </Grid>
     </Container>
