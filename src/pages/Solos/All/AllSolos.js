@@ -19,6 +19,8 @@ import SanitizeInstrument from '../../../helpers/sanitizeInstrument';
 import SmallCardActions from '../../../components/SmallCardActions';
 import SoloSmallCardContent from '../../../components/SoloSmallCardContent';
 
+// TODO: Big todo here...need to make this match Ensembles Index in functionality
+
 function AllSolos() {
   const [solos, setSolos] = useState([]);
   const [filteredSolos, setFilteredSolos] = useState([]);
