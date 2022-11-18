@@ -133,11 +133,12 @@ function InstrumentationFormatter(instrumentation) {
             <ListItemText primary={value} />
           </ListItem>,
         ))}
-        {/* TODO: make this divider hidden if there are no asterisks to show */}
-        <Divider
-          light
-          variant="center"
-        />
+        {noteOne || noteTwo || noteThree || noteFour ? (
+          <Divider
+            light
+            variant="center"
+          />
+        ) : null}
         {noteOne !== '' && (
           <ListItem sx={{ pl: 0, pr: 0 }}>
             <ListItemIcon>
