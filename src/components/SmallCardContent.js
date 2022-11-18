@@ -25,6 +25,9 @@ export default function SmallCardContent(item) {
     },
   } = item;
 
+  // TODO: Add a check to see if the title is actually being truncated
+  // if not, don't hide the composer/arranger name
+
   return (
     <CardContent>
       <Typography
