@@ -21,13 +21,16 @@ function InstrumentationFormatter(instrumentation) {
   let noteTwo = '';
   let noteThree = '';
   let noteFour = '';
+
   if (instrumentation.includes(' \u2028* ')) {
     noteOne = instrumentation.slice(instrumentation.indexOf(' \u2028* '));
     cleanedInstrumentation = instrumentation.slice(0, instrumentation.indexOf(' \u2028* '));
     if (noteOne.includes(' \u2028* * ')) {
       noteTwo = noteOne.slice(noteOne.indexOf(' \u2028* * '));
       noteOne = noteOne.slice(0, noteOne.indexOf(' \u2028* * '));
+      noteTwo = noteTwo.slice(6);
     }
+    noteOne = noteOne.slice(4);
   }
 
   if (instrumentation.includes('   *')) {
@@ -37,33 +40,38 @@ function InstrumentationFormatter(instrumentation) {
       noteTwo = noteOne.slice(noteOne.indexOf(' **'));
       noteOne = noteOne.slice(0, noteOne.indexOf(' **'));
       noteTwo = noteTwo.slice(3);
-      noteOne = noteOne.slice(4);
     }
+    noteOne = noteOne.slice(4);
   }
 
   if (cleanedInstrumentation.includes('*  *')) {
-    noteThree = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  *'));
+    noteOne = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  *'));
     cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('  *'));
-    noteThree = noteThree.slice(3);
+    if (noteOne.includes(' **')) {
+      noteTwo = noteOne.slice(noteOne.indexOf(' **'));
+      noteOne = noteOne.slice(0, noteOne.indexOf(' **'));
+      noteTwo = noteTwo.slice(3);
+    }
+    noteOne = noteOne.slice(3);
   }
 
   if (cleanedInstrumentation.includes('  * ')) {
-    noteFour = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  * '));
+    noteThree = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('  * '));
     cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('  * '));
-    noteFour = noteFour.slice(4);
+    noteThree = noteThree.slice(4);
   }
 
-  let noteFive = '';
   if (cleanedInstrumentation.includes('*   *')) {
-    noteFive = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('*   *'));
+    noteFour = cleanedInstrumentation.slice(cleanedInstrumentation.indexOf('*   *'));
     cleanedInstrumentation = cleanedInstrumentation.slice(0, cleanedInstrumentation.indexOf('*   *'));
-    noteFive = noteFive.slice(5);
+    noteFour = noteFour.slice(5);
   }
-
-  console.log(noteFive);
 
   // TODO: Search for '**' in instrumentation and make
   // sure all the asterisk cases are covered by the above
+
+  // TODO: these look bad: 868, 918, 985, 993, 997, 1044, 1064, 1126
+  // TODO: these have three asterisks: 993, 1126
 
   if (cleanedInstrumentation.startsWith('Soloist:')) {
     stringArray = cleanedInstrumentation
@@ -125,6 +133,7 @@ function InstrumentationFormatter(instrumentation) {
             <ListItemText primary={value} />
           </ListItem>,
         ))}
+        {/* TODO: make this divider hidden if there are no asterisks to show */}
         <Divider
           light
           variant="center"
@@ -176,17 +185,6 @@ function InstrumentationFormatter(instrumentation) {
               />
             </ListItemIcon>
             <ListItemText primary={noteFour} />
-          </ListItem>
-        )}
-        {noteFive !== '' && (
-          <ListItem sx={{ pl: 0, pr: 0 }}>
-            <ListItemIcon>
-              <Asterisk
-                color="secondary.main"
-                secondaryColor="secondary.light"
-              />
-            </ListItemIcon>
-            <ListItemText primary={noteFive} />
           </ListItem>
         )}
       </List>

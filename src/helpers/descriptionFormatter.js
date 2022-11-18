@@ -3,8 +3,16 @@ import { Typography } from '@mui/material';
 import React from 'react';
 
 function DescriptionFormatter(title, description) {
+  let cleanedDescription = description;
+  cleanedDescription = cleanedDescription.replace(/'/g, "'");
+  cleanedDescription = cleanedDescription.replace(/'/g, "'");
+  cleanedDescription = cleanedDescription.replace(//g, '"');
+  cleanedDescription = cleanedDescription.replace(//g, '"');
+  cleanedDescription = cleanedDescription.replace(/ /g, '');
+  cleanedDescription = cleanedDescription.replace(/-/g, '-');
+
   const regex = title;
-  const myArray = description.split(regex);
+  const myArray = cleanedDescription.split(regex);
 
   return myArray.map((item) =>
   // Check for first and last items being the title of the piece, and styles appropriately.
