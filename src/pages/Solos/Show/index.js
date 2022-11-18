@@ -365,7 +365,6 @@ class Show extends React.Component {
               </Typography>
             </Box>
           ) : null}
-          {/* split this on the bullet */}
           {item.description ? (
             <Typography
               variant="body2"

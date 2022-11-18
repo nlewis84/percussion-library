@@ -3,6 +3,7 @@
 import {
   Box,
   Container,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
@@ -18,6 +19,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
 import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
+import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone';
 
 import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
@@ -35,6 +37,9 @@ class Show extends React.Component {
     this.state = {
       DataisLoaded: false,
       item: [],
+      likeCount: 0,
+      likedThisLoad: false,
+      viewCount: 0,
     };
   }
 
@@ -45,6 +50,8 @@ class Show extends React.Component {
       .then(async (json) => {
         this.setState({
           item: json[0],
+          likeCount: json[0].likes,
+          viewCount: json[0].views,
         });
 
         if (
@@ -80,7 +87,66 @@ class Show extends React.Component {
   }
 
   render() {
-    const { DataisLoaded, item } = this.state;
+    const {
+      DataisLoaded, item, likeCount, likedThisLoad, viewCount,
+    } = this.state;
+
+    console.log(item, likeCount, viewCount);
+
+    // handleLike function that increase item.like on the database
+    const handleLike = () => {
+      // eslint-disable-next-line no-undef
+      fetch(
+        `${process.env.REACT_APP_DATA_URL}ensembles/${this.props.ensembleId}`,
+        {
+          body: JSON.stringify({
+            likes: item.likes + 1,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'PATCH',
+        },
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          this.setState({
+            ...this.state,
+            item: {
+              ...this.state.item,
+              likes: json.likes,
+            },
+            likeCount: json.likes,
+            likedThisLoad: true,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    // handleView function that increase item.view on the database
+    // const handleView = () => {
+    //   // eslint-disable-next-line no-undef
+    //   fetch(
+    //     `${process.env.REACT_APP_DATA_URL}ensembles/${this.props.ensembleId}`,
+    //     {
+    //       body: JSON.stringify({
+    //         views: item.views + 1,
+    //       }),
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       method: 'PATCH',
+    //     },
+    //   )
+    //     .then((res) => res.json())
+    //     .then((json) => {
+    //       this.setState({
+    //         item: json,
+    //       });
+    //     });
+    // };
 
     if (!DataisLoaded) {
       return (
@@ -114,23 +180,24 @@ class Show extends React.Component {
               >
                 <Skeleton animation="wave" />
               </Typography>
-              {new Array(8).fill().map((value) => React.cloneElement(
-                <ListItem>
-                  <ListItemIcon>
-                    <MusicNote
-                      color="secondary.main"
-                      secondaryColor="secondary.light"
-                    />
-                  </ListItemIcon>
-                  <Typography
-                    key={value}
-                    variant="body1"
-                    sx={{ mb: 1, width: '50%' }}
-                  >
-                    <Skeleton animation="wave" />
-                  </Typography>
-                </ListItem>,
-              ))}
+              {new Array(8).fill().map((value) =>
+                React.cloneElement(
+                  <ListItem>
+                    <ListItemIcon>
+                      <MusicNote
+                        color="secondary.main"
+                        secondaryColor="secondary.light"
+                      />
+                    </ListItemIcon>
+                    <Typography
+                      key={value}
+                      variant="body1"
+                      sx={{ mb: 1, width: '50%' }}
+                    >
+                      <Skeleton animation="wave" />
+                    </Typography>
+                  </ListItem>,
+                ))}
             </List>
           </Paper>
           <Paper sx={{ p: 5, width: '66%' }}>
@@ -256,6 +323,21 @@ class Show extends React.Component {
         >
           {item.title}
         </Typography>
+        {/* a thumbs up icon and item.likes in small grey font */}
+        <IconButton
+          aria-label="like"
+          onClick={() => handleLike(item.id)}
+          disabled={likedThisLoad}
+        >
+          <ThumbUpTwoToneIcon sx={{ color: 'secondary.main' }} />
+        </IconButton>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          sx={{ display: 'inline' }}
+        >
+          {likeCount}
+        </Typography>
         {item.instrumentation
           ? InstrumentationFormatter(item.instrumentation)
           : null}
@@ -344,13 +426,11 @@ class Show extends React.Component {
                 variant="body1"
                 color="text.primary"
               >
-                {item.min_players}
-                {' '}
+                {item.min_players}{' '}
                 {item.max_players ? `- ${item.max_players}` : ''}
               </Typography>
             </Box>
           ) : null}
-          {/* split this on the bullet */}
           {item.description ? (
             <Typography
               variant="body2"
@@ -365,7 +445,9 @@ class Show extends React.Component {
             : null}
         </Paper>
         {item.audio_link ? (
-          <Box sx={{ mt: 1.5, width: '66%' }}>{ReactHtmlParser(item.audio_embed)}</Box>
+          <Box sx={{ mt: 1.5, width: '66%' }}>
+            {ReactHtmlParser(item.audio_embed)}
+          </Box>
         ) : null}
         {item.reviews ? (
           <Paper sx={{ p: 5, width: '66%' }}>
