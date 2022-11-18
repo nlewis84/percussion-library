@@ -28,7 +28,6 @@ import SanitizeInstrument from '../../../helpers/sanitizeInstrument';
 
 import MusicNote from '../../../components/icons/MusicNote';
 
-// TODO: Check the review render for In The Stillness Beneath the Trees solos/1246
 // TODO: make this a functional component, matching AllEnsembles
 class Show extends React.Component {
   // Constructor
@@ -383,7 +382,6 @@ class Show extends React.Component {
         {item.audio_link ? (
           <Box sx={{ mt: 1.5, width: '66%' }}>{ReactHtmlParser(item.audio_embed)}</Box>
         ) : null}
-        {/* TODO: make these reviews look cool */}
         {item.reviews ? (
           <Paper sx={{ p: 5, width: '66%' }}>
             <Typography
