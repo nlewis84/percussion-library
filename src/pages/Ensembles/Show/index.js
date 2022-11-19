@@ -82,6 +82,42 @@ class Show extends React.Component {
           this.setState({
             ...this.state,
             DataisLoaded: true,
+            item: {
+              ...this.state.item,
+              non_sound_cloud_audio_link: json[0].audio_link,
+            },
+          });
+        }
+
+        if (this.state.item.video_link1 || this.state.item.video_link2) {
+          const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#]*).*/;
+          let link1 = '';
+
+          if (this.state.item.video_link1) {
+            link1 = this.state.item.video_link1.match(regExp);
+            if (link1 && link1[7].length === 11) {
+              // eslint-disable-next-line prefer-destructuring
+              link1 = link1[7];
+            }
+          }
+
+          let link2 = '';
+          if (this.state.item.video_link2) {
+            link2 = this.state.item.video_link2.match(regExp);
+            if (link2 && link2[7].length === 11) {
+              // eslint-disable-next-line prefer-destructuring
+              link2 = link2[7];
+            }
+          }
+
+          this.setState({
+            ...this.state,
+            DataisLoaded: true,
+            item: {
+              ...this.state.item,
+              video_link1: link1,
+              video_link2: link2,
+            },
           });
         }
       })
@@ -181,9 +217,10 @@ class Show extends React.Component {
               >
                 <Skeleton animation="wave" />
               </Typography>
-              {new Array(8).fill().map((value) =>
+              {new Array(8).fill().map((value, i) =>
                 React.cloneElement(
-                  <ListItem>
+                  // eslint-disable-next-line react/no-array-index-key
+                  <ListItem key={i}>
                     <ListItemIcon>
                       <MusicNote
                         color="secondary.main"
@@ -363,6 +400,8 @@ class Show extends React.Component {
             >
               {likeCount}
             </Typography>
+            {/* TODO: Add a WarningTwoToneIcon that links to an
+            action for users to report an issue with this page */}
           </Container>
           <Container
             sx={{
@@ -497,6 +536,49 @@ class Show extends React.Component {
         {item.audio_link ? (
           <Box sx={{ mt: 1.5, width: '66%' }}>
             {ReactHtmlParser(item.audio_embed)}
+          </Box>
+        ) : null}
+        {item.non_sound_cloud_audio_link ? (
+          <Box
+            sx={{
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <audio
+              controls
+              src={item.non_sound_cloud_audio_link}
+            />
+          </Box>
+        ) : null}
+        {item.video_link1 ? (
+          <Box sx={{ mt: 1.5, width: '66%' }}>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <iframe
+              id="ytplayer"
+              frameBorder="0"
+              width="100%"
+              height="400"
+              src={`https://www.youtube.com/embed/${item.video_link1}`}
+              title={item.title}
+              type="text/html"
+            />
+          </Box>
+        ) : null}
+        {item.video_link2 ? (
+          <Box sx={{ mt: 0.5, width: '66%' }}>
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <iframe
+              id="ytplayer"
+              frameBorder="0"
+              width="100%"
+              height="400"
+              src={`https://www.youtube.com/embed/${item.video_link2}`}
+              title={item.title}
+              type="text/html"
+            />
           </Box>
         ) : null}
         {item.reviews ? (

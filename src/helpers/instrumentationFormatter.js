@@ -67,6 +67,8 @@ function InstrumentationFormatter(instrumentation) {
     noteFour = noteFour.slice(5);
   }
 
+  // TODO: Check out C Alan items
+
   // TODO: Search for '**' in instrumentation and make
   // sure all the asterisk cases are covered by the above
 
