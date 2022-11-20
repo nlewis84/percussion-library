@@ -9,6 +9,8 @@ function TruncateText(string, number, name = false) {
     textToTruncate = textToTruncate.replace(/(\(ensemble\))/, '');
   }
 
+  // TODO: C. Alan names are all over the place...grab the last name and use that
+
   if (name && string.split(' ').length > 1) {
     // exclude Jr. and III
     if (string === 'Moore III') {
@@ -18,7 +20,9 @@ function TruncateText(string, number, name = false) {
     }
 
     if (string.endsWith('Jr.')) {
-      textToTruncate = `${string.split(' ').at(-2)} ${string.split(' ').at(-1)}`;
+      textToTruncate = `${string.split(' ').at(-2)} ${string
+        .split(' ')
+        .at(-1)}`;
 
       return textToTruncate;
     }
@@ -29,7 +33,7 @@ function TruncateText(string, number, name = false) {
   }
 
   if (textToTruncate.length > number) {
-    (textToTruncate = `${textToTruncate.substring(0, number - 1)}...`);
+    textToTruncate = `${textToTruncate.substring(0, number - 1)}...`;
     return textToTruncate;
   }
   return textToTruncate;
