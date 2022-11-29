@@ -9,6 +9,14 @@ function TruncateText(string, number, name = false) {
     textToTruncate = textToTruncate.replace(/(\(ensemble\))/, '');
   }
 
+  if (textToTruncate.endsWith(' (percussion ensemble version)')) {
+    console.log(string);
+    textToTruncate = textToTruncate.replace(
+      /( \(percussion ensemble version\))/,
+      '',
+    );
+  }
+
   // TODO: C. Alan names are all over the place...grab the last name and use that
 
   if (name && string.split(' ').length > 1) {

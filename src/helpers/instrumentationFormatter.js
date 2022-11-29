@@ -22,6 +22,7 @@ function InstrumentationFormatter(instrumentation) {
   let noteTwo = '';
   let noteThree = '';
   let noteFour = '';
+  let noteFive = '';
 
   if (instrumentation.includes(' \u2028* ')) {
     noteOne = instrumentation.slice(instrumentation.indexOf(' \u2028* '));
@@ -96,6 +97,28 @@ function InstrumentationFormatter(instrumentation) {
     noteThree = noteThree.slice(4);
   }
 
+  if (cleanedInstrumentation.includes('  *')) {
+    noteOne = cleanedInstrumentation.slice(
+      cleanedInstrumentation.indexOf('  *'),
+    );
+    cleanedInstrumentation = cleanedInstrumentation.slice(
+      0,
+      cleanedInstrumentation.indexOf('  *'),
+    );
+    if (noteOne.includes(' **')) {
+      noteTwo = noteOne.slice(noteOne.indexOf(' **'));
+      noteOne = noteOne.slice(0, noteOne.indexOf(' **'));
+      noteTwo = noteTwo.slice(3);
+    }
+    if (noteTwo.includes(' ***')) {
+      console.log('TEST');
+      noteFive = noteTwo.slice(noteTwo.indexOf(' ***'));
+      noteTwo = noteTwo.slice(0, noteTwo.indexOf(' ***'));
+      noteFive = noteFive.slice(4);
+    }
+    noteOne = noteOne.slice(3);
+  }
+
   if (cleanedInstrumentation.includes('*   *')) {
     noteFour = cleanedInstrumentation.slice(
       cleanedInstrumentation.indexOf('*   *'),
@@ -160,10 +183,11 @@ function InstrumentationFormatter(instrumentation) {
   // TODO: Search for '**' in instrumentation and make
   // sure all the asterisk cases are covered by the above
 
-  // TODO: these look bad: 868, 918, 985, 993, 997, 1044, 1064, 1126
+  // TODO: these look bad: 997, 1044, 1064, 1126
   // TODO: these have three asterisks: 993, 1126
 
   if (cleanedInstrumentation.startsWith('Soloist:')) {
+    console.log('test1');
     stringArray = cleanedInstrumentation
       .split('Soloist: ')
       .filter((item) => item !== '')
@@ -176,12 +200,28 @@ function InstrumentationFormatter(instrumentation) {
   } else if (cleanedInstrumentation.startsWith('•')) {
     stringArray = cleanedInstrumentation
       .split('•')
-      .filter((item) => item !== '')
-      .join()
-      .split('\n,');
+      .filter((item) => item !== '');
+    // TODO: this is broken...check out 746, 747
+    // if any of the items in the array contains \n, join them and split on \n
+    // stringArray.forEach((item, index) => {
+    //   if (item.includes('\u2028')) {
+    //     stringArray[index] = item
+    //       .split('\n,')
+    //       .filter((strItem) => strItem !== '')
+    //       .join('');
+    //   }
+    // });
+    // .join();
+    // .split('\n,');
   } else if (cleanedInstrumentation.startsWith('\t•\t')) {
     stringArray = cleanedInstrumentation
       .split('\t•\t')
+      .filter((item) => item !== '');
+    // .join()
+    // .split('\n,');
+  } else if (cleanedInstrumentation.startsWith('	• ')) {
+    stringArray = cleanedInstrumentation
+      .split('	• ')
       .filter((item) => item !== '');
     // .join()
     // .split('\n,');
@@ -248,7 +288,7 @@ function InstrumentationFormatter(instrumentation) {
         )}
         {noteTwo !== '' && (
           <ListItem sx={{ pl: 0, pr: 0 }}>
-            <ListItemIcon sx={{ transform: 'translateX(-10px)' }}>
+            <ListItemIcon sx={{ transform: 'translateX(-12px)' }}>
               <Asterisk
                 color="secondary.main"
                 secondaryColor="secondary.light"
@@ -281,6 +321,25 @@ function InstrumentationFormatter(instrumentation) {
               />
             </ListItemIcon>
             <ListItemText primary={noteFour} />
+          </ListItem>
+        )}
+        {noteFive !== '' && (
+          <ListItem sx={{ pl: 0, pr: 0 }}>
+            <ListItemIcon sx={{ mr: -2, transform: 'translateX(-25px)' }}>
+              <Asterisk
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+              <Asterisk
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+              <Asterisk
+                color="secondary.main"
+                secondaryColor="secondary.light"
+              />
+            </ListItemIcon>
+            <ListItemText primary={noteFive} />
           </ListItem>
         )}
       </List>

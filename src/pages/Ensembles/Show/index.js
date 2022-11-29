@@ -26,6 +26,7 @@ import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
 import ReviewFormatter from '../../../helpers/reviewFormatter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
+import TruncateText from '../../../helpers/truncateText';
 
 import MusicNote from '../../../components/icons/MusicNote';
 
@@ -530,7 +531,7 @@ class Show extends React.Component {
             </Typography>
           ) : null}
           {item.description
-            ? DescriptionFormatter(item.title, item.description)
+            ? DescriptionFormatter(TruncateText(item.title, 100), item.description)
             : null}
         </Paper>
         {item.audio_link ? (

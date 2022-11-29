@@ -484,6 +484,8 @@ function AllEnsembles() {
                     variant="outlined"
                     style={{ textDecoration: 'none' }}
                     component={Link}
+                    rel="noreferrer"
+                    target="_blank"
                     to={`/ensembles/${item.id}`}
                   >
                     <SmallCardContent item={item} />
@@ -510,6 +512,8 @@ function AllEnsembles() {
                   variant="outlined"
                   style={{ textDecoration: 'none' }}
                   component={Link}
+                  rel="noreferrer"
+                  target="_blank"
                   to={`/ensembles/${item.id}`}
                 >
                   <SmallCardContent item={item} />

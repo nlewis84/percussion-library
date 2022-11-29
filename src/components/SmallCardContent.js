@@ -35,15 +35,15 @@ export default function SmallCardContent(item) {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        {title}
+        {TruncateText(title, 100)}
       </Typography>
       {arranger ? (
         <Typography
           sx={{
-            height: hover && title.length > 21 ? 0 : 'auto',
+            height: hover && TruncateText(title, 100).length > 21 ? 0 : 'auto',
             mb: 1.5,
-            opacity: hover && title.length > 21 ? 0 : 1,
-            transform: hover && title.length > 21 ? 'translateY(15px)' : 'translateY(0px)',
+            opacity: hover && TruncateText(title, 100).length > 21 ? 0 : 1,
+            transform: hover && TruncateText(title, 100).length > 21 ? 'translateY(15px)' : 'translateY(0px)',
             transition: 'transform 0.2s, opacity 0.2s, height 0.2s',
           }}
           color="text.secondary"
@@ -53,10 +53,10 @@ export default function SmallCardContent(item) {
       ) : (
         <Typography
           sx={{
-            height: hover && title.length > 21 ? 0 : 'auto',
+            height: hover && TruncateText(title, 100).length > 21 ? 0 : 'auto',
             mb: 1.5,
-            opacity: hover && title.length > 21 ? 0 : 1,
-            transform: hover && title.length > 21 ? 'translateY(15px)' : 'translateY(0px)',
+            opacity: hover && TruncateText(title, 100).length > 21 ? 0 : 1,
+            transform: hover && TruncateText(title, 100).length > 21 ? 'translateY(15px)' : 'translateY(0px)',
             transition: 'transform 0.2s, opacity 0.2s, height 0.2s',
           }}
           color="text.secondary"
@@ -69,9 +69,9 @@ export default function SmallCardContent(item) {
         direction="row"
         alignItems="center"
         sx={{
-          height: hover && title.length > 37 ? 0 : 'auto',
-          opacity: hover && title.length > 37 ? 0 : 1,
-          transform: hover && title.length > 37 ? 'translateY(15px)' : 'translateY(0px)',
+          height: hover && TruncateText(title, 100).length > 37 ? 0 : 'auto',
+          opacity: hover && TruncateText(title, 100).length > 37 ? 0 : 1,
+          transform: hover && TruncateText(title, 100).length > 37 ? 'translateY(15px)' : 'translateY(0px)',
           transition: 'transform 0.2s, opacity 0.2s, height 0.2s',
         }}
       >
@@ -95,9 +95,9 @@ export default function SmallCardContent(item) {
         direction="row"
         alignItems="center"
         sx={{
-          height: hover && title.length > 45 ? 0 : 'auto',
-          opacity: hover && title.length > 45 ? 0 : 1,
-          transform: hover && title.length > 45 ? 'translateY(15px)' : 'translateY(0px)',
+          height: hover && TruncateText(title, 100).length > 45 ? 0 : 'auto',
+          opacity: hover && TruncateText(title, 100).length > 45 ? 0 : 1,
+          transform: hover && TruncateText(title, 100).length > 45 ? 'translateY(15px)' : 'translateY(0px)',
           transition: 'transform 0.2s, opacity 0.2s, height 0.2s',
         }}
       >
