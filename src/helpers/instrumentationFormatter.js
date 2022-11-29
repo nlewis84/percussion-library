@@ -68,6 +68,22 @@ function InstrumentationFormatter(instrumentation) {
     noteOne = noteOne.slice(3);
   }
 
+  if (cleanedInstrumentation.includes('** 	 * ')) {
+    noteOne = cleanedInstrumentation.slice(
+      cleanedInstrumentation.indexOf('** 	 * '),
+    );
+    cleanedInstrumentation = cleanedInstrumentation.slice(
+      0,
+      cleanedInstrumentation.indexOf('** 	 * '),
+    );
+    if (noteOne.includes(' ** ')) {
+      noteTwo = noteOne.slice(noteOne.indexOf(' ** '));
+      noteOne = noteOne.slice(0, noteOne.indexOf(' ** '));
+      noteTwo = noteTwo.slice(4);
+    }
+    noteOne = noteOne.slice(6);
+  }
+
   if (cleanedInstrumentation.includes('•		•	*')) {
     noteOne = cleanedInstrumentation.slice(
       cleanedInstrumentation.indexOf('•		•	*'),
@@ -76,6 +92,16 @@ function InstrumentationFormatter(instrumentation) {
       0,
       cleanedInstrumentation.indexOf('•		•	*'),
     );
+    if (noteOne.includes('•		•	**')) {
+      noteTwo = noteOne.slice(noteOne.indexOf('•		•	**'));
+      noteOne = noteOne.slice(0, noteOne.indexOf('•		•	**'));
+      noteTwo = noteTwo.slice(7);
+    }
+    if (noteOne.includes('	•	**')) {
+      noteTwo = noteOne.slice(noteOne.indexOf('	•	**'));
+      noteOne = noteOne.slice(0, noteOne.indexOf('	•	**'));
+      noteTwo = noteTwo.slice(5);
+    }
     if (noteOne.includes('•	** ')) {
       noteTwo = noteOne.slice(noteOne.indexOf('•	** '));
 
@@ -111,7 +137,6 @@ function InstrumentationFormatter(instrumentation) {
       noteTwo = noteTwo.slice(3);
     }
     if (noteTwo.includes(' ***')) {
-      console.log('TEST');
       noteFive = noteTwo.slice(noteTwo.indexOf(' ***'));
       noteTwo = noteTwo.slice(0, noteTwo.indexOf(' ***'));
       noteFive = noteFive.slice(4);
@@ -167,7 +192,6 @@ function InstrumentationFormatter(instrumentation) {
   ) {
     cAlanInstrumentArray.forEach((item) => {
       if (cleanedInstrumentation.includes(item)) {
-        // keep item but slice off 	•
         const slicedItem = item.slice(
           0,
           item.includes(' 	•	') ? item.indexOf(' 	•	') : item.indexOf('	•	'),
@@ -180,14 +204,7 @@ function InstrumentationFormatter(instrumentation) {
     });
   }
 
-  // TODO: Search for '**' in instrumentation and make
-  // sure all the asterisk cases are covered by the above
-
-  // TODO: these look bad: 997, 1044, 1064, 1126
-  // TODO: these have three asterisks: 993, 1126
-
   if (cleanedInstrumentation.startsWith('Soloist:')) {
-    console.log('test1');
     stringArray = cleanedInstrumentation
       .split('Soloist: ')
       .filter((item) => item !== '')
@@ -201,18 +218,6 @@ function InstrumentationFormatter(instrumentation) {
     stringArray = cleanedInstrumentation
       .split('•')
       .filter((item) => item !== '');
-    // TODO: this is broken...check out 746, 747
-    // if any of the items in the array contains \n, join them and split on \n
-    // stringArray.forEach((item, index) => {
-    //   if (item.includes('\u2028')) {
-    //     stringArray[index] = item
-    //       .split('\n,')
-    //       .filter((strItem) => strItem !== '')
-    //       .join('');
-    //   }
-    // });
-    // .join();
-    // .split('\n,');
   } else if (cleanedInstrumentation.startsWith('\t•\t')) {
     stringArray = cleanedInstrumentation
       .split('\t•\t')
