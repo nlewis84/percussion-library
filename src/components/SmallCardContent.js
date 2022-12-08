@@ -48,7 +48,7 @@ export default function SmallCardContent(item) {
           }}
           color="text.secondary"
         >
-          {TruncateText(arranger, 25, true)}
+          {TruncateText(arranger, 25, true, publisher === 'C. Alan')}
         </Typography>
       ) : (
         <Typography
@@ -61,7 +61,7 @@ export default function SmallCardContent(item) {
           }}
           color="text.secondary"
         >
-          {TruncateText(composer, 25, true)}
+          {TruncateText(composer, 25, true, publisher === 'C. Alan')}
         </Typography>
       )}
       <Box

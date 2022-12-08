@@ -1,4 +1,4 @@
-function TruncateText(string, number, name = false) {
+function TruncateText(string, number, name = false, cAlan = false) {
   let textToTruncate = string;
 
   if (textToTruncate.endsWith('(ensemble version)')) {
@@ -31,6 +31,13 @@ function TruncateText(string, number, name = false) {
       textToTruncate = `${string.split(' ').at(-2)} ${string
         .split(' ')
         .at(-1)}`;
+
+      return textToTruncate;
+    }
+
+    if (name && cAlan) {
+      // split on the comma and take the first part
+      textToTruncate = string.split(',').at(0);
 
       return textToTruncate;
     }
