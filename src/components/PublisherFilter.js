@@ -31,7 +31,7 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
       <InputLabel
         id="multiple-checkbox-label"
         size="small"
-        sx={{ bgcolor: 'background.paper', pr: 1 }}
+        sx={{ bgcolor: 'background.paper', pr: 1, transform: 'translate(12px, -12px) scale(0.75)' }}
       >
         Publisher
       </InputLabel>
@@ -45,6 +45,7 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
         input={<OutlinedInput label="Tag" />}
         renderValue={(selected) => selected.join(', ')}
         MenuProps={MenuProps}
+        sx={{ transform: 'translate(12px, -6px) scale(0.75)' }}
       >
         {publishers.map((num) => (
           <MenuItem

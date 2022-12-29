@@ -40,7 +40,7 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
       <InputLabel
         id="multiple-checkbox-label"
         size="small"
-        sx={{ bgcolor: 'background.paper', pr: 1 }}
+        sx={{ bgcolor: 'background.paper', pr: 1, transform: 'translate(12px, -12px) scale(0.75)' }}
       >
         Instrument
       </InputLabel>
@@ -54,6 +54,7 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
         input={<OutlinedInput label="Tag" />}
         renderValue={(selected) => selected.join(', ')}
         MenuProps={MenuProps}
+        sx={{ transform: 'translate(12px, -6px) scale(0.75)' }}
       >
         {levels.map((num) => (
           <MenuItem
