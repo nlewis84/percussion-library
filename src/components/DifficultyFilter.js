@@ -25,7 +25,9 @@ export default function DifficultyFilter({ difficulty, handleChange, name }) {
     <FormControl
       size="small"
       sx={{
-        minWidth: 132, mx: 1, my: 1,
+        minWidth: 132,
+        mx: 1,
+        my: 1,
       }}
     >
       <InputLabel
@@ -33,7 +35,10 @@ export default function DifficultyFilter({ difficulty, handleChange, name }) {
         color="secondary"
         size="small"
         sx={{
-          bgcolor: 'background.default', color: 'secondary.dark', fontWeight: 'bold', pr: 1,
+          bgcolor: 'background.default',
+          color: 'secondary.dark',
+          fontWeight: 'bold',
+          pr: 1,
         }}
       >
         Difficulty
@@ -51,7 +56,7 @@ export default function DifficultyFilter({ difficulty, handleChange, name }) {
             autoFocus
             color="secondary"
           />
-        )}
+)}
         renderValue={(selected) => selected.join(', ')}
         MenuProps={MenuProps}
       >

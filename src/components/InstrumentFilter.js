@@ -34,7 +34,9 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
     <FormControl
       size="small"
       sx={{
-        minWidth: 132, mx: 1, my: 1,
+        minWidth: 132,
+        mx: 1,
+        my: 1,
       }}
     >
       <InputLabel
@@ -42,7 +44,10 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
         color="secondary"
         size="small"
         sx={{
-          bgcolor: 'background.default', color: 'secondary.dark', fontWeight: 'bold', pr: 1,
+          bgcolor: 'background.default',
+          color: 'secondary.dark',
+          fontWeight: 'bold',
+          pr: 1,
         }}
       >
         Instrument
@@ -60,7 +65,7 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
             autoFocus
             color="secondary"
           />
-        )}
+)}
         renderValue={(selected) => selected.join(', ')}
         MenuProps={MenuProps}
       >
