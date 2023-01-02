@@ -15,7 +15,10 @@ import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 
 export default function LoadingSkeleton() {
   return (
-    <Container>
+    <Container
+      className="App"
+      maxWidth="none"
+    >
       <Container sx={{ display: 'grid', mt: 5 }}>
         <Typography
           variant="body"
@@ -27,15 +30,23 @@ export default function LoadingSkeleton() {
       </Container>
       <Grid
         container
-        sx={{ gap: 2, mt: 5 }}
-        spacing={2}
+        sx={{ gap: 2, mt: 2 }}
+        spacing={0}
         alignItems="center"
         justifyContent="center"
+        xs={12}
       >
         {new Array(42).fill().map((item, index) => (
           <Card
             key={index.toString()}
-            sx={{ borderRadius: 2, height: 224, width: 196 }}
+            sx={{
+              '@media (max-width:599px)': {
+                width: '99%',
+              },
+              borderRadius: 2,
+              height: 224,
+              width: 196,
+            }}
             variant="outlined"
             style={{ textDecoration: 'none' }}
           >

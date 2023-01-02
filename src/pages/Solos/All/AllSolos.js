@@ -254,7 +254,10 @@ function AllSolos() {
     );
   }
   return (
-    <Container className="App">
+    <Container
+      className="App"
+      maxWidth="none"
+    >
       <Container
         className="Filters"
         sx={{ textAlign: 'center' }}
@@ -303,9 +306,10 @@ function AllSolos() {
       <Grid
         container
         sx={{ gap: 2, mt: 2 }}
-        spacing={2}
+        spacing={0}
         alignItems="center"
         justifyContent="center"
+        xs={12}
       >
         {
         // eslint-disable-next-line no-nested-ternary
@@ -317,6 +321,9 @@ function AllSolos() {
                 sx={{
                   ':hover': {
                     boxShadow: 10,
+                  },
+                  '@media (max-width:599px)': {
+                    width: '99%',
                   },
                   borderRadius: 2,
                   height: 224,
@@ -352,6 +359,9 @@ function AllSolos() {
                     ':hover': {
                       boxShadow: 10,
                     },
+                    '@media (max-width:599px)': {
+                      width: '99%',
+                    },
                     borderRadius: 2,
                     height: 224,
                     width: 196,
@@ -375,6 +385,9 @@ function AllSolos() {
                 sx={{
                   ':hover': {
                     boxShadow: 10,
+                  },
+                  '@media (max-width:599px)': {
+                    width: '99%',
                   },
                   borderRadius: 2,
                   height: 224,

@@ -373,7 +373,10 @@ function AllEnsembles() {
     return <LoadingSkeleton />;
   }
   return (
-    <Container className="App">
+    <Container
+      className="App"
+      maxWidth="none"
+    >
       <Container
         className="Filters"
         sx={{ textAlign: 'center' }}
@@ -428,9 +431,10 @@ function AllEnsembles() {
       <Grid
         container
         sx={{ gap: 2, mt: 2 }}
-        spacing={2}
+        spacing={0}
         alignItems="center"
         justifyContent="center"
+        xs={12}
       >
         {
           // eslint-disable-next-line no-nested-ternary
@@ -441,6 +445,9 @@ function AllEnsembles() {
                 sx={{
                   ':hover': {
                     boxShadow: 10,
+                  },
+                  '@media (max-width:599px)': {
+                    width: '99%',
                   },
                   borderRadius: 2,
                   height: 224,
@@ -477,6 +484,9 @@ function AllEnsembles() {
                       ':hover': {
                         boxShadow: 10,
                       },
+                      '@media (max-width:599px)': {
+                        width: '99%',
+                      },
                       borderRadius: 2,
                       height: 224,
                       width: 196,
@@ -504,6 +514,9 @@ function AllEnsembles() {
                   sx={{
                     ':hover': {
                       boxShadow: 10,
+                    },
+                    '@media (max-width:599px)': {
+                      width: '99%',
                     },
                     borderRadius: 2,
                     height: 224,
