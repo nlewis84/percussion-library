@@ -34,6 +34,7 @@ export default function LoadingSkeleton() {
         spacing={0}
         alignItems="center"
         justifyContent="center"
+        item
         xs={12}
       >
         {new Array(42).fill().map((item, index) => (

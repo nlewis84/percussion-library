@@ -34,13 +34,16 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
     <FormControl
       size="small"
       sx={{
-        minWidth: 132, mx: 5, my: 1,
+        minWidth: 132, mx: 1, my: 1,
       }}
     >
       <InputLabel
         id="multiple-checkbox-label"
+        color="secondary"
         size="small"
-        sx={{ bgcolor: 'background.paper', pr: 1 }}
+        sx={{
+          bgcolor: 'background.default', color: 'secondary.dark', fontWeight: 'bold', pr: 1,
+        }}
       >
         Instrument
       </InputLabel>
@@ -51,7 +54,13 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
         multiple
         value={instrument}
         onChange={handleChange}
-        input={<OutlinedInput label="Tag" />}
+        input={(
+          <OutlinedInput
+            label="Tag"
+            autoFocus
+            color="secondary"
+          />
+        )}
         renderValue={(selected) => selected.join(', ')}
         MenuProps={MenuProps}
       >

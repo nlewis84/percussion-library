@@ -384,6 +384,7 @@ function AllEnsembles() {
         <Paper
           elevation={0}
           sx={{
+            backgroundColor: 'transparent',
             display: 'inline-block',
             mr: 2,
             mt: 2,
