@@ -37,15 +37,6 @@ function SearchAppBar() {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ color: 'white', display: { md: 'flex', xs: 'none' }, mr: 2 }}
-          >
-            Percussion Library
-          </Typography>
-
           <Box sx={{ display: { md: 'none', xs: 'flex' }, flexGrow: 1 }}>
             <IconButton
               size="large"
@@ -88,6 +79,16 @@ function SearchAppBar() {
               ))}
             </Menu>
           </Box>
+
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ color: 'white', display: { md: 'flex', xs: 'flex' }, mr: 2 }}
+          >
+            Percussion Library
+          </Typography>
+
           <Box
             sx={{
               display: { md: 'flex', xs: 'none' },
