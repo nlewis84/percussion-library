@@ -364,6 +364,9 @@ class Show extends React.Component {
         </Typography>
         <Container
           sx={{
+            '@media (max-width: 959px)': {
+              width: '100%',
+            },
             alignItems: 'center',
             display: 'flex',
             justifyContent: 'center',
@@ -373,6 +376,9 @@ class Show extends React.Component {
         >
           <Container
             sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
               alignItems: 'center',
               display: 'flex',
               justifyContent: 'center',
@@ -404,8 +410,11 @@ class Show extends React.Component {
             {/* TODO: Add a WarningTwoToneIcon that links to an
             action for users to report an issue with this page */}
           </Container>
-          <Container
+          <Box
             sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
               alignItems: 'center',
               display: 'flex',
               justifyContent: 'center',
@@ -426,12 +435,20 @@ class Show extends React.Component {
             >
               {viewCount}
             </Typography>
-          </Container>
+          </Box>
         </Container>
         {item.instrumentation
           ? InstrumentationFormatter(item.instrumentation)
           : null}
-        <Paper sx={{ p: 5, width: '66%' }}>
+        <Paper
+          sx={{
+            '@media (max-width: 959px)': {
+              width: '100%',
+            },
+            p: 5,
+            width: '66%',
+          }}
+        >
           {item.arranger ? (
             <Typography
               variant="h6"
@@ -535,13 +552,24 @@ class Show extends React.Component {
             : null}
         </Paper>
         {item.audio_link ? (
-          <Box sx={{ mt: 1.5, width: '66%' }}>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              mt: 1.5,
+              width: '66%',
+            }}
+          >
             {ReactHtmlParser(item.audio_embed)}
           </Box>
         ) : null}
         {item.non_sound_cloud_audio_link ? (
           <Box
             sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
               alignItems: 'center',
               display: 'flex',
               justifyContent: 'center',
@@ -555,7 +583,15 @@ class Show extends React.Component {
           </Box>
         ) : null}
         {item.video_link1 ? (
-          <Box sx={{ mt: 1.5, width: '66%' }}>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              mt: 1.5,
+              width: '66%',
+            }}
+          >
             {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
             <iframe
               id="ytplayer"
@@ -569,7 +605,15 @@ class Show extends React.Component {
           </Box>
         ) : null}
         {item.video_link2 ? (
-          <Box sx={{ mt: 0.5, width: '66%' }}>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              mt: 0.5,
+              width: '66%',
+            }}
+          >
             {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
             <iframe
               id="ytplayer"
@@ -583,7 +627,15 @@ class Show extends React.Component {
           </Box>
         ) : null}
         {item.reviews ? (
-          <Paper sx={{ p: 5, width: '66%' }}>
+          <Paper
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              p: 5,
+              width: '66%',
+            }}
+          >
             <Box sx={{ pb: 1 }}>
               <Typography
                 variant="body2"

@@ -247,6 +247,9 @@ function InstrumentationFormatter(instrumentation) {
   return (
     <Paper
       sx={{
+        '@media (max-width: 959px)': {
+          display: 'none',
+        },
         float: 'right',
         pb: 2,
         pt: 1,

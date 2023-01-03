@@ -62,7 +62,6 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
         input={(
           <OutlinedInput
             label="Tag"
-            autoFocus
             color="secondary"
           />
 )}

@@ -33,6 +33,7 @@ function AllEnsembles() {
   const [filterIsOn, setFilterIsOn] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetch(`${process.env.REACT_APP_DATA_URL}`)
       .then((res) => res.json())
       .then((json) => {

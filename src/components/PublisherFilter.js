@@ -48,7 +48,6 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
         input={(
           <OutlinedInput
             label="Tag"
-            autoFocus
             color="secondary"
           />
         )}

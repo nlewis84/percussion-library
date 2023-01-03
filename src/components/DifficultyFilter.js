@@ -53,7 +53,6 @@ export default function DifficultyFilter({ difficulty, handleChange, name }) {
         input={(
           <OutlinedInput
             label="Tag"
-            autoFocus
             color="secondary"
           />
 )}

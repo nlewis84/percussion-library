@@ -48,7 +48,6 @@ export default function NumberOfPlayersFilter({ handleChange, name, numberOfPlay
         input={(
           <OutlinedInput
             label="Tag"
-            autoFocus
             color="secondary"
           />
         )}

@@ -258,7 +258,15 @@ class Show extends React.Component {
         {item.instrumentation
           ? InstrumentationFormatter(item.instrumentation)
           : null}
-        <Paper sx={{ p: 5, width: '66%' }}>
+        <Paper
+          sx={{
+            '@media (max-width: 959px)': {
+              width: '100%',
+            },
+            p: 5,
+            width: '66%',
+          }}
+        >
           {item.arranger ? (
             <Typography
               variant="h6"
@@ -279,7 +287,12 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{ mt: 1.5 }}
+              sx={{
+                '@media (max-width: 959px)': {
+                  width: '100%',
+                },
+                mt: 1.5,
+              }}
             >
               <MenuBookOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -297,7 +310,12 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{ mt: 1.5 }}
+              sx={{
+                '@media (max-width: 959px)': {
+                  width: '100%',
+                },
+                mt: 1.5,
+              }}
             >
               <SpeedOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -316,7 +334,12 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{ mt: 1.5 }}
+              sx={{
+                '@media (max-width: 959px)': {
+                  width: '100%',
+                },
+                mt: 1.5,
+              }}
             >
               <PersonOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -334,7 +357,12 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{ mt: 1.5 }}
+              sx={{
+                '@media (max-width: 959px)': {
+                  width: '100%',
+                },
+                mt: 1.5,
+              }}
             >
               <AccessTimeOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -352,7 +380,12 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{ mt: 1.5 }}
+              sx={{
+                '@media (max-width: 959px)': {
+                  width: '100%',
+                },
+                mt: 1.5,
+              }}
             >
               <BusinessCenterTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -369,7 +402,12 @@ class Show extends React.Component {
             <Typography
               variant="body2"
               color="text.secondary"
-              sx={{ mt: 5 }}
+              sx={{
+                '@media (max-width: 959px)': {
+                  width: '100%',
+                },
+                mt: 5,
+              }}
             >
               Description
             </Typography>
@@ -379,10 +417,27 @@ class Show extends React.Component {
             : null}
         </Paper>
         {item.audio_link ? (
-          <Box sx={{ mt: 1.5, width: '66%' }}>{ReactHtmlParser(item.audio_embed)}</Box>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              mt: 1.5,
+              width: '66%',
+            }}
+          >{ReactHtmlParser(item.audio_embed)}
+          </Box>
         ) : null}
         {item.reviews ? (
-          <Paper sx={{ p: 5, width: '66%' }}>
+          <Paper
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              p: 5,
+              width: '66%',
+            }}
+          >
             <Typography
               variant="body2"
               color="text.secondary"

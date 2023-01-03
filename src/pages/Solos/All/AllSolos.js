@@ -31,6 +31,7 @@ function AllSolos() {
   const [filterIsOn, setFilterIsOn] = useState(false);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     fetch(`${process.env.REACT_APP_DATA_URL}solos`)
       .then((res) => res.json())
       .then((json) => {
