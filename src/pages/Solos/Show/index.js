@@ -106,7 +106,16 @@ class Show extends React.Component {
           >
             <Skeleton animation="wave" />
           </Typography>
-          <Paper sx={{ float: 'right', pt: 0, width: '33%' }}>
+          <Paper
+            sx={{
+              '@media (max-width: 959px)': {
+                display: 'none',
+              },
+              float: 'right',
+              pt: 0,
+              width: '33%',
+            }}
+          >
             <List dense={false}>
               <Typography
                 variant="body2"
@@ -132,7 +141,16 @@ class Show extends React.Component {
               ))}
             </List>
           </Paper>
-          <Paper sx={{ p: 5, width: '66%' }}>
+          <Paper
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              float: 'right',
+              pt: 0,
+              width: '33%',
+            }}
+          >
             <Typography
               variant="h6"
               color="text.primary"

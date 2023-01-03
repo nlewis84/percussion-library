@@ -25,6 +25,9 @@ export default function DifficultyFilter({ difficulty, handleChange, name }) {
     <FormControl
       size="small"
       sx={{
+        '@media (max-width: 599px)': {
+          minWidth: '100%',
+        },
         minWidth: 132,
         mx: 1,
         my: 1,

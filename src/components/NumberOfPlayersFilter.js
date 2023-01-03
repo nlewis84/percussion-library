@@ -25,7 +25,12 @@ export default function NumberOfPlayersFilter({ handleChange, name, numberOfPlay
     <FormControl
       size="small"
       sx={{
-        minWidth: 132, mx: 1, my: 1,
+        '@media (max-width: 599px)': {
+          minWidth: '100%',
+        },
+        minWidth: 132,
+        mx: 1,
+        my: 1,
       }}
     >
       <InputLabel

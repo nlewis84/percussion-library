@@ -10,6 +10,7 @@ import {
   Paper,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import AccessTimeTwoToneIcon from '@mui/icons-material/AccessTimeTwoTone';
@@ -21,6 +22,7 @@ import ReactHtmlParser from 'react-html-parser';
 import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
 import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone';
 import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
 
 import DescriptionFormatter from '../../../helpers/descriptionFormatter';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
@@ -41,6 +43,8 @@ class Show extends React.Component {
       item: [],
       likeCount: 0,
       likedThisLoad: false,
+      reportCount: 0,
+      reportedThisLoad: false,
       viewCount: 0,
     };
   }
@@ -53,6 +57,7 @@ class Show extends React.Component {
         this.setState({
           item: json[0],
           likeCount: json[0].likes,
+          reportCount: json[0].reports,
           viewCount: json[0].views,
         });
 
@@ -151,7 +156,7 @@ class Show extends React.Component {
 
   render() {
     const {
-      DataisLoaded, item, likeCount, likedThisLoad, viewCount,
+      DataisLoaded, item, likeCount, likedThisLoad, reportCount, reportedThisLoad, viewCount,
     } = this.state;
 
     // handleLike function that increase item.like on the database
@@ -186,6 +191,38 @@ class Show extends React.Component {
         });
     };
 
+    // handleReport function that increase item.like on the database
+    const handleReport = () => {
+      // eslint-disable-next-line no-undef
+      fetch(
+        `${process.env.REACT_APP_DATA_URL}ensembles/${this.props.ensembleId}/reports`,
+        {
+          body: JSON.stringify({
+            reports: item.reports + 1,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'PATCH',
+        },
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          this.setState({
+            ...this.state,
+            item: {
+              ...this.state.item,
+              reports: json.reports,
+            },
+            reportCount: json.reports,
+            reportedThisLoad: true,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
     if (!DataisLoaded) {
       return (
         <Container
@@ -208,7 +245,16 @@ class Show extends React.Component {
           >
             <Skeleton animation="wave" />
           </Typography>
-          <Paper sx={{ float: 'right', pt: 0, width: '33%' }}>
+          <Paper
+            sx={{
+              '@media (max-width: 959px)': {
+                display: 'none',
+              },
+              float: 'right',
+              pt: 0,
+              width: '33%',
+            }}
+          >
             <List dense={false}>
               <Typography
                 variant="body2"
@@ -239,7 +285,15 @@ class Show extends React.Component {
                 ))}
             </List>
           </Paper>
-          <Paper sx={{ p: 5, width: '66%' }}>
+          <Paper
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              p: 5,
+              width: '66%',
+            }}
+          >
             <Typography
               variant="h6"
               color="text.primary"
@@ -374,42 +428,6 @@ class Show extends React.Component {
             width: '50%',
           }}
         >
-          <Container
-            sx={{
-              '@media (max-width: 959px)': {
-                width: '100%',
-              },
-              alignItems: 'center',
-              display: 'flex',
-              justifyContent: 'center',
-              pt: 0,
-              width: '50%',
-            }}
-          >
-            <IconButton
-              aria-label="like"
-              onClick={() => handleLike(item.id)}
-              disabled={likedThisLoad}
-              sx={{
-                '&:active': {
-                  transform: 'scale(1.1) rotate(-30deg)',
-                  transition: 'transform 0.1s',
-                  transitionTimingFunction: 'ease-out',
-                },
-              }}
-            >
-              <ThumbUpTwoToneIcon sx={{ color: 'secondary.main' }} />
-            </IconButton>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ display: 'inline' }}
-            >
-              {likeCount}
-            </Typography>
-            {/* TODO: Add a WarningTwoToneIcon that links to an
-            action for users to report an issue with this page */}
-          </Container>
           <Box
             sx={{
               '@media (max-width: 959px)': {
@@ -422,18 +440,94 @@ class Show extends React.Component {
               width: '50%',
             }}
           >
-            <IconButton
-              aria-label="view"
-              disabled
+            <Tooltip title="Like">
+              <IconButton
+                aria-label="like"
+                onClick={() => handleLike(item.id)}
+                disabled={likedThisLoad}
+                sx={{
+                  '&:active': {
+                    transform: 'scale(1.1) rotate(-30deg)',
+                    transition: 'transform 0.1s',
+                    transitionTimingFunction: 'ease-out',
+                  },
+                }}
+              >
+                <ThumbUpTwoToneIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Tooltip>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ display: 'inline' }}
             >
-              <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
-            </IconButton>
+              {likeCount}
+            </Typography>
+            {/* TODO: Add a WarningTwoToneIcon that links to an
+            action for users to report an issue with this page */}
+          </Box>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 0,
+              width: '50%',
+            }}
+          >
+            <Tooltip title="View">
+              <IconButton
+                aria-label="view"
+                disabled
+              >
+                <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Tooltip>
             <Typography
               variant="body2"
               color="text.secondary"
               sx={{ display: 'inline' }}
             >
               {viewCount}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 0,
+              width: '50%',
+            }}
+          >
+            <Tooltip title="Report an issue">
+              <IconButton
+                aria-label="report"
+                onClick={() => handleReport(item.id)}
+                disabled={reportedThisLoad}
+                sx={{
+                  '&:active': {
+                    transform: 'scale(1.1) rotate(-30deg)',
+                    transition: 'transform 0.1s',
+                    transitionTimingFunction: 'ease-out',
+                  },
+                }}
+              >
+                <WarningTwoToneIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Tooltip>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ display: 'inline' }}
+            >
+              {reportCount}
             </Typography>
           </Box>
         </Container>

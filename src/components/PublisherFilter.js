@@ -25,7 +25,12 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
     <FormControl
       size="small"
       sx={{
-        minWidth: 132, mx: 1, my: 1,
+        '@media (max-width: 599px)': {
+          minWidth: '100%',
+        },
+        minWidth: 132,
+        mx: 1,
+        my: 1,
       }}
     >
       <InputLabel
