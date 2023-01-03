@@ -479,12 +479,14 @@ class Show extends React.Component {
             }}
           >
             <Tooltip title="View">
-              <IconButton
-                aria-label="view"
-                disabled
-              >
-                <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
-              </IconButton>
+              <span>
+                <IconButton
+                  aria-label="view"
+                  disabled
+                >
+                  <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
+                </IconButton>
+              </span>
             </Tooltip>
             <Typography
               variant="body2"
