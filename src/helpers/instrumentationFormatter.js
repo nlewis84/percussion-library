@@ -24,6 +24,8 @@ function InstrumentationFormatter(instrumentation) {
   let noteFour = '';
   let noteFive = '';
 
+  // TODO: 1692 is all one line.
+
   if (instrumentation.includes(' \u2028* ')) {
     noteOne = instrumentation.slice(instrumentation.indexOf(' \u2028* '));
     cleanedInstrumentation = instrumentation.slice(
