@@ -1,9 +1,10 @@
 /* eslint-disable react/no-array-index-key */
 import {
+  Box,
   Card,
   CardContent,
   Container,
-  Grid,
+  Grid, Pagination,
   Paper, TextField,
   Typography,
 } from '@mui/material';
@@ -26,13 +27,23 @@ import SmallCardContent from '../../../components/SmallCardContent';
 // TODO: Save Filters in the query params so that links can be shared to a
 // specific filter also so when you press back your filters are saved
 
+const pageSize = 50;
+
 function AllEnsembles() {
   const [filters, setFilters] = useState({
     difficulty_level_id: [],
     number_of_players: [],
+    page: 1,
     publisher: [],
     q: '',
   });
+
+  const handleChangePage = useCallback((event, value) => {
+    setFilters((f) => ({
+      ...f,
+      page: value,
+    }));
+  }, []);
 
   const searchTextField = useTextField();
 
@@ -47,18 +58,35 @@ function AllEnsembles() {
     difficulty_level_id: filters.difficulty_level_id
       .map((d) => difficultyLevels.find((dl) => dl.name === d).id),
     number_of_players: filters.number_of_players,
+    page: filters.page,
+    page_size: pageSize,
     publisher: filters.publisher,
     q: filters.q,
   }), [difficultyLevels, filters]);
 
   const {
-    data: ensembles,
+    data: ensemblesData,
     isLoading,
   } = useFetchEnsembles(queryParams);
+
+  const ensembles = useMemo(
+    () =>
+      (ensemblesData ? ensemblesData.ensembles : []),
+    [ensemblesData],
+  );
+
+  console.log('data : ', ensemblesData);
+
+  const fullCount = ensemblesData ? ensemblesData.fullCount : 0;
+
+  const pageCount = Math.ceil(fullCount / pageSize);
+
+  console.log({ pageCount });
 
   useEffect(() => {
     setFilters((f) => ({
       ...f,
+      page: 1,
       q,
     }));
   }, [q]);
@@ -68,6 +96,7 @@ function AllEnsembles() {
 
     setFilters((f) => ({
       ...f,
+      page: 1,
       [target.name]: target.value,
     }));
   }, []);
@@ -216,6 +245,18 @@ function AllEnsembles() {
           )}
         </Grid>
       )}
+
+      <Box
+        display="flex"
+        justifyContent="center"
+        marginTop={2}
+      >
+        <Pagination
+          count={pageCount}
+          page={filters.page}
+          onChange={handleChangePage}
+        />
+      </Box>
     </Container>
   );
 }

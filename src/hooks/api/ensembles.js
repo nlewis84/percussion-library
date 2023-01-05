@@ -29,7 +29,10 @@ const fetchEnsembles = async (queryString = '') => {
     throw new Error(data.message);
   }
 
-  return data;
+  return {
+    ensembles: data,
+    fullCount: res.headers.get('X-Full-Count'),
+  };
 };
 
 export const useFetchEnsembles = (queryParams = {}) => {
