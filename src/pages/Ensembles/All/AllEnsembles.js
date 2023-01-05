@@ -4,14 +4,18 @@ import {
   CardContent,
   Container,
   Grid,
-  Paper,
+  Paper, TextField,
   Typography,
 } from '@mui/material';
 import { Link } from '@reach/router';
-import React, { useMemo, useState } from 'react';
+import { useDebounce } from 'use-debounce';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 
 import { useFetchDifficultyLevels } from '../../../hooks/api/difficulties';
 import { useFetchEnsembles } from '../../../hooks/api/ensembles';
+import { useTextField } from '../../../hooks/useTextField';
 import DifficultyFilter from '../../../components/DifficultyFilter';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import NumberOfPlayersFilter from '../../../components/NumberOfPlayersFilter';
@@ -27,7 +31,12 @@ function AllEnsembles() {
     difficulty_level_id: [],
     number_of_players: [],
     publisher: [],
+    q: '',
   });
+
+  const searchTextField = useTextField();
+
+  const [q] = useDebounce(searchTextField.value, 300);
 
   const {
     data: difficultyLevels,
@@ -39,6 +48,7 @@ function AllEnsembles() {
       .map((d) => difficultyLevels.find((dl) => dl.name === d).id),
     number_of_players: filters.number_of_players,
     publisher: filters.publisher,
+    q: filters.q,
   }), [difficultyLevels, filters]);
 
   const {
@@ -46,15 +56,21 @@ function AllEnsembles() {
     isLoading,
   } = useFetchEnsembles(queryParams);
 
-  // TODO: Move all this filtering to the backend.
-  const handleChange = (event) => {
+  useEffect(() => {
+    setFilters((f) => ({
+      ...f,
+      q,
+    }));
+  }, [q]);
+
+  const handleChange = useCallback((event) => {
     const { target } = event;
 
-    setFilters({
-      ...filters,
+    setFilters((f) => ({
+      ...f,
       [target.name]: target.value,
-    });
-  };
+    }));
+  }, []);
 
   return (
     <Container
@@ -68,8 +84,10 @@ function AllEnsembles() {
         <Paper
           elevation={0}
           sx={{
+            alignItems: 'center',
             backgroundColor: 'transparent',
-            display: 'inline-block',
+            display: 'flex',
+            justifyContent: 'center',
             mr: 2,
             mt: 2,
             py: 1,
@@ -90,6 +108,15 @@ function AllEnsembles() {
             handleChange={handleChange}
             name="publisher"
             publisher={filters.publisher}
+          />
+
+          <TextField
+            id="search"
+            label="Search"
+            name="search"
+            size="small"
+            {...searchTextField}
+            value={searchTextField.value}
           />
 
           {/* <Typography
