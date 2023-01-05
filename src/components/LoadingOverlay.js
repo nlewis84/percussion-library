@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from '@mui/material';
+import { Box } from '@mui/material';
 
 function LoadingOverlay({ children, loading }) {
   return (
@@ -22,9 +22,7 @@ function LoadingOverlay({ children, loading }) {
             top: 0,
             width: '100%',
           }}
-        >
-          <CircularProgress />
-        </Box>
+        />
       )}
     </Box>
   );
