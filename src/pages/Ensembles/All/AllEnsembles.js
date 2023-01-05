@@ -23,9 +23,11 @@ import SmallCardContent from '../../../components/SmallCardContent';
 // specific filter also so when you press back your filters are saved
 
 function AllEnsembles() {
-  const [numberOfPlayers, setNumberOfPlayers] = useState([]);
-  const [difficulty, setDifficulty] = useState([]);
-  const [publisher, setPublisher] = useState([]);
+  const [filters, setFilters] = useState({
+    difficulty_level_id: [],
+    number_of_players: [],
+    publisher: [],
+  });
 
   const {
     data: difficultyLevels,
@@ -33,10 +35,11 @@ function AllEnsembles() {
 
   const queryParams = useMemo(() => ({
     category: 'Percussion Ensembles',
-    difficulty_level_id: difficulty.map((d) => difficultyLevels.find((dl) => dl.name === d).id),
-    number_of_players: numberOfPlayers,
-    publisher,
-  }), [difficulty, difficultyLevels, numberOfPlayers, publisher]);
+    difficulty_level_id: filters.difficulty_level_id
+      .map((d) => difficultyLevels.find((dl) => dl.name === d).id),
+    number_of_players: filters.number_of_players,
+    publisher: filters.publisher,
+  }), [difficultyLevels, filters]);
 
   const {
     data: ensembles,
@@ -47,14 +50,10 @@ function AllEnsembles() {
   const handleChange = (event) => {
     const { target } = event;
 
-    // This logic sets the correct state based on the event.target.name
-    if (target.name === 'Players') {
-      setNumberOfPlayers(target.value);
-    } else if (target.name === 'Difficulty') {
-      setDifficulty(target.value);
-    } else if (target.name === 'Publisher') {
-      setPublisher(target.value);
-    }
+    setFilters({
+      ...filters,
+      [target.name]: target.value,
+    });
   };
 
   return (
@@ -79,18 +78,18 @@ function AllEnsembles() {
         >
           <NumberOfPlayersFilter
             handleChange={handleChange}
-            name="Players"
-            numberOfPlayers={numberOfPlayers}
+            name="number_of_players"
+            numberOfPlayers={filters.number_of_players}
           />
           <DifficultyFilter
             handleChange={handleChange}
-            name="Difficulty"
-            difficulty={difficulty}
+            name="difficulty_level_id"
+            difficulty={filters.difficulty_level_id}
           />
           <PublisherFilter
             handleChange={handleChange}
-            name="Publisher"
-            publisher={publisher}
+            name="publisher"
+            publisher={filters.publisher}
           />
 
           {/* <Typography
