@@ -30,6 +30,7 @@ import ReviewFormatter from '../../../helpers/reviewFormatter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
 import TruncateText from '../../../helpers/truncateText';
 
+import IncompleteInformation from '../../../components/IncompleteInformation';
 import MusicNote from '../../../components/icons/MusicNote';
 
 // TODO: make this a functional component, matching AllEnsembles
@@ -156,7 +157,12 @@ class Show extends React.Component {
 
   render() {
     const {
-      DataisLoaded, item, likeCount, likedThisLoad, reportCount, reportedThisLoad, viewCount,
+      DataisLoaded,
+      item,
+      likeCount,
+      likedThisLoad,
+      reportedThisLoad,
+      viewCount,
     } = this.state;
 
     // handleLike function that increase item.like on the database
@@ -524,13 +530,6 @@ class Show extends React.Component {
                 <WarningTwoToneIcon sx={{ color: 'secondary.main' }} />
               </IconButton>
             </Tooltip>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ display: 'inline' }}
-            >
-              {reportCount}
-            </Typography>
           </Box>
         </Container>
         {item.instrumentation
@@ -644,7 +643,10 @@ class Show extends React.Component {
             </Typography>
           ) : null}
           {item.description
-            ? DescriptionFormatter(TruncateText(item.title, 100), item.description)
+            ? DescriptionFormatter(
+              TruncateText(item.title, 100),
+              item.description,
+            )
             : null}
         </Paper>
         {item.audio_link ? (
@@ -748,6 +750,12 @@ class Show extends React.Component {
             </Typography>
           </Paper>
         ) : null}
+        {!(item.audio_link
+        || item.non_sound_cloud_audio_link
+        || item.video_link1)
+        || !item.reviews ? (
+          <IncompleteInformation />
+          ) : null}
       </Container>
     );
   }
