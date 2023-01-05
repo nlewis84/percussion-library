@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from '@reach/router';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -35,18 +36,22 @@ function Copyright() {
   );
 }
 
+const queryClient = new QueryClient();
+
 function App() {
   return (
-    <Box className="wrapper">
-      <SearchAppBar />
-      <Router>
-        <AllEnsembles path="/" />
-        <AllSolos path="/solos" />
-        <EnsembleShow path="ensembles/:ensembleId" />
-        <SoloShow path="solos/:soloId" />
-      </Router>
-      <Copyright />
-    </Box>
+    <QueryClientProvider client={queryClient}>
+      <Box className="wrapper">
+        <SearchAppBar />
+        <Router>
+          <AllEnsembles path="/" />
+          <AllSolos path="/solos" />
+          <EnsembleShow path="ensembles/:ensembleId" />
+          <SoloShow path="solos/:soloId" />
+        </Router>
+        <Copyright />
+      </Box>
+    </QueryClientProvider>
   );
 }
 
