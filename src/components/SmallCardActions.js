@@ -33,6 +33,7 @@ export default function SmallCardActions(item) {
           <Typography
             variant="body2"
             color="text.secondary"
+            sx={{ marginTop: !reviews && !audio_link ? '10px' : '0' }}
           >
             {likes} likes
           </Typography>

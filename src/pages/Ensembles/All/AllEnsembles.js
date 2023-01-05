@@ -43,6 +43,7 @@ function AllEnsembles() {
       });
   }, []);
 
+  // TODO: Move all this filtering to the backend.
   const handleChange = (event) => {
     const { target } = event;
 
