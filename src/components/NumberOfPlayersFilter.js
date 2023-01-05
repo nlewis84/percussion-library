@@ -29,8 +29,6 @@ export default function NumberOfPlayersFilter({ handleChange, name, numberOfPlay
           minWidth: '100%',
         },
         minWidth: 132,
-        mx: 1,
-        my: 1,
       }}
     >
       <InputLabel

@@ -115,6 +115,8 @@ function AllEnsembles() {
             alignItems: 'center',
             backgroundColor: 'transparent',
             display: 'flex',
+            flexWrap: 'wrap',
+            gap: 1,
             justifyContent: 'center',
             mr: 2,
             mt: 2,
@@ -139,10 +141,17 @@ function AllEnsembles() {
           />
 
           <TextField
+            color="secondary"
             id="search"
             label="Search"
             name="search"
             size="small"
+            sx={{
+              width: {
+                sm: 'auto',
+                xs: '100%',
+              },
+            }}
             {...searchTextField}
             value={searchTextField.value}
           />
@@ -251,6 +260,7 @@ function AllEnsembles() {
         marginTop={2}
       >
         <Pagination
+          color="secondary"
           count={pageCount}
           page={filters.page}
           onChange={handleChangePage}
