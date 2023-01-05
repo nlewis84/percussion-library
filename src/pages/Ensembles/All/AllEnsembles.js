@@ -18,6 +18,7 @@ import { useFetchDifficultyLevels } from '../../../hooks/api/difficulties';
 import { useFetchEnsembles } from '../../../hooks/api/ensembles';
 import { useTextField } from '../../../hooks/useTextField';
 import DifficultyFilter from '../../../components/DifficultyFilter';
+import LoadingOverlay from '../../../components/LoadingOverlay';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import NumberOfPlayersFilter from '../../../components/NumberOfPlayersFilter';
 import PublisherFilter from '../../../components/PublisherFilter';
@@ -30,6 +31,8 @@ import SmallCardContent from '../../../components/SmallCardContent';
 const pageSize = 50;
 
 function AllEnsembles() {
+  const [localData, setLocalData] = useState(null);
+
   const [filters, setFilters] = useState({
     difficulty_level_id: [],
     number_of_players: [],
@@ -69,19 +72,15 @@ function AllEnsembles() {
     isLoading,
   } = useFetchEnsembles(queryParams);
 
-  const ensembles = useMemo(
-    () =>
-      (ensemblesData ? ensemblesData.ensembles : []),
-    [ensemblesData],
-  );
-
-  console.log('data : ', ensemblesData);
+  useEffect(() => {
+    if (ensemblesData && ensemblesData.ensembles) {
+      setLocalData(ensemblesData.ensembles);
+    }
+  }, [ensemblesData]);
 
   const fullCount = ensemblesData ? ensemblesData.fullCount : 0;
 
   const pageCount = Math.ceil(fullCount / pageSize);
-
-  console.log({ pageCount });
 
   useEffect(() => {
     setFilters((f) => ({
@@ -170,9 +169,9 @@ function AllEnsembles() {
         </Paper>
       </Container>
 
-      {isLoading && <LoadingSkeleton />}
+      {isLoading && !localData && <LoadingSkeleton />}
 
-      {!isLoading && (
+      <LoadingOverlay loading={isLoading}>
         <Grid
           container
           sx={{ gap: 2, mt: 2 }}
@@ -181,7 +180,7 @@ function AllEnsembles() {
           justifyContent="center"
           xs={12}
         >
-          {(ensembles && ensembles.length === 0) ? (
+          {(localData && localData.length === 0) ? (
             <Card
               key="no_items_to_show"
               sx={{
@@ -217,7 +216,7 @@ function AllEnsembles() {
               </CardContent>
             </Card>
           ) : (
-            (ensembles || []).map((item) => (
+            (localData || []).map((item) => (
               <Card
                 key={item.id}
                 sx={{
@@ -244,7 +243,7 @@ function AllEnsembles() {
             ))
           )}
         </Grid>
-      )}
+      </LoadingOverlay>
 
       <Box
         display="flex"
