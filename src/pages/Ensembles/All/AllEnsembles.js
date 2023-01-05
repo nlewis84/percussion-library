@@ -57,10 +57,6 @@ function AllEnsembles() {
     }
   };
 
-  if (isLoading) {
-    return <LoadingSkeleton />;
-  }
-
   return (
     <Container
       className="App"
@@ -119,53 +115,20 @@ function AllEnsembles() {
         </Paper>
       </Container>
 
-      <Grid
-        container
-        sx={{ gap: 2, mt: 2 }}
-        spacing={0}
-        alignItems="center"
-        justifyContent="center"
-        xs={12}
-      >
-        {(ensembles && ensembles.length === 0) ? (
-          <Card
-            key="no_items_to_show"
-            sx={{
-              ':hover': {
-                boxShadow: 10,
-              },
-              '@media (max-width:599px)': {
-                width: '99%',
-              },
-              borderRadius: 2,
-              height: 224,
-              width: 196,
-            }}
-            variant="outlined"
-            style={{ textDecoration: 'none' }}
-          >
-            <CardContent>
-              <Typography
-                variant="h7"
-                color="secondary.main"
-                sx={{ fontWeight: 'bold', textAlign: 'center' }}
-                component="div"
-              >
-                Whoops
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ textAlign: 'center' }}
-                color="text.primary"
-              >
-                No items match that criteria
-              </Typography>
-            </CardContent>
-          </Card>
-        ) : (
-          (ensembles || []).map((item) => (
+      {isLoading && <LoadingSkeleton />}
+
+      {!isLoading && (
+        <Grid
+          container
+          sx={{ gap: 2, mt: 2 }}
+          spacing={0}
+          alignItems="center"
+          justifyContent="center"
+          xs={12}
+        >
+          {(ensembles && ensembles.length === 0) ? (
             <Card
-              key={item.id}
+              key="no_items_to_show"
               sx={{
                 ':hover': {
                   boxShadow: 10,
@@ -179,17 +142,54 @@ function AllEnsembles() {
               }}
               variant="outlined"
               style={{ textDecoration: 'none' }}
-              component={Link}
-              rel="noreferrer"
-              target="_blank"
-              to={`/ensembles/${item.id}`}
             >
-              <SmallCardContent item={item} />
-              <SmallCardActions item={item} />
+              <CardContent>
+                <Typography
+                  variant="h7"
+                  color="secondary.main"
+                  sx={{ fontWeight: 'bold', textAlign: 'center' }}
+                  component="div"
+                >
+                  Whoops
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ textAlign: 'center' }}
+                  color="text.primary"
+                >
+                  No items match that criteria
+                </Typography>
+              </CardContent>
             </Card>
-          ))
-        )}
-      </Grid>
+          ) : (
+            (ensembles || []).map((item) => (
+              <Card
+                key={item.id}
+                sx={{
+                  ':hover': {
+                    boxShadow: 10,
+                  },
+                  '@media (max-width:599px)': {
+                    width: '99%',
+                  },
+                  borderRadius: 2,
+                  height: 224,
+                  width: 196,
+                }}
+                variant="outlined"
+                style={{ textDecoration: 'none' }}
+                component={Link}
+                rel="noreferrer"
+                target="_blank"
+                to={`/ensembles/${item.id}`}
+              >
+                <SmallCardContent item={item} />
+                <SmallCardActions item={item} />
+              </Card>
+            ))
+          )}
+        </Grid>
+      )}
     </Container>
   );
 }

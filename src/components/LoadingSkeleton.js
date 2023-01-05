@@ -19,15 +19,6 @@ export default function LoadingSkeleton() {
       className="App"
       maxWidth="none"
     >
-      <Container sx={{ display: 'grid', mt: 5 }}>
-        <Typography
-          variant="body"
-          color="secondary.main"
-          textAlign="center"
-        >
-          <Skeleton animation="wave" />
-        </Typography>
-      </Container>
       <Grid
         container
         sx={{ gap: 2, mt: 2 }}
