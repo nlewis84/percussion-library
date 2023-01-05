@@ -30,7 +30,7 @@ import SmallCardContent from '../../../components/SmallCardContent';
 // TODO: Save Filters in the query params so that links can be shared to a
 // specific filter also so when you press back your filters are saved
 
-const pageSize = 50;
+const pageSize = 60;
 
 function AllEnsembles() {
   const [localData, setLocalData] = useState(null);
@@ -146,6 +146,9 @@ function AllEnsembles() {
             color="secondary"
             id="search"
             label="Search"
+            InputLabelProps={{
+              sx: { color: 'secondary.dark', fontWeight: 'bold' },
+            }}
             name="search"
             size="small"
             sx={{
