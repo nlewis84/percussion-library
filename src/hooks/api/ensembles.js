@@ -17,14 +17,10 @@ const convertQueryParamsToFlatArray = (queryParams) => {
     }
   });
 
-  return flatArray;
+  return flatArray.sort((a, b) => a[0].localeCompare(b[0]));
 };
 
-const fetchEnsembles = async (queryParams = {}) => {
-  const flattenedParams = convertQueryParamsToFlatArray(queryParams);
-
-  const queryString = new URLSearchParams(flattenedParams);
-
+const fetchEnsembles = async (queryString = '') => {
   const res = await fetch(`${process.env.REACT_APP_DATA_URL}?${queryString}`);
 
   const data = await res.json();
@@ -37,10 +33,14 @@ const fetchEnsembles = async (queryParams = {}) => {
 };
 
 export const useFetchEnsembles = (queryParams = {}) => {
-  const queryFn = useCallback(() => fetchEnsembles(queryParams), [queryParams]);
+  const flattenedParams = convertQueryParamsToFlatArray(queryParams);
+
+  const queryString = new URLSearchParams(flattenedParams).toString();
+
+  const queryFn = useCallback(() => fetchEnsembles(queryString), [queryString]);
 
   return useQuery({
     queryFn,
-    queryKey: ['ensembles', queryParams],
+    queryKey: ['ensembles', queryString],
   });
 };
