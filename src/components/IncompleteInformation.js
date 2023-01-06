@@ -10,7 +10,10 @@ function IncompleteInformation() {
   return (
     <Paper
       sx={{
-        mt: 0.5,
+        '@media (max-width: 959px)': {
+          width: '100%',
+        },
+        mt: 1.5,
         p: 5,
         width: '66%',
       }}
