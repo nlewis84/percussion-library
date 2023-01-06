@@ -31,9 +31,6 @@ import PublisherFilter from '../../../components/PublisherFilter';
 import SmallCardActions from '../../../components/SmallCardActions';
 import SmallCardContent from '../../../components/SmallCardContent';
 
-// TODO: Save Filters in the query params so that links can be shared to a
-// specific filter also so when you press back your filters are saved
-
 const pageSize = 60;
 
 function AllEnsembles() {
