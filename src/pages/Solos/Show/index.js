@@ -84,6 +84,7 @@ class Show extends React.Component {
   render() {
     const { DataisLoaded, item } = this.state;
 
+    // TODO: Loading states for Solos Show pages are JACKED UP
     if (!DataisLoaded) {
       return (
         <Container
