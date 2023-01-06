@@ -65,6 +65,7 @@ function AllEnsembles() {
     } = convertQueryStringToParams(location.search);
 
     const filters = {
+      category: 'Percussion Ensembles',
       difficulty_level_id: arrayify(difficulty_level_id),
       number_of_players: arrayify(number_of_players),
       page,
