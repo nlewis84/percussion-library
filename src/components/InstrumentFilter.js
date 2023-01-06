@@ -38,8 +38,6 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
           minWidth: '100%',
         },
         minWidth: 132,
-        mx: 1,
-        my: 1,
       }}
     >
       <InputLabel

@@ -1,3 +1,4 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Router } from '@reach/router';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
@@ -10,6 +11,7 @@ import AllSolos from './pages/Solos/All/AllSolos';
 import EnsembleShow from './pages/Ensembles/Show/index';
 import SearchAppBar from './components/SearchAppBar';
 import SoloShow from './pages/Solos/Show/index';
+import UIContextProvider from './state/UIContext/UIContextProvider';
 
 function Copyright() {
   return (
@@ -35,18 +37,31 @@ function Copyright() {
   );
 }
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 1000 * 60 * 60 * 24,
+      staleTime: 1000 * 60 * 60 * 24,
+    },
+  },
+});
+
 function App() {
   return (
-    <Box className="wrapper">
-      <SearchAppBar />
-      <Router>
-        <AllEnsembles path="/" />
-        <AllSolos path="/solos" />
-        <EnsembleShow path="ensembles/:ensembleId" />
-        <SoloShow path="solos/:soloId" />
-      </Router>
-      <Copyright />
-    </Box>
+    <UIContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <Box className="wrapper">
+          <SearchAppBar />
+          <Router>
+            <AllEnsembles path="/" />
+            <AllSolos path="/solos" />
+            <EnsembleShow path="ensembles/:ensembleId" />
+            <SoloShow path="solos/:soloId" />
+          </Router>
+          <Copyright />
+        </Box>
+      </QueryClientProvider>
+    </UIContextProvider>
   );
 }
 

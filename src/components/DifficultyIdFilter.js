@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useMemo } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -6,6 +7,8 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
+
+import { useFetchDifficultyLevels } from '../hooks/api/difficulties';
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = 8;
@@ -18,9 +21,20 @@ const MenuProps = {
   },
 };
 
-const publishers = ['C. Alan', 'Tapspace'];
+export default function DifficultyIdFilter({ difficulty, handleChange, name }) {
+  const {
+    data: difficultyLevels,
+  } = useFetchDifficultyLevels();
 
-export default function PublisherFilter({ handleChange, name, publisher }) {
+  const selectedDifficultyLabels = useMemo(
+    () =>
+      (difficultyLevels || [])
+        .filter((difficultyLevel) => difficulty.includes(difficultyLevel.id))
+        .sort((a, b) => a.id - b.id)
+        .map((difficultyLevel) => difficultyLevel.name),
+    [difficulty, difficultyLevels],
+  );
+
   return (
     <FormControl
       size="small"
@@ -36,17 +50,20 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
         color="secondary"
         size="small"
         sx={{
-          bgcolor: 'background.default', color: 'secondary.dark', fontWeight: 'bold', pr: 1,
+          bgcolor: 'background.default',
+          color: 'secondary.dark',
+          fontWeight: 'bold',
+          pr: 1,
         }}
       >
-        Publisher
+        Difficulty
       </InputLabel>
       <Select
         labelId="multiple-checkbox-label"
         id="multiple-checkbox"
         name={name}
         multiple
-        value={publisher}
+        value={difficulty}
         onChange={handleChange}
         input={(
           <OutlinedInput
@@ -54,17 +71,17 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
             color="secondary"
           />
         )}
-        renderValue={(selected) => selected.join(', ')}
+        renderValue={() => selectedDifficultyLabels.join(', ')}
         MenuProps={MenuProps}
       >
-        {publishers.map((num) => (
+        {(difficultyLevels || []).map((diff) => (
           <MenuItem
-            key={num}
-            value={num}
+            key={diff.id}
+            value={diff.id}
             dense
           >
-            <Checkbox checked={publisher.indexOf(num) > -1} />
-            <ListItemText primary={num} />
+            <Checkbox checked={difficulty.indexOf(Number(diff.id)) > -1} />
+            <ListItemText primary={diff.name} />
           </MenuItem>
         ))}
       </Select>

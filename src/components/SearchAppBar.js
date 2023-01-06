@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { navigate } from '@reach/router';
 import { styled } from '@mui/material/styles';
+import { useMemo } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -11,14 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-const pages = [
-  { route: '/', title: 'Ensembles' },
-  { route: '/solos', title: 'Solos' },
-  // TODO: Get these route ready for primetime
-  // { route: 'chamber-music', title: 'Chamber Music' },
-  // { route: 'steel-band', title: 'Steel Band' },
-  // { route: 'books', title: 'Books' },
-];
+import { useUIState } from '../state/UIContext/hooks';
 
 const Offset = styled('div')(({ theme }) => theme.mixins.toolbar);
 
@@ -32,6 +26,17 @@ function SearchAppBar() {
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
+
+  const uiState = useUIState();
+
+  const pages = useMemo(() => [
+    { route: `/${uiState.ensemblesQueryString}`, title: 'Ensembles' },
+    { route: '/solos', title: 'Solos' },
+    // TODO: Get these route ready for primetime
+    // { route: 'chamber-music', title: 'Chamber Music' },
+    // { route: 'steel-band', title: 'Steel Band' },
+    // { route: 'books', title: 'Books' },
+  ], [uiState]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

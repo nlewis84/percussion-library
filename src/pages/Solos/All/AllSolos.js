@@ -266,10 +266,15 @@ function AllSolos() {
         <Paper
           elevation={0}
           sx={{
+            alignItems: 'center',
             backgroundColor: 'transparent',
-            display: 'inline-block',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 1,
+            justifyContent: 'center',
             mr: 2,
             mt: 2,
+            py: 1,
             width: '99%',
           }}
         >
