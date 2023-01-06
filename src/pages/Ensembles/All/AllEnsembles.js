@@ -10,16 +10,19 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Link } from '@reach/router';
+import { Link, useLocation, useNavigate } from '@reach/router';
 import { useDebounce } from 'use-debounce';
 import React, {
   useCallback, useEffect, useMemo, useState,
 } from 'react';
 
-import { useFetchDifficultyLevels } from '../../../hooks/api/difficulties';
+import { arrayify } from '../../../utils/arrayify';
+import { convertQueryStringToParams } from '../../../utils/convertQueryStringToParams';
+import { getQueryStringFromParams } from '../../../utils/getQueryStringFromParams';
+import { stripLeadingQuestionMarkFromSearch } from '../../../utils/stripLeadingQuestionMarkFromSearch';
 import { useFetchEnsembles } from '../../../hooks/api/ensembles';
 import { useTextField } from '../../../hooks/useTextField';
-import DifficultyFilter from '../../../components/DifficultyFilter';
+import DifficultyIdFilter from '../../../components/DifficultyIdFilter';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
 import NumberOfPlayersFilter from '../../../components/NumberOfPlayersFilter';
@@ -35,44 +38,59 @@ const pageSize = 60;
 function AllEnsembles() {
   const [localData, setLocalData] = useState(null);
 
-  const [filters, setFilters] = useState({
-    difficulty_level_id: [],
-    number_of_players: [],
-    page: 1,
-    publisher: [],
-    q: '',
-  });
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const filtersFromQueryString = useMemo(() => {
+    /* eslint-disable camelcase */
+    const {
+      difficulty_level_id,
+      number_of_players,
+      page = 1,
+      page_size = 60,
+      publisher,
+      q,
+    } = convertQueryStringToParams(location.search);
+
+    const filters = {
+      difficulty_level_id: arrayify(difficulty_level_id),
+      number_of_players: arrayify(number_of_players),
+      page,
+      page_size,
+      publisher: arrayify(publisher),
+      q: q || '',
+    };
+
+    // Remove null values from object
+    return Object.entries(filters).reduce((acc, [key, value]) => {
+      if (value) {
+        acc[key] = value;
+      }
+
+      return acc;
+    }, {});
+    /* eslint-enable camelcase */
+  }, [location.search]);
 
   const handleChangePage = useCallback((event, value) => {
-    setFilters((f) => ({
-      ...f,
+    const newFilters = {
+      ...filtersFromQueryString,
       page: value,
-    }));
-  }, []);
+    };
 
-  const searchTextField = useTextField();
+    const queryString = getQueryStringFromParams(newFilters);
+
+    navigate(`?${queryString}`, { replace: true });
+  }, [filtersFromQueryString]);
+
+  const searchTextField = useTextField(filtersFromQueryString.q || '');
 
   const [q] = useDebounce(searchTextField.value, 300);
 
   const {
-    data: difficultyLevels,
-  } = useFetchDifficultyLevels();
-
-  const queryParams = useMemo(() => ({
-    category: 'Percussion Ensembles',
-    difficulty_level_id: filters.difficulty_level_id
-      .map((d) => difficultyLevels.find((dl) => dl.name === d).id),
-    number_of_players: filters.number_of_players,
-    page: filters.page,
-    page_size: pageSize,
-    publisher: filters.publisher,
-    q: filters.q,
-  }), [difficultyLevels, filters]);
-
-  const {
     data: ensemblesData,
     isLoading,
-  } = useFetchEnsembles(queryParams);
+  } = useFetchEnsembles(stripLeadingQuestionMarkFromSearch(location.search));
 
   useEffect(() => {
     if (ensemblesData && ensemblesData.ensembles) {
@@ -85,22 +103,30 @@ function AllEnsembles() {
   const pageCount = Math.ceil(fullCount / pageSize);
 
   useEffect(() => {
-    setFilters((f) => ({
-      ...f,
+    const newFilters = {
+      ...filtersFromQueryString,
       page: 1,
       q,
-    }));
-  }, [q]);
+    };
+
+    const queryString = getQueryStringFromParams(newFilters);
+
+    navigate(`?${queryString}`, { replace: true });
+  }, [filtersFromQueryString, navigate, q]);
 
   const handleChange = useCallback((event) => {
     const { target } = event;
 
-    setFilters((f) => ({
-      ...f,
+    const newFilters = {
+      ...filtersFromQueryString,
       page: 1,
       [target.name]: target.value,
-    }));
-  }, []);
+    };
+
+    const queryString = getQueryStringFromParams(newFilters);
+
+    navigate(`?${queryString}`, { replace: true });
+  }, [filtersFromQueryString, navigate]);
 
   return (
     <Container
@@ -129,17 +155,17 @@ function AllEnsembles() {
           <NumberOfPlayersFilter
             handleChange={handleChange}
             name="number_of_players"
-            numberOfPlayers={filters.number_of_players}
+            numberOfPlayers={filtersFromQueryString.number_of_players || []}
           />
-          <DifficultyFilter
+          <DifficultyIdFilter
             handleChange={handleChange}
             name="difficulty_level_id"
-            difficulty={filters.difficulty_level_id}
+            difficulty={(filtersFromQueryString.difficulty_level_id || []).map(Number)}
           />
           <PublisherFilter
             handleChange={handleChange}
             name="publisher"
-            publisher={filters.publisher}
+            publisher={filtersFromQueryString.publisher || []}
           />
 
           <TextField
@@ -267,7 +293,7 @@ function AllEnsembles() {
         <Pagination
           color="secondary"
           count={pageCount}
-          page={filters.page}
+          page={filtersFromQueryString.page}
           onChange={handleChangePage}
         />
       </Box>
