@@ -124,7 +124,9 @@ function AllEnsembles() {
     const queryString = getQueryStringFromParams(newFilters);
 
     navigate(`?${queryString}`, { replace: true });
-  }, [filtersFromQueryString, navigate, q]);
+    // we only listen for q to change
+    // intentionally not passing in filtersFromQueryString
+  }, [q]);
 
   const handleChange = useCallback((event) => {
     const { target } = event;
