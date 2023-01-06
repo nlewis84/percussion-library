@@ -11,6 +11,7 @@ import AllSolos from './pages/Solos/All/AllSolos';
 import EnsembleShow from './pages/Ensembles/Show/index';
 import SearchAppBar from './components/SearchAppBar';
 import SoloShow from './pages/Solos/Show/index';
+import UIContextProvider from './state/UIContext/UIContextProvider';
 
 function Copyright() {
   return (
@@ -47,18 +48,20 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <Box className="wrapper">
-        <SearchAppBar />
-        <Router>
-          <AllEnsembles path="/" />
-          <AllSolos path="/solos" />
-          <EnsembleShow path="ensembles/:ensembleId" />
-          <SoloShow path="solos/:soloId" />
-        </Router>
-        <Copyright />
-      </Box>
-    </QueryClientProvider>
+    <UIContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <Box className="wrapper">
+          <SearchAppBar />
+          <Router>
+            <AllEnsembles path="/" />
+            <AllSolos path="/solos" />
+            <EnsembleShow path="ensembles/:ensembleId" />
+            <SoloShow path="solos/:soloId" />
+          </Router>
+          <Copyright />
+        </Box>
+      </QueryClientProvider>
+    </UIContextProvider>
   );
 }
 

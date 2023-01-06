@@ -22,6 +22,7 @@ import { getQueryStringFromParams } from '../../../utils/getQueryStringFromParam
 import { stripLeadingQuestionMarkFromSearch } from '../../../utils/stripLeadingQuestionMarkFromSearch';
 import { useFetchEnsembles } from '../../../hooks/api/ensembles';
 import { useTextField } from '../../../hooks/useTextField';
+import { useUIDispatch } from '../../../state/UIContext/hooks';
 import DifficultyIdFilter from '../../../components/DifficultyIdFilter';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
@@ -40,6 +41,17 @@ function AllEnsembles() {
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  const uiDispatch = useUIDispatch();
+
+  useEffect(() => {
+    uiDispatch({
+      payload: {
+        ensemblesQueryString: location.search,
+      },
+      type: 'updateEnsemblesQueryString',
+    });
+  }, [location.search, uiDispatch]);
 
   const filtersFromQueryString = useMemo(() => {
     /* eslint-disable camelcase */
