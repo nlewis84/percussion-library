@@ -305,7 +305,7 @@ function AllEnsembles() {
         <Pagination
           color="secondary"
           count={pageCount}
-          page={filtersFromQueryString.page}
+          page={parseInt(filtersFromQueryString.page, 10)}
           onChange={handleChangePage}
         />
       </Box>
