@@ -18,7 +18,13 @@ const MenuProps = {
   },
 };
 
-const publishers = ['C. Alan', 'Tapspace'];
+const publishers = [
+  'C. Alan',
+  'Gottry Publications',
+  // 'Meredith Music',
+  // 'SMP Press',
+  'Tapspace',
+];
 
 export default function PublisherFilter({ handleChange, name, publisher }) {
   return (
@@ -36,7 +42,10 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
         color="secondary"
         size="small"
         sx={{
-          bgcolor: 'background.default', color: 'secondary.dark', fontWeight: 'bold', pr: 1,
+          bgcolor: 'background.default',
+          color: 'secondary.dark',
+          fontWeight: 'bold',
+          pr: 1,
         }}
       >
         Publisher
@@ -53,7 +62,7 @@ export default function PublisherFilter({ handleChange, name, publisher }) {
             label="Tag"
             color="secondary"
           />
-        )}
+)}
         renderValue={(selected) => selected.join(', ')}
         MenuProps={MenuProps}
       >
