@@ -32,7 +32,7 @@ function SearchAppBar() {
   const pages = useMemo(() => [
     { route: `/${uiState.ensemblesQueryString}`, title: 'Ensembles' },
     { route: '/solos', title: 'Solos' },
-    // TODO: Get these route ready for primetime
+    // TODO: Get these routes ready for primetime
     // { route: 'chamber-music', title: 'Chamber Music' },
     // { route: 'steel-band', title: 'Steel Band' },
     // { route: 'books', title: 'Books' },
@@ -89,7 +89,7 @@ function SearchAppBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ color: 'white', display: { md: 'flex', xs: 'flex' }, mr: 2 }}
+            sx={{ color: 'text.primary', display: { md: 'flex', xs: 'flex' }, mr: 2 }}
           >
             Percussion Library
           </Typography>
@@ -105,7 +105,7 @@ function SearchAppBar() {
               <Button
                 key={page.title}
                 onClick={() => handleCloseNavMenu && navigate(page.route)}
-                sx={{ color: 'white', display: 'block', my: 2 }}
+                sx={{ color: 'text.primary', display: 'block', my: 2 }}
               >
                 {page.title}
               </Button>
