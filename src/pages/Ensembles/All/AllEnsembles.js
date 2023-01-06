@@ -230,6 +230,7 @@ function AllEnsembles() {
           spacing={0}
           alignItems="center"
           justifyContent="center"
+          item
           xs={12}
         >
           {(localData && localData.length === 0) ? (

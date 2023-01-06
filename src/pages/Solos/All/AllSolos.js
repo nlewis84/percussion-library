@@ -319,6 +319,7 @@ function AllSolos() {
         spacing={0}
         alignItems="center"
         justifyContent="center"
+        item
         xs={12}
       >
         {
