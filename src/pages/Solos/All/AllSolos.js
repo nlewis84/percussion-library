@@ -53,7 +53,6 @@ function AllSolos() {
   const filtersFromQueryString = useMemo(() => {
     /* eslint-disable camelcase */
     const {
-      // category,
       difficulty_level_id,
       number_of_players,
       page = 1,
@@ -63,7 +62,6 @@ function AllSolos() {
     } = convertQueryStringToParams(location.search);
 
     const filters = {
-      // category,
       difficulty_level_id: arrayify(difficulty_level_id),
       number_of_players: arrayify(number_of_players),
       page,
@@ -199,30 +197,10 @@ function AllSolos() {
             {...searchTextField}
             value={searchTextField.value}
           />
-
-          {/* <Typography
-            variant="body"
-            color="secondary.main"
-            textAlign="center"
-            sx={{ display: 'block' }}
-          >
-            {
-            // eslint-disable-next-line no-nested-ternary
-            filterIsOn
-              ? filteredItems.length === 0
-                ? '0'
-                : filteredItems.filter(
-                  (item) => item.category === '%solo%',
-                ).length
-              : items.filter((item) => item.category === '%solo%').length
-            }
-            {' '}
-            {filteredItems.length === 1 ? 'result' : 'results'}
-          </Typography> */}
         </Paper>
       </Container>
 
-      {!localData && <LoadingSkeleton />}
+      {isLoading && !localData && <LoadingSkeleton />}
 
       <LoadingOverlay loading={isLoading}>
         <Grid
@@ -234,8 +212,7 @@ function AllSolos() {
           item
           xs={12}
         >
-          {console.log(localData)}
-          {(localData.solos.length === 0) ? (
+          {(localData && localData.solos && localData.solos.length === 0) ? (
             <Card
               key="no_items_to_show"
               sx={{
@@ -271,7 +248,7 @@ function AllSolos() {
               </CardContent>
             </Card>
           ) : (
-            (localData.solos || []).map((item) => (
+            (localData ? localData.solos : []).map((item) => (
               <Card
                 key={item.id}
                 sx={{
