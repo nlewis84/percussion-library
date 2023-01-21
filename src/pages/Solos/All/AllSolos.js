@@ -1,259 +1,146 @@
 /* eslint-disable react/no-array-index-key */
 import {
+  Box,
   Card,
   CardContent,
   Container,
   Grid,
+  Pagination,
   Paper,
+  TextField,
   Typography,
 } from '@mui/material';
-import { Link } from '@reach/router';
-import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from '@reach/router';
+import { useDebounce } from 'use-debounce';
+import React, {
+  useCallback, useEffect, useMemo, useState,
+} from 'react';
 
-import DifficultyFilter from '../../../components/DifficultyFilter';
-import InstrumentFilter from '../../../components/InstrumentFilter';
+import { arrayify } from '../../../utils/arrayify';
+import { convertQueryStringToParams } from '../../../utils/convertQueryStringToParams';
+import { getQueryStringFromParams } from '../../../utils/getQueryStringFromParams';
+import { stripLeadingQuestionMarkFromSearch } from '../../../utils/stripLeadingQuestionMarkFromSearch';
+import { useFetchSolos } from '../../../hooks/api/solos';
+import { useTextField } from '../../../hooks/useTextField';
+import { useUIDispatch } from '../../../state/UIContext/hooks';
+import DifficultyIdFilter from '../../../components/DifficultyIdFilter';
+import LoadingOverlay from '../../../components/LoadingOverlay';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
+import NumberOfPlayersFilter from '../../../components/NumberOfPlayersFilter';
 import PublisherFilter from '../../../components/PublisherFilter';
-import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
-import SanitizeInstrument from '../../../helpers/sanitizeInstrument';
 import SmallCardActions from '../../../components/SmallCardActions';
 import SoloSmallCardContent from '../../../components/SoloSmallCardContent';
 
-// TODO: Big todo here...need to make this match Ensembles Index in functionality
+const pageSize = 60;
 
 function AllSolos() {
-  const [solos, setSolos] = useState([]);
-  const [filteredSolos, setFilteredSolos] = useState([]);
-  const [difficulty, setDifficulty] = useState([]);
-  const [instrument, setInstrument] = useState([]);
-  const [publisher, setPublisher] = useState([]);
-  const [DataisLoaded, setDataisLoaded] = useState(false);
-  const [filterIsOn, setFilterIsOn] = useState(false);
+  const [localData, setLocalData] = useState(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const uiDispatch = useUIDispatch();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    fetch(`${process.env.REACT_APP_DATA_URL}solos`)
-      .then((res) => res.json())
-      .then((json) => {
-        setSolos(json);
-        setDataisLoaded(true);
-      });
-  }, []);
+    uiDispatch({
+      payload: {
+        solosQueryString: location.search,
+      },
+      type: 'updateSolosQueryString',
+    });
+  }, [location.search, uiDispatch]);
 
-  const handleChange = (event) => {
+  const filtersFromQueryString = useMemo(() => {
+    /* eslint-disable camelcase */
     const {
-      target,
-    } = event;
+      // category,
+      difficulty_level_id,
+      number_of_players,
+      page = 1,
+      page_size = 60,
+      publisher,
+      q,
+    } = convertQueryStringToParams(location.search);
 
-    if (!!instrument || !!difficulty || !!publisher) {
-      setFilterIsOn(true);
+    const filters = {
+      // category,
+      difficulty_level_id: arrayify(difficulty_level_id),
+      number_of_players: arrayify(number_of_players),
+      page,
+      page_size,
+      publisher: arrayify(publisher),
+      q: q || '',
+    };
+
+    // Remove null values from object
+    return Object.entries(filters).reduce((acc, [key, value]) => {
+      if (value) {
+        acc[key] = value;
+      }
+
+      return acc;
+    }, {});
+    /* eslint-enable camelcase */
+  }, [location.search]);
+
+  const handleChangePage = useCallback((event, value) => {
+    const newFilters = {
+      ...filtersFromQueryString,
+      page: value,
+    };
+
+    const queryString = getQueryStringFromParams(newFilters);
+
+    navigate(`solos?${queryString}`, { replace: true });
+  }, [filtersFromQueryString]);
+
+  const searchTextField = useTextField(filtersFromQueryString.q || '');
+
+  const [q] = useDebounce(searchTextField.value, 300);
+
+  const {
+    data: solosData,
+    isLoading,
+  } = useFetchSolos(stripLeadingQuestionMarkFromSearch(location.search));
+
+  useEffect(() => {
+    if (solosData && solosData.solos) {
+      setLocalData(solosData.solos);
     }
-    // We need to check to see if all the filters are blank, but to do that we need to
-    // check the target.value instead of the state of the filter that triggered this
-    // handlePublisherChange due to the async nature of setState()
+  }, [solosData]);
 
-    switch (!!target.value.length) {
-      case true:
-        // this is where we do the work of figuring out what to filter
+  const fullCount = solosData ? solosData.fullCount : 0;
 
-        switch (target.name) {
-          case 'Instrument':
-            // Check the other two filters to see if they are false
-            if (!difficulty.length && !publisher.length) {
-              InstrumentFilterAction(target.value);
-              break;
-            }
-            if (!difficulty.length && publisher.length) {
-              PublisherAndInstrumentFilterAction(publisher, target.value);
-              break;
-            }
-            if (difficulty.length && !publisher.length) {
-              DifficultyAndInstrumentFilterAction(difficulty, target.value);
-              break;
-            }
-            if (difficulty.length && publisher.length) {
-              FilterAllAction(target.value, difficulty, publisher);
-              break;
-            }
-            break;
-          case 'Difficulty':
-            if (!instrument.length && !publisher.length) {
-              DifficultyFilterAction(target.value);
-              break;
-            }
-            if (instrument.length && !publisher.length) {
-              DifficultyAndInstrumentFilterAction(target.value, instrument);
-              break;
-            }
-            if (!instrument.length && publisher.length) {
-              PublisherAndDifficultyFilterAction(publisher, target.value);
-              break;
-            }
-            if (instrument.length && publisher.length) {
-              FilterAllAction(instrument, target.value, publisher);
-              break;
-            }
-            break;
-          case 'Publisher': // Publisher
-            if (!difficulty.length && !instrument.length) {
-              PublisherFilterAction(target.value);
-              break;
-            }
-            if (difficulty.length && !instrument.length) {
-              PublisherAndDifficultyFilterAction(target.value, difficulty);
-              break;
-            }
-            if (!difficulty.length && instrument.length) {
-              PublisherAndInstrumentFilterAction(target.value, instrument);
-              break;
-            }
-            if (difficulty.length && instrument.length) {
-              FilterAllAction(instrument, difficulty, target.value);
-              break;
-            }
-            break;
-          default:
-            break;
-        }
-        break;
-      case false:
-        // This current event.target.value is blank, so we need to
-        // check if the other filters are also blank. If so,
-        // then we will setFilteredSolos([]) and call it a day.
-        // If not, then we will incorporate the logic on line 108.
-        switch (target.name) {
-          case 'Instrument':
-            // Check the other two filters to see if they are false
-            if (!difficulty.length && !publisher.length) {
-              setFilteredSolos([]);
-              setFilterIsOn(false);
-              break;
-            }
-            if (!difficulty.length && publisher.length) {
-              PublisherFilterAction(publisher);
-              break;
-            }
-            if (difficulty.length && !publisher.length) {
-              DifficultyFilterAction(difficulty);
-              break;
-            }
-            if (difficulty.length && publisher.length) {
-              PublisherAndDifficultyFilterAction(publisher, difficulty);
-              break;
-            }
-            break;
-          case 'Difficulty':
-            if (!instrument.length && !publisher.length) {
-              setFilteredSolos([]);
-              setFilterIsOn(false);
-              break;
-            }
-            if (instrument.length && !publisher.length) {
-              InstrumentFilterAction(instrument);
-              break;
-            }
-            if (!instrument.length && publisher.length) {
-              PublisherFilterAction(publisher);
-              break;
-            }
-            if (instrument.length && publisher.length) {
-              PublisherAndInstrumentFilterAction(publisher, instrument);
-              break;
-            }
-            break;
-          case 'Publisher': // Publisher
-            if (!difficulty.length && !instrument.length) {
-              setFilteredSolos([]);
-              setFilterIsOn(false);
-              break;
-            }
-            if (difficulty.length && !instrument.length) {
-              DifficultyFilterAction(difficulty);
-              break;
-            }
-            if (!difficulty.length && instrument.length) {
-              InstrumentFilterAction(instrument);
-              break;
-            }
-            if (difficulty.length && instrument.length) {
-              DifficultyAndInstrumentFilterAction(difficulty, instrument);
-              break;
-            }
-            break;
-          default:
-            break;
-        }
-        break;
-      default:
-        break;
-    }
+  const pageCount = Math.ceil(fullCount / pageSize);
 
-    // This logic sets the correct state based on the event.target.name
-    if (target.name === 'Instrument') {
-      setInstrument(target.value);
-    } else if (target.name === 'Difficulty') {
-      setDifficulty(target.value);
-    } else if (target.name === 'Publisher') {
-      setPublisher(target.value);
-    }
-  };
+  useEffect(() => {
+    const newFilters = {
+      ...filtersFromQueryString,
+      page: 1,
+      q,
+    };
 
-  let filtered = [];
+    const queryString = getQueryStringFromParams(newFilters);
 
-  // TODO: Break these functions out into separate files.
+    navigate(`solos?${queryString}`, { replace: true });
+    // we only listen for q to change
+    // intentionally not passing in filtersFromQueryString
+  }, [q]);
 
-  // Individual functions for all filtering cases.
+  const handleChange = useCallback((event) => {
+    const { target } = event;
 
-  function FilterAllAction(inst, diff, pub) {
-    filtered = solos
-      .filter((item) => inst.includes(SanitizeInstrument(item.min_players, item.category)))
-      .filter((item) => pub.includes(item.publisher))
-      .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
-    setFilteredSolos(filtered);
-  }
+    const newFilters = {
+      ...filtersFromQueryString,
+      page: 1,
+      [target.name]: target.value,
+    };
 
-  function PublisherAndDifficultyFilterAction(pub, diff) {
-    filtered = solos
-      .filter((item) => pub.includes(item.publisher))
-      .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
-    setFilteredSolos(filtered);
-  }
+    const queryString = getQueryStringFromParams(newFilters);
 
-  function PublisherAndInstrumentFilterAction(pub, inst) {
-    filtered = solos
-      .filter((item) => inst.includes(SanitizeInstrument(item.min_players, item.category)))
-      .filter((item) => pub.includes(item.publisher));
-    setFilteredSolos(filtered);
-  }
+    navigate(`solos?${queryString}`, { replace: true });
+  }, [filtersFromQueryString, navigate]);
 
-  function DifficultyAndInstrumentFilterAction(diff, inst) {
-    filtered = solos
-      .filter((item) => inst.includes(SanitizeInstrument(item.min_players, item.category)))
-      .filter((item) => diff.includes(SanitizeDifficulty(item.level)));
-    setFilteredSolos(filtered);
-  }
-
-  function PublisherFilterAction(target) {
-    filtered = solos.filter((item) => target.includes(item.publisher));
-    setFilteredSolos(filtered);
-  }
-
-  function DifficultyFilterAction(target) {
-    filtered = solos.filter((item) => target.includes(SanitizeDifficulty(item.level)));
-    setFilteredSolos(filtered);
-  }
-
-  function InstrumentFilterAction(target) {
-    filtered = solos
-      .filter((item) => target.includes(SanitizeInstrument(item.min_players, item.category)));
-    setFilteredSolos(filtered);
-  }
-
-  if (!DataisLoaded) {
-    return (
-      <LoadingSkeleton />
-    );
-  }
   return (
     <Container
       className="App"
@@ -278,20 +165,39 @@ function AllSolos() {
             width: '99%',
           }}
         >
-          <InstrumentFilter
+          <NumberOfPlayersFilter
             handleChange={handleChange}
-            name="Instrument"
-            instrument={instrument}
+            name="number_of_players"
+            numberOfPlayers={filtersFromQueryString.number_of_players || []}
           />
-          <DifficultyFilter
+          <DifficultyIdFilter
             handleChange={handleChange}
-            name="Difficulty"
-            difficulty={difficulty}
+            name="difficulty_level_id"
+            difficulty={(filtersFromQueryString.difficulty_level_id || []).map(Number)}
           />
           <PublisherFilter
             handleChange={handleChange}
-            name="Publisher"
-            publisher={publisher}
+            name="publisher"
+            publisher={filtersFromQueryString.publisher || []}
+          />
+
+          <TextField
+            color="secondary"
+            id="search"
+            label="Search"
+            InputLabelProps={{
+              sx: { color: 'secondary.dark', fontWeight: 'bold' },
+            }}
+            name="search"
+            size="small"
+            sx={{
+              width: {
+                sm: 'auto',
+                xs: '100%',
+              },
+            }}
+            {...searchTextField}
+            value={searchTextField.value}
           />
 
           {/* <Typography
@@ -303,94 +209,69 @@ function AllSolos() {
             {
             // eslint-disable-next-line no-nested-ternary
             filterIsOn
-              ? filteredSolos.length === 0
+              ? filteredItems.length === 0
                 ? '0'
-                : filteredSolos.length
-              : solos.length
+                : filteredItems.filter(
+                  (item) => item.category === '%solo%',
+                ).length
+              : items.filter((item) => item.category === '%solo%').length
             }
             {' '}
-            {filteredSolos.length === 1 ? 'result' : 'results'}
+            {filteredItems.length === 1 ? 'result' : 'results'}
           </Typography> */}
         </Paper>
       </Container>
-      <Grid
-        container
-        sx={{ gap: 2, mt: 2 }}
-        spacing={0}
-        alignItems="center"
-        justifyContent="center"
-        item
-        xs={12}
-      >
-        {
-        // eslint-disable-next-line no-nested-ternary
-        filterIsOn
-          ? filteredSolos.length === 0
-            ? (
-              <Card
-                key="no_items_to_show"
-                sx={{
-                  ':hover': {
-                    boxShadow: 10,
-                  },
-                  '@media (max-width:599px)': {
-                    width: '99%',
-                  },
-                  borderRadius: 2,
-                  height: 224,
-                  width: 196,
-                }}
-                variant="outlined"
-                style={{ textDecoration: 'none' }}
-              >
-                <CardContent>
-                  <Typography
-                    variant="h7"
-                    color="secondary.main"
-                    sx={{ fontWeight: 'bold', textAlign: 'center' }}
-                    component="div"
-                  >
-                    Whoops
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ textAlign: 'center' }}
-                    color="text.primary"
-                  >
-                    No items match that criteria
-                  </Typography>
-                </CardContent>
-              </Card>
-            )
-            : filteredSolos
-              .map((item) => (
-                <Card
-                  key={item.id}
-                  sx={{
-                    ':hover': {
-                      boxShadow: 10,
-                    },
-                    '@media (max-width:599px)': {
-                      width: '99%',
-                    },
-                    borderRadius: 2,
-                    height: 224,
-                    width: 196,
-                  }}
-                  variant="outlined"
-                  style={{ textDecoration: 'none' }}
-                  component={Link}
-                  to={`/solos/${item.id}`}
+
+      {!localData && <LoadingSkeleton />}
+
+      <LoadingOverlay loading={isLoading}>
+        <Grid
+          container
+          sx={{ gap: 2, mt: 2 }}
+          spacing={0}
+          alignItems="center"
+          justifyContent="center"
+          item
+          xs={12}
+        >
+          {console.log(localData)}
+          {(localData.solos.length === 0) ? (
+            <Card
+              key="no_items_to_show"
+              sx={{
+                ':hover': {
+                  boxShadow: 10,
+                },
+                '@media (max-width:599px)': {
+                  width: '99%',
+                },
+                borderRadius: 2,
+                height: 224,
+                width: 196,
+              }}
+              variant="outlined"
+              style={{ textDecoration: 'none' }}
+            >
+              <CardContent>
+                <Typography
+                  variant="h7"
+                  color="secondary.main"
+                  sx={{ fontWeight: 'bold', textAlign: 'center' }}
+                  component="div"
                 >
-                  <SoloSmallCardContent item={item} />
-                  <SmallCardActions item={item} />
-                </Card>
-              ))
-        // TODO: Change this to be some sort of landing screen with
-        // multiple different horizontal view swipers
-        // TODO: Actually disply 0 items if the filters cause there to be none with the filters
-          : solos
-            .map((item) => (
+                  Whoops
+                </Typography>
+                <Typography
+                  variant="body2"
+                  sx={{ textAlign: 'center' }}
+                  color="text.primary"
+                >
+                  No items match that criteria
+                </Typography>
+              </CardContent>
+            </Card>
+          ) : (
+            (localData.solos || []).map((item) => (
               <Card
                 key={item.id}
                 sx={{
@@ -407,14 +288,30 @@ function AllSolos() {
                 variant="outlined"
                 style={{ textDecoration: 'none' }}
                 component={Link}
+                rel="noreferrer"
+                target="_blank"
                 to={`/solos/${item.id}`}
               >
                 <SoloSmallCardContent item={item} />
                 <SmallCardActions item={item} />
               </Card>
             ))
-        }
-      </Grid>
+          )}
+        </Grid>
+      </LoadingOverlay>
+
+      <Box
+        display="flex"
+        justifyContent="center"
+        marginTop={2}
+      >
+        <Pagination
+          color="secondary"
+          count={pageCount}
+          page={parseInt(filtersFromQueryString.page, 10)}
+          onChange={handleChangePage}
+        />
+      </Box>
     </Container>
   );
 }

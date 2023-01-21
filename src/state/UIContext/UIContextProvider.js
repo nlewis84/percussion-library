@@ -2,6 +2,7 @@ import React, { createContext, useReducer } from 'react';
 
 const initialState = {
   ensemblesQueryString: '',
+  solosQueryString: '',
 };
 
 export const UIStateContext = createContext(initialState);
@@ -13,6 +14,11 @@ const uiReducer = (state, action) => {
       return {
         ...state,
         ensemblesQueryString: action.payload.ensemblesQueryString,
+      };
+    case 'updateSolosQueryString':
+      return {
+        ...state,
+        solosQueryString: action.payload.solosQueryString,
       };
 
     default:
