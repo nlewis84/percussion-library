@@ -24,9 +24,9 @@ import { useFetchSolos } from '../../../hooks/api/solos';
 import { useTextField } from '../../../hooks/useTextField';
 import { useUIDispatch } from '../../../state/UIContext/hooks';
 import DifficultyIdFilter from '../../../components/DifficultyIdFilter';
+import InstrumentFilter from '../../../components/InstrumentFilter';
 import LoadingOverlay from '../../../components/LoadingOverlay';
 import LoadingSkeleton from '../../../components/LoadingSkeleton';
-import NumberOfPlayersFilter from '../../../components/NumberOfPlayersFilter';
 import PublisherFilter from '../../../components/PublisherFilter';
 import SmallCardActions from '../../../components/SmallCardActions';
 import SoloSmallCardContent from '../../../components/SoloSmallCardContent';
@@ -53,17 +53,16 @@ function AllSolos() {
   const filtersFromQueryString = useMemo(() => {
     /* eslint-disable camelcase */
     const {
+      category,
       difficulty_level_id,
-      number_of_players,
       page = 1,
       page_size = 60,
       publisher,
       q,
     } = convertQueryStringToParams(location.search);
-
     const filters = {
+      category: arrayify(category),
       difficulty_level_id: arrayify(difficulty_level_id),
-      number_of_players: arrayify(number_of_players),
       page,
       page_size,
       publisher: arrayify(publisher),
@@ -163,10 +162,10 @@ function AllSolos() {
             width: '99%',
           }}
         >
-          <NumberOfPlayersFilter
+          <InstrumentFilter
             handleChange={handleChange}
-            name="number_of_players"
-            numberOfPlayers={filtersFromQueryString.number_of_players || []}
+            name="category"
+            instrument={filtersFromQueryString.category || []}
           />
           <DifficultyIdFilter
             handleChange={handleChange}
@@ -212,7 +211,7 @@ function AllSolos() {
           item
           xs={12}
         >
-          {(localData && localData.solos && localData.solos.length === 0) ? (
+          {(localData && localData.length === 0) ? (
             <Card
               key="no_items_to_show"
               sx={{
@@ -248,7 +247,7 @@ function AllSolos() {
               </CardContent>
             </Card>
           ) : (
-            (localData ? localData.solos : []).map((item) => (
+            (localData || []).map((item) => (
               <Card
                 key={item.id}
                 sx={{
