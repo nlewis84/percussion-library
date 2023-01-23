@@ -31,7 +31,7 @@ function SearchAppBar() {
 
   const pages = useMemo(() => [
     { route: `/${uiState.ensemblesQueryString}`, title: 'Ensembles' },
-    { route: '/solos', title: 'Solos' },
+    { route: `/solos${uiState.solosQueryString}`, title: 'Solos' },
     // TODO: Get these routes ready for primetime
     // { route: 'chamber-music', title: 'Chamber Music' },
     // { route: 'steel-band', title: 'Steel Band' },

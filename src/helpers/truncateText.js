@@ -10,7 +10,6 @@ function TruncateText(string, number, name = false, cAlan = false) {
   }
 
   if (textToTruncate.endsWith(' (percussion ensemble version)')) {
-    console.log(string);
     textToTruncate = textToTruncate.replace(
       /( \(percussion ensemble version\))/,
       '',

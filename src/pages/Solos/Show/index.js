@@ -3,30 +3,36 @@
 import {
   Box,
   Container,
+  IconButton,
   List,
   ListItem,
   ListItemIcon,
   Paper,
   Skeleton,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
-import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
+import AccessTimeTwoToneIcon from '@mui/icons-material/AccessTimeTwoTone';
 import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import MenuBookTwoToneIcon from '@mui/icons-material/MenuBookTwoTone';
 import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactHtmlParser from 'react-html-parser';
-import SpeedOutlinedIcon from '@mui/icons-material/SpeedOutlined';
+import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
+import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone';
+import VisibilityTwoToneIcon from '@mui/icons-material/VisibilityTwoTone';
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
 
 import DescriptionFormatter from '../../../helpers/descriptionFormatter';
+import IncompleteInformation from '../../../components/IncompleteInformation';
 import InstrumentationFormatter from '../../../helpers/instrumentationFormatter';
+import MusicNote from '../../../components/icons/MusicNote';
 import ReviewFormatter from '../../../helpers/reviewFormatter';
 import SanitizeDifficulty from '../../../helpers/sanitizeDifficulty';
 import SanitizeInstrument from '../../../helpers/sanitizeInstrument';
-
-import MusicNote from '../../../components/icons/MusicNote';
+import TruncateText from '../../../helpers/truncateText';
 
 // TODO: make this a functional component, matching AllEnsembles
 class Show extends React.Component {
@@ -37,6 +43,11 @@ class Show extends React.Component {
     this.state = {
       DataisLoaded: false,
       item: [],
+      likeCount: 0,
+      likedThisLoad: false,
+      reportCount: 0,
+      reportedThisLoad: false,
+      viewCount: 0,
     };
   }
 
@@ -47,6 +58,9 @@ class Show extends React.Component {
       .then(async (json) => {
         this.setState({
           item: json[0],
+          likeCount: json[0].likes,
+          reportCount: json[0].reports,
+          viewCount: json[0].views,
         });
 
         if (
@@ -76,14 +90,136 @@ class Show extends React.Component {
           this.setState({
             ...this.state,
             DataisLoaded: true,
+            item: {
+              ...this.state.item,
+              non_sound_cloud_audio_link: json[0].audio_link,
+            },
           });
         }
+        if (this.state.item.video_link1 || this.state.item.video_link2) {
+          const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#]*).*/;
+          let link1 = '';
+          if (this.state.item.video_link1) {
+            link1 = this.state.item.video_link1.match(regExp);
+            if (link1 && link1[7].length === 11) {
+              // eslint-disable-next-line prefer-destructuring
+              link1 = link1[7];
+            }
+          }
+          let link2 = '';
+          if (this.state.item.video_link2) {
+            link2 = this.state.item.video_link2.match(regExp);
+            if (link2 && link2[7].length === 11) {
+              // eslint-disable-next-line prefer-destructuring
+              link2 = link2[7];
+            }
+          }
+          this.setState({
+            ...this.state,
+            DataisLoaded: true,
+            item: {
+              ...this.state.item,
+              video_link1: link1,
+              video_link2: link2,
+            },
+          });
+        }
+      })
+      .then(() => {
+        fetch(
+          `${process.env.REACT_APP_DATA_URL}solos/${this.props.soloId}/views`,
+          {
+            body: JSON.stringify({
+              views: this.state.item.views + 1,
+            }),
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            method: 'PATCH',
+          },
+        )
+          .then((res) => res.json())
+          .then((json) => {
+            this.setState({
+              ...this.state,
+              item: {
+                ...this.state.item,
+                views: json.views,
+              },
+              viewCount: json.views,
+            });
+          });
       });
   }
 
   render() {
-    const { DataisLoaded, item } = this.state;
-
+    const {
+      DataisLoaded,
+      item,
+      likeCount,
+      likedThisLoad,
+      reportedThisLoad,
+      viewCount,
+    } = this.state;
+    // handleLike function that increase item.like on the database
+    const handleLike = () => {
+      // eslint-disable-next-line no-undef
+      fetch(`${process.env.REACT_APP_DATA_URL}ensembles/${this.props.soloId}`, {
+        body: JSON.stringify({
+          likes: item.likes + 1,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PATCH',
+      })
+        .then((res) => res.json())
+        .then((json) => {
+          this.setState({
+            ...this.state,
+            item: {
+              ...this.state.item,
+              likes: json.likes,
+            },
+            likeCount: json.likes,
+            likedThisLoad: true,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    // handleReport function that increase item.like on the database
+    const handleReport = () => {
+      // eslint-disable-next-line no-undef
+      fetch(
+        `${process.env.REACT_APP_DATA_URL}solos/${this.props.soloId}/reports`,
+        {
+          body: JSON.stringify({
+            reports: item.reports + 1,
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'PATCH',
+        },
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          this.setState({
+            ...this.state,
+            item: {
+              ...this.state.item,
+              reports: json.reports,
+            },
+            reportCount: json.reports,
+            reportedThisLoad: true,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
     // TODO: Loading states for Solos Show pages are JACKED UP
     if (!DataisLoaded) {
       return (
@@ -126,20 +262,25 @@ class Show extends React.Component {
               >
                 <Skeleton animation="wave" />
               </Typography>
-              {new Array(8).fill().map((value, i) => React.cloneElement(
-                // eslint-disable-next-line react/no-array-index-key
-                <ListItem key={`${value} + ${i}`}>
-                  <ListItemIcon>
-                    <MusicNote color="secondary.main" />
-                  </ListItemIcon>
-                  <Typography
-                    variant="body1"
-                    sx={{ mb: 1, width: '50%' }}
-                  >
-                    <Skeleton animation="wave" />
-                  </Typography>
-                </ListItem>,
-              ))}
+              {new Array(8).fill().map((value, i) =>
+                React.cloneElement(
+                  // eslint-disable-next-line react/no-array-index-key
+                  <ListItem key={i}>
+                    <ListItemIcon>
+                      <MusicNote
+                        color="secondary.main"
+                        secondaryColor="secondary.light"
+                      />
+                    </ListItemIcon>
+                    <Typography
+                      key={value}
+                      variant="body1"
+                      sx={{ mb: 1, width: '50%' }}
+                    >
+                      <Skeleton animation="wave" />
+                    </Typography>
+                  </ListItem>,
+                ))}
             </List>
           </Paper>
           <Paper
@@ -147,9 +288,8 @@ class Show extends React.Component {
               '@media (max-width: 959px)': {
                 width: '100%',
               },
-              float: 'right',
-              pt: 0,
-              width: '33%',
+              p: 5,
+              width: '66%',
             }}
           >
             <Typography
@@ -163,7 +303,7 @@ class Show extends React.Component {
               direction="row"
               alignItems="center"
             >
-              <SpeedOutlinedIcon
+              <SpeedTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -179,7 +319,7 @@ class Show extends React.Component {
               direction="row"
               alignItems="center"
             >
-              <AccessTimeOutlinedIcon
+              <AccessTimeTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -274,6 +414,116 @@ class Show extends React.Component {
         >
           {item.title}
         </Typography>
+        <Container
+          sx={{
+            '@media (max-width: 959px)': {
+              width: '100%',
+            },
+            alignItems: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            pt: 0,
+            width: '50%',
+          }}
+        >
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 0,
+              width: '50%',
+            }}
+          >
+            <Tooltip title="Like">
+              <IconButton
+                aria-label="like"
+                onClick={() => handleLike(item.id)}
+                disabled={likedThisLoad}
+                sx={{
+                  '&:active': {
+                    transform: 'scale(1.1) rotate(-30deg)',
+                    transition: 'transform 0.1s',
+                    transitionTimingFunction: 'ease-out',
+                  },
+                }}
+              >
+                <ThumbUpTwoToneIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Tooltip>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ display: 'inline' }}
+            >
+              {likeCount}
+            </Typography>
+            {/* TODO: Add a WarningTwoToneIcon that links to an
+            action for users to report an issue with this page */}
+          </Box>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 0,
+              width: '50%',
+            }}
+          >
+            <Tooltip title="View">
+              <span>
+                <IconButton
+                  aria-label="view"
+                  disabled
+                >
+                  <VisibilityTwoToneIcon sx={{ color: 'secondary.main' }} />
+                </IconButton>
+              </span>
+            </Tooltip>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              sx={{ display: 'inline' }}
+            >
+              {viewCount}
+            </Typography>
+          </Box>
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+              pt: 0,
+              width: '50%',
+            }}
+          >
+            <Tooltip title="Report an issue">
+              <IconButton
+                aria-label="report"
+                onClick={() => handleReport(item.id)}
+                disabled={reportedThisLoad}
+                sx={{
+                  '&:active': {
+                    transform: 'scale(1.1) rotate(-30deg)',
+                    transition: 'transform 0.1s',
+                    transitionTimingFunction: 'ease-out',
+                  },
+                }}
+              >
+                <WarningTwoToneIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        </Container>
         {item.instrumentation
           ? InstrumentationFormatter(item.instrumentation)
           : null}
@@ -306,14 +556,9 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{
-                '@media (max-width: 959px)': {
-                  width: '100%',
-                },
-                mt: 1.5,
-              }}
+              sx={{ mt: 1.5 }}
             >
-              <MenuBookOutlinedIcon
+              <MenuBookTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -329,14 +574,9 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{
-                '@media (max-width: 959px)': {
-                  width: '100%',
-                },
-                mt: 1.5,
-              }}
+              sx={{ mt: 1.5 }}
             >
-              <SpeedOutlinedIcon
+              <SpeedTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -353,12 +593,7 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{
-                '@media (max-width: 959px)': {
-                  width: '100%',
-                },
-                mt: 1.5,
-              }}
+              sx={{ mt: 1.5 }}
             >
               <PersonOutlinedIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -376,14 +611,9 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{
-                '@media (max-width: 959px)': {
-                  width: '100%',
-                },
-                mt: 1.5,
-              }}
+              sx={{ mt: 1.5 }}
             >
-              <AccessTimeOutlinedIcon
+              <AccessTimeTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
               />
               <Typography
@@ -399,12 +629,7 @@ class Show extends React.Component {
               component={Stack}
               direction="row"
               alignItems="center"
-              sx={{
-                '@media (max-width: 959px)': {
-                  width: '100%',
-                },
-                mt: 1.5,
-              }}
+              sx={{ mt: 1.5 }}
             >
               <BusinessCenterTwoToneIcon
                 sx={{ color: 'secondary.main', display: 'inline', mr: 5 }}
@@ -417,20 +642,12 @@ class Show extends React.Component {
               </Typography>
             </Box>
           ) : null}
-          {item.description ? (
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{
-                '@media (max-width: 959px)': {
-                  width: '100%',
-                },
-                mt: 5,
-              }}
-            >
-              Description
-            </Typography>
-          ) : null}
+          {item.description
+            ? DescriptionFormatter(
+              TruncateText(item.title, 100),
+              item.description,
+            )
+            : null}
           {item.description
             ? DescriptionFormatter(item.title, item.description)
             : null}
@@ -444,7 +661,70 @@ class Show extends React.Component {
               mt: 1.5,
               width: '66%',
             }}
-          >{ReactHtmlParser(item.audio_embed)}
+          >
+            {ReactHtmlParser(item.audio_embed)}
+          </Box>
+        ) : null}
+        {item.non_sound_cloud_audio_link ? (
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              alignItems: 'center',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <audio
+              controls
+              src={item.non_sound_cloud_audio_link}
+            />
+          </Box>
+        ) : null}
+        {item.video_link1 ? (
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              mt: 1.5,
+              width: '66%',
+            }}
+          >
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <iframe
+              id="ytplayer"
+              frameBorder="0"
+              width="100%"
+              height="400"
+              src={`https://www.youtube.com/embed/${item.video_link1}`}
+              title={item.title}
+              type="text/html"
+            />
+          </Box>
+        ) : null}
+        {item.video_link2 ? (
+          <Box
+            sx={{
+              '@media (max-width: 959px)': {
+                width: '100%',
+              },
+              mt: 0.5,
+              width: '66%',
+            }}
+          >
+            {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
+            <iframe
+              id="ytplayer"
+              frameBorder="0"
+              width="100%"
+              height="400"
+              src={`https://www.youtube.com/embed/${item.video_link2}`}
+              title={item.title}
+              type="text/html"
+            />
           </Box>
         ) : null}
         {item.reviews ? (
@@ -457,12 +737,14 @@ class Show extends React.Component {
               width: '66%',
             }}
           >
-            <Typography
-              variant="body2"
-              color="text.secondary"
-            >
-              Reviews
-            </Typography>
+            <Box sx={{ pb: 1 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+              >
+                Reviews
+              </Typography>
+            </Box>
             <Typography
               variant="body3"
               color="text.primary"
@@ -471,6 +753,13 @@ class Show extends React.Component {
             </Typography>
           </Paper>
         ) : null}
+        {!(
+          item.audio_link
+          || item.non_sound_cloud_audio_link
+          || item.video_link1
+        ) || !item.reviews ? (
+          <IncompleteInformation />
+          ) : null}
       </Container>
     );
   }

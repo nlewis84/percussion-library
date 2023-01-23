@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useMemo } from 'react';
 import Checkbox from '@mui/material/Checkbox';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -6,6 +7,8 @@ import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Select from '@mui/material/Select';
+
+import { useFetchInstruments } from '../hooks/api/instruments';
 
 const ITEM_HEIGHT = 50;
 const ITEM_PADDING_TOP = 8;
@@ -18,18 +21,19 @@ const MenuProps = {
   },
 };
 
-const levels = [
-  'Snare',
-  'Keyboard',
-  'Drumset',
-  'Multi Perc',
-  'Timpani',
-  'Tenors',
-  'Steel Drum',
-  'Djembe',
-];
-
 export default function InstrumentFilter({ handleChange, instrument, name }) {
+  const {
+    data: instrumentLabels,
+  } = useFetchInstruments();
+  const selectedInstrumentLabels = useMemo(
+    () =>
+      (instrumentLabels || [])
+        .filter((inst) => instrument.includes(inst.id))
+        .sort((a, b) => a.id - b.id)
+        .map((inst) => inst.name),
+    [instrument, instrumentLabels],
+  );
+
   return (
     <FormControl
       size="small"
@@ -65,18 +69,18 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
             label="Tag"
             color="secondary"
           />
-)}
-        renderValue={(selected) => selected.join(', ')}
+        )}
+        renderValue={() => selectedInstrumentLabels.join(', ')}
         MenuProps={MenuProps}
       >
-        {levels.map((num) => (
+        {(instrumentLabels || []).map((inst) => (
           <MenuItem
-            key={num}
-            value={num}
+            key={inst.id}
+            value={inst.id}
             dense
           >
-            <Checkbox checked={instrument.indexOf(num) > -1} />
-            <ListItemText primary={num} />
+            <Checkbox checked={instrument.indexOf(Number(inst.id)) > -1} />
+            <ListItemText primary={inst.name} />
           </MenuItem>
         ))}
       </Select>
