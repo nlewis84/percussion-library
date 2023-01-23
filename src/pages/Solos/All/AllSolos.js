@@ -165,7 +165,7 @@ function AllSolos() {
           <InstrumentFilter
             handleChange={handleChange}
             name="category"
-            instrument={filtersFromQueryString.category || []}
+            instrument={(filtersFromQueryString.category || []).map(Number)}
           />
           <DifficultyIdFilter
             handleChange={handleChange}

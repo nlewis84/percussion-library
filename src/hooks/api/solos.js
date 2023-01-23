@@ -2,8 +2,6 @@ import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 
 const fetchSolos = async (queryString = '') => {
-  console.log(queryString);
-
   const res = await fetch(
     `${process.env.REACT_APP_DATA_URL}solos?${queryString}`,
   );

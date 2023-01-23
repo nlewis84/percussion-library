@@ -27,9 +27,10 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
   } = useFetchInstruments();
   const selectedInstrumentLabels = useMemo(
     () =>
-      (instrument || [])
+      (instrumentLabels || [])
+        .filter((inst) => instrument.includes(inst.id))
         .sort((a, b) => a.id - b.id)
-        .map((inst) => inst),
+        .map((inst) => inst.name),
     [instrument, instrumentLabels],
   );
 
@@ -61,7 +62,7 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
         id="multiple-checkbox"
         name={name}
         multiple
-        value={instrument || []}
+        value={instrument}
         onChange={handleChange}
         input={(
           <OutlinedInput
@@ -72,15 +73,14 @@ export default function InstrumentFilter({ handleChange, instrument, name }) {
         renderValue={() => selectedInstrumentLabels.join(', ')}
         MenuProps={MenuProps}
       >
-        {(instrumentLabels || []).map((inst, index) => (
+        {(instrumentLabels || []).map((inst) => (
           <MenuItem
-            // eslint-disable-next-line react/no-array-index-key
-            key={`${inst.id}-${index}`}
-            value={inst.instrument}
+            key={inst.id}
+            value={inst.id}
             dense
           >
-            <Checkbox checked={instrument && instrument.indexOf(inst.instrument) > -1} />
-            <ListItemText primary={inst.instrument} />
+            <Checkbox checked={instrument.indexOf(Number(inst.id)) > -1} />
+            <ListItemText primary={inst.name} />
           </MenuItem>
         ))}
       </Select>

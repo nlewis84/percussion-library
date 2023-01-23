@@ -10,7 +10,9 @@ const fetchInstruments = async () => {
     throw new Error(data.message);
   }
 
-  return data;
+  const filteredInstruments = data.filter((item) => !['Books & Education', 'Cadences', 'Chamber Music', 'Marching Ensembles', 'Marching Features', 'Percussion Ensembles', 'Steel Band'].includes(item.name));
+
+  return filteredInstruments;
 };
 
 export const useFetchInstruments = () => {
